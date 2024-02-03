@@ -37,3 +37,6 @@ SAenv.json
 next-env.d.ts
 
 .vercel
+
+.env*.local
+.vercel
