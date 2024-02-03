@@ -24,7 +24,7 @@ func ConnectToMongo(function func(*mongo.Collection)) {
 	}
 
 	// Disconnect from MongoDB client after function ends
-	defer func () {
+	defer func() {
 		if err := client.Disconnect(context.TODO()); err != nil {
 			fmt.Errorf("Error disconnecting from MongoDB: %v", err)
 		}
