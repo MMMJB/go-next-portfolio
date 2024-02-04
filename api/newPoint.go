@@ -4,22 +4,21 @@ import (
 	// L "github.com/MMMJB/go-next-portfolio/lib"
 
 	// "context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	s "strconv"
-
 	// "os"
 	// "io"
-	"go.mongodb.org/mongo-driver/bson"
 	// "go.mongodb.org/mongo-driver/mongo"
 	// "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Point struct {
-	lat int    `bson:"lat"`
-	lng int    `bson:"lng"`
-	col string `bson:"col"`
+	Lat int    `bson:"lat"`
+	Lng int    `bson:"lng"`
+	Col string `bson:"col"`
 }
 
 func NewPoint(w http.ResponseWriter, r *http.Request) {
@@ -47,11 +46,11 @@ func NewPoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create a new point
-	resp.lat = latInt
-	resp.lng = lngInt
-	resp.col = col
+	resp.Lat = latInt
+	resp.Lng = lngInt
+	resp.Col = col
 
-	json, err := bson.Marshal(resp)
+	json, err := json.Marshal(resp)
 
 	if err != nil {
 		fmt.Errorf("Error marshalling response to JSON: %v", err)
