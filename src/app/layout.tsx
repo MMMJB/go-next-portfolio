@@ -1,8 +1,15 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+
+import type { Metadata } from "next";
+
 const inter = Inter({ subsets: ["latin"] });
+const akira = localFont({
+  src: [{ path: "../../public/fonts/Akira.ttf", weight: "normal" }],
+  variable: "--font-akira",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +23,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <style>{`
+          .font-akira {
+            font-family: ${akira.style.fontFamily.replaceAll("'", "")};
+          }
+        `}</style>
+      </head>
+      <body className={`${inter.className} text-text`}>{children}</body>
     </html>
   );
 }
