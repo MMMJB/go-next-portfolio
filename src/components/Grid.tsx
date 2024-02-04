@@ -40,14 +40,17 @@ export default function Grid({
   function handleMouseMove(e: MouseEvent) {
     e.preventDefault();
 
-    setMousePosition({ x: e.clientX, y: e.clientY });
+    const x = e.clientX - (window.innerWidth - width) / 2;
+    const y = e.clientY;
+
+    setMousePosition({ x, y });
   }
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [width, height]);
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className="absolute inset-0 -z-10">
@@ -58,9 +61,7 @@ export default function Grid({
         key="mouse"
         p={{
           lat: Math.ceil(mousePosition.y / size) - 1,
-          lng: Math.ceil(
-            (mousePosition.x - (window.innerWidth - width) / 2) / size - 1,
-          ),
+          lng: Math.ceil(mousePosition.x / size) - 1,
           col: "transparent",
         }}
         stroke="#aaa"
