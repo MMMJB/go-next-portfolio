@@ -1,17 +1,16 @@
 package handler
 
 import (
-	// L "github.com/MMMJB/go-next-portfolio/lib"
+	L "github.com/MMMJB/go-next-portfolio/lib"
 
-	// "context"
-	"encoding/json"
+	"context"
 	"fmt"
 	"net/http"
 
 	s "strconv"
 	// "os"
 	// "io"
-	// "go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo"
 	// "go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -24,38 +23,50 @@ type Point struct {
 func NewPoint(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	resp := new(Point)
+	p := new(Point)
 
-	// L.ConnectToMongo(func(collection *mongo.Collection) {
-	// Extract point data from query parameters
-	params := r.URL.Query()
+	L.ConnectToMongo(func(collection *mongo.Collection) {
+		// Extract point data from query parameters
+		params := r.URL.Query()
 
-	lat := params.Get("lat")
-	lng := params.Get("lng")
-	col := params.Get("col")
+		lat := params.Get("lat")
+		lng := params.Get("lng")
+		col := params.Get("col")
 
-	// Convert lat and lng to integers
-	latInt, err := s.Atoi(lat)
-	if err != nil {
-		fmt.Errorf("Error converting lat to integer: %v", err)
-	}
+		// Return error if any fields are empty
+		if lat == "" || lng == "" || col == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	lngInt, err := s.Atoi(lng)
-	if err != nil {
-		fmt.Errorf("Error converting lng to integer: %v", err)
-	}
+		// Convert lat and lng to integers
+		latInt, err := s.Atoi(lat)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Printf("Error converting lat to integer: %v\n", err)
+			return
+		}
 
-	// Create a new point
-	resp.Lat = latInt
-	resp.Lng = lngInt
-	resp.Col = col
+		lngInt, err := s.Atoi(lng)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Printf("Error converting lng to integer: %v\n", err)
+			return
+		}
 
-	json, err := json.Marshal(resp)
+		// Create a new point
+		p.Lat = latInt
+		p.Lng = lngInt
+		p.Col = col
 
-	if err != nil {
-		fmt.Errorf("Error marshalling response to JSON: %v", err)
-	}
+		// Insert the point into the database
+		_, err = collection.InsertOne(context.TODO(), p)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Printf("Error inserting point into database: %v\n", err)
+			return
+		}
 
-	w.Write(json)
-	// })
+		w.WriteHeader(http.StatusOK)
+	})
 }
