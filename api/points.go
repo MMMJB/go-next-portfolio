@@ -30,7 +30,7 @@ func Points(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Iterate through the cursor and write to the response writer
+		// Iterate through the cursor and write to the points array
 		for cursor.Next(context.Background()) {
 			var result bson.M
 
