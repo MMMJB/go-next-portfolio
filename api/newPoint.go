@@ -6,9 +6,8 @@ import (
 	// "context"
 	"fmt"
 	"net/http"
-	"reflect"
 
-	// s "strconv"
+	s "strconv"
 
 	// "os"
 	// "io"
@@ -27,20 +26,30 @@ func NewPoint(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	resp := new(Point)
-	m := reflect.ValueOf(resp).Elem()
 
 	// L.ConnectToMongo(func(collection *mongo.Collection) {
 	// Extract point data from query parameters
 	params := r.URL.Query()
-	for k, v := range params {
-		f := m.FieldByName(k)
 
-		if f == (reflect.Value{}) {
-			fmt.Errorf("Field not found: %v", k)
-		} else {
-			m.FieldByName(k).Set(reflect.ValueOf(v))
-		}
+	lat := params.Get("lat")
+	lng := params.Get("lng")
+	col := params.Get("col")
+
+	// Convert lat and lng to integers
+	latInt, err := s.Atoi(lat)
+	if err != nil {
+		fmt.Errorf("Error converting lat to integer: %v", err)
 	}
+
+	lngInt, err := s.Atoi(lng)
+	if err != nil {
+		fmt.Errorf("Error converting lng to integer: %v", err)
+	}
+
+	// Create a new point
+	resp.lat = latInt
+	resp.lng = lngInt
+	resp.col = col
 
 	json, err := bson.Marshal(resp)
 
