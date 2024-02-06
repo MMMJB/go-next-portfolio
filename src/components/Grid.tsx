@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useOptimistic } from "react";
 
 function Point({
   p,
@@ -25,31 +25,73 @@ function Point({
 }
 
 export default function Grid({
-  points,
+  startingPoints,
   width,
   height,
   size,
 }: {
-  points: Point[];
+  startingPoints: Point[];
   width: number;
   height: number;
   size: number;
 }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
+  const [points, addPoint] = useOptimistic<Point[], Point>(
+    startingPoints,
+    (state, newPoint) => [
+      ...state,
+      {
+        ...newPoint,
+        updating: true,
+      },
+    ],
+  );
+
+  function parseMouseEvent(e: MouseEvent | PointerEvent) {
+    return {
+      x: e.clientX - (window.innerWidth - width) / 2,
+      y: e.clientY,
+    };
+  }
+
   function handleMouseMove(e: MouseEvent) {
     e.preventDefault();
 
-    const x = e.clientX - (window.innerWidth - width) / 2;
-    const y = e.clientY;
+    setMousePosition(parseMouseEvent(e));
+  }
 
-    setMousePosition({ x, y });
+  async function handleMouseClick(e: MouseEvent | PointerEvent) {
+    e.preventDefault();
+
+    const { x, y } = parseMouseEvent(e);
+    const newPoint = {
+      lat: Math.ceil(y / size) - 1,
+      lng: Math.ceil(x / size) - 1,
+      col: "black",
+    };
+
+    console.log("Updating points...");
+
+    addPoint(newPoint);
+
+    await fetch(
+      `/api/newPoint?lat=${newPoint.lat}&lng=${newPoint.lng}&col=${newPoint.col}`,
+    );
+
+    console.log("Points updated");
   }
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseClick);
+    window.addEventListener("pointerdown", handleMouseClick);
 
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseClick);
+      window.removeEventListener("pointerdown", handleMouseClick);
+    };
   }, [width, height]);
 
   return (

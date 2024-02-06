@@ -7,14 +7,25 @@ import Grid from "@/components/Grid";
 export default function Home() {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [points, setPoints] = useState<Point[]>([]);
 
   function handleResize() {
     setWidth(Math.min(window.innerWidth, 600));
     setHeight(window.innerHeight);
   }
 
+  async function fetchAllPoints() {
+    const response = await fetch("/api/points");
+    const data = await response.json();
+
+    setPoints(data);
+    setLoading(false);
+  }
+
   useEffect(() => {
     handleResize();
+    fetchAllPoints();
 
     window.addEventListener("resize", handleResize);
 
@@ -23,7 +34,9 @@ export default function Home() {
 
   return (
     <div className="relative mx-auto h-full w-full max-w-[600px] flex-col justify-center py-16">
-      <Grid points={[]} width={width} height={height} size={25} />
+      {!loading && (
+        <Grid startingPoints={points} width={width} height={height} size={25} />
+      )}
       <section className="font-akira flex w-max flex-col gap-4">
         <h1 className="text-right text-8xl">
           Michael
