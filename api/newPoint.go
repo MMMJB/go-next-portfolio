@@ -10,8 +10,8 @@ import (
 	s "strconv"
 	// "os"
 	// "io"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	// "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Point struct {
@@ -59,12 +59,29 @@ func NewPoint(w http.ResponseWriter, r *http.Request) {
 		p.Lng = lngInt
 		p.Col = col
 
-		// Insert the point into the database
-		_, err = collection.InsertOne(context.TODO(), p)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Printf("Error inserting point into database: %v\n", err)
-			return
+		// Check if a point with the same lat and lng already exists
+		filter := bson.D{{"lat", p.Lat}, {"lng", p.Lng}}
+		var result Point
+
+		err = collection.FindOne(context.TODO(), filter).Decode(&result)
+		if err == nil {
+			// If a point with the same lat and lng exists, update it with the new color
+			update := bson.D{{"$set", bson.D{{"col", p.Col}}}}
+
+			_, err = collection.UpdateOne(context.TODO(), filter, update)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				fmt.Printf("Error updating point in database: %v\n", err)
+				return
+			}
+		} else {
+			// Insert the point into the database
+			_, err = collection.InsertOne(context.TODO(), p)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				fmt.Printf("Error inserting point into database: %v\n", err)
+				return
+			}
 		}
 
 		w.WriteHeader(http.StatusOK)

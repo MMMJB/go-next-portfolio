@@ -21,3 +21,13 @@ export async function createPoint(newPoint: Point) {
 
   revalidatePath("/app");
 }
+
+export async function deletePoint(lat: number, lng: number) {
+  console.log("Updating points...");
+
+  await fetch(process.env.WEB_URI + `/api/deletePoint?lat=${lat}&lng=${lng}`);
+
+  console.log("Points updated.");
+
+  revalidatePath("/app");
+}

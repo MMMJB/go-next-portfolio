@@ -69,6 +69,8 @@ export default function Grid({
       col: "black",
     };
 
+    // TODO: Make sure the point doesn't already exist, and if it does, replace it
+
     addOptimisticPoint(newPoint);
 
     await addPoint(newPoint);
