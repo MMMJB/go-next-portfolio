@@ -29,12 +29,14 @@ function Point({
 export default function Grid({
   points,
   addPoint,
+  removePoint,
   width,
   height,
   size,
 }: {
   points: Point[];
   addPoint: (newPoint: Point) => Promise<void>;
+  removePoint: (point: Point) => Promise<void>;
   width: number;
   height: number;
   size: number;
@@ -46,7 +48,7 @@ export default function Grid({
     Point
   >(points, (state, newPoint) => [...state, { ...newPoint, updating: true }]);
 
-  function parseMouseEvent(e: MouseEvent, width: number) {
+  function parseMouseEvent(e: MouseEvent) {
     return {
       x: e.clientX - (window.innerWidth - width) / 2,
       y: e.clientY,
@@ -56,35 +58,52 @@ export default function Grid({
   function handleMouseMove(e: MouseEvent) {
     e.preventDefault();
 
-    setMousePosition(parseMouseEvent(e, width));
+    setMousePosition(parseMouseEvent(e));
   }
 
   async function handleMouseClick(e: MouseEvent) {
     e.preventDefault();
 
-    const { x, y } = parseMouseEvent(e, width);
+    const { x, y } = parseMouseEvent(e);
     const newPoint = {
       lat: Math.ceil(y / size) - 1,
       lng: Math.ceil(x / size) - 1,
       col: "black",
     };
 
-    // TODO: Make sure the point doesn't already exist, and if it does, replace it
-
     addOptimisticPoint(newPoint);
 
     await addPoint(newPoint);
   }
 
+  async function handleRightClick(e: MouseEvent) {
+    e.preventDefault();
+
+    const { x, y } = parseMouseEvent(e);
+    const point = {
+      lat: Math.ceil(y / size) - 1,
+      lng: Math.ceil(x / size) - 1,
+      col: "black",
+    };
+
+    console.log(
+      points.filter((p) => p.lat === point.lat && p.lng === point.lng),
+    );
+
+    await removePoint(point);
+  }
+
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseClick);
-    window.addEventListener("pointerdown", handleMouseClick);
+    // window.addEventListener("mouseup", handleMouseClick);
+    // window.addEventListener("pointerup", handleMouseClick);
+    window.addEventListener("contextmenu", handleRightClick);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseClick);
-      window.removeEventListener("pointerdown", handleMouseClick);
+      // window.removeEventListener("mouseup", handleMouseClick);
+      // window.removeEventListener("pointerup", handleMouseClick);
+      window.removeEventListener("contextmenu", handleRightClick);
     };
   }, [width, height]);
 

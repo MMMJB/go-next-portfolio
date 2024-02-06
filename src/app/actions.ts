@@ -10,24 +10,26 @@ export async function fetchAllPoints() {
 }
 
 export async function createPoint(newPoint: Point) {
-  console.log("Updating points...");
+  console.log("Adding point...");
 
   await fetch(
     process.env.WEB_URI +
       `/api/newPoint?lat=${newPoint.lat}&lng=${newPoint.lng}&col=${newPoint.col}`,
   );
 
-  console.log("Points updated.");
+  console.log("Point added.");
 
   revalidatePath("/app");
 }
 
-export async function deletePoint(lat: number, lng: number) {
-  console.log("Updating points...");
+export async function deletePoint(point: Point) {
+  console.log("Removing point...");
 
-  await fetch(process.env.WEB_URI + `/api/deletePoint?lat=${lat}&lng=${lng}`);
+  await fetch(
+    process.env.WEB_URI + `/api/deletePoint?lat=${point.lat}&lng=${point.lng}`,
+  );
 
-  console.log("Points updated.");
+  console.log("Point removed.");
 
   revalidatePath("/app");
 }

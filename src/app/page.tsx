@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import Grid from "@/components/Grid";
 
-import { fetchAllPoints, createPoint } from "./actions";
+import { fetchAllPoints, createPoint, deletePoint } from "./actions";
 
 export default function Home() {
   const [width, setWidth] = useState(0);
@@ -39,11 +39,20 @@ export default function Home() {
     setPoints((points) => [...points, newPoint]);
   }
 
+  async function removePoint(point: Point) {
+    await deletePoint(point);
+
+    setPoints((points) =>
+      points.filter((p) => !(p.lat === point.lat && p.lng === point.lng)),
+    );
+  }
+
   return (
     <div className="relative mx-auto h-full w-full max-w-[600px] flex-col justify-center py-16">
       {!loading && (
         <Grid
           addPoint={addPoint}
+          removePoint={removePoint}
           points={points}
           width={width}
           height={height}
