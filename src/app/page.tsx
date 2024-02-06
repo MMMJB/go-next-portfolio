@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 
 import Grid from "@/components/Grid";
 
+import { fetchAllPoints, createPoint } from "./actions";
+
 export default function Home() {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -15,9 +17,8 @@ export default function Home() {
     setHeight(window.innerHeight);
   }
 
-  async function fetchAllPoints() {
-    const response = await fetch("/api/points");
-    const data = await response.json();
+  async function onPageLoad() {
+    const data = await fetchAllPoints();
 
     setPoints(data);
     setLoading(false);
@@ -25,17 +26,29 @@ export default function Home() {
 
   useEffect(() => {
     handleResize();
-    fetchAllPoints();
+    onPageLoad();
 
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  async function addPoint(newPoint: Point) {
+    await createPoint(newPoint);
+
+    setPoints((points) => [...points, newPoint]);
+  }
+
   return (
     <div className="relative mx-auto h-full w-full max-w-[600px] flex-col justify-center py-16">
       {!loading && (
-        <Grid startingPoints={points} width={width} height={height} size={25} />
+        <Grid
+          addPoint={addPoint}
+          points={points}
+          width={width}
+          height={height}
+          size={25}
+        />
       )}
       <section className="font-akira flex w-max flex-col gap-4">
         <h1 className="text-right text-8xl">
