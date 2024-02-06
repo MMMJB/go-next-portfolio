@@ -41,30 +41,52 @@ export default function Grid({
   height: number;
   size: number;
 }) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   const [optimisticPoints, addOptimisticPoint] = useOptimistic<
     GridPoint[],
     Point
   >(points, (state, newPoint) => [...state, { ...newPoint, updating: true }]);
 
+  function findPointAtLocation(lat: number, lng: number) {
+    return (
+      optimisticPoints &&
+      optimisticPoints.find((p) => p.lat === lat && p.lng === lng)
+    );
+  }
+
   function parseMouseEvent(e: MouseEvent) {
-    return {
-      x: e.clientX - (window.innerWidth - width) / 2,
-      y: e.clientY,
-    };
+    const x = e.clientX - (window.innerWidth - width) / 2;
+    const y = e.clientY;
+
+    if (x <= 0 || x > width || y <= 0 || y > height) return null;
+
+    return { x, y };
   }
 
   function handleMouseMove(e: MouseEvent) {
     e.preventDefault();
 
-    setMousePosition(parseMouseEvent(e));
+    const position = parseMouseEvent(e);
+    if (!position) return setMousePosition(null);
+
+    const { x, y } = position;
+    setMousePosition(() => ({
+      x: Math.ceil(x / size) - 1,
+      y: Math.ceil(y / size) - 1,
+    }));
   }
 
   async function handleMouseClick(e: MouseEvent) {
     e.preventDefault();
 
-    const { x, y } = parseMouseEvent(e);
+    const position = parseMouseEvent(e);
+    if (!position) return;
+
+    const { x, y } = position;
     const newPoint = {
       lat: Math.ceil(y / size) - 1,
       lng: Math.ceil(x / size) - 1,
@@ -79,16 +101,15 @@ export default function Grid({
   async function handleRightClick(e: MouseEvent) {
     e.preventDefault();
 
-    const { x, y } = parseMouseEvent(e);
+    const position = parseMouseEvent(e);
+    if (!position) return;
+
+    const { x, y } = position;
     const point = {
       lat: Math.ceil(y / size) - 1,
       lng: Math.ceil(x / size) - 1,
       col: "black",
     };
-
-    console.log(
-      points.filter((p) => p.lat === point.lat && p.lng === point.lng),
-    );
 
     await removePoint(point);
   }
@@ -108,29 +129,41 @@ export default function Grid({
   }, [width, height]);
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="absolute inset-0 -z-10">
-      {optimisticPoints.map((point, i) => (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className="absolute inset-0 -z-10 border-r border-gray-300 bg-white"
+      style={{
+        backgroundSize: `${size}px ${size}px`,
+        backgroundImage: `linear-gradient(to right, #cccccc33 1px, transparent 1px), linear-gradient(to bottom, #cccccc33 1px, transparent 1px)`,
+      }}
+    >
+      {optimisticPoints &&
+        optimisticPoints.map((point, i) => (
+          <Point
+            key={i}
+            p={point}
+            size={size}
+            style={{
+              opacity: point.updating ? 0.5 : 1,
+            }}
+          />
+        ))}
+      {mousePosition && (
         <Point
-          key={i}
-          p={point}
-          size={size}
-          style={{
-            opacity: point.updating ? 0.5 : 1,
+          key="mouse"
+          p={{
+            lat: mousePosition.y,
+            lng: mousePosition.x,
+            col:
+              findPointAtLocation(mousePosition.y, mousePosition.x)?.col ||
+              "white",
           }}
+          style={{
+            stroke: "#aaaaaa33",
+          }}
+          size={size}
         />
-      ))}
-      <Point
-        key="mouse"
-        p={{
-          lat: Math.ceil(mousePosition.y / size) - 1,
-          lng: Math.ceil(mousePosition.x / size) - 1,
-          col: "transparent",
-        }}
-        style={{
-          stroke: "#aaa",
-        }}
-        size={size}
-      />
+      )}
     </svg>
   );
 }

@@ -13,7 +13,7 @@ export default function Home() {
   const [points, setPoints] = useState<Point[]>([]);
 
   function handleResize() {
-    setWidth(Math.min(window.innerWidth, 600));
+    setWidth(Math.min(window.innerWidth, 768));
     setHeight(window.innerHeight);
   }
 
@@ -48,7 +48,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative mx-auto h-full w-full max-w-[600px] flex-col justify-center py-16">
+    <div className="relative mx-auto h-full w-full max-w-screen-md flex-col justify-center py-16">
       {!loading && (
         <Grid
           addPoint={addPoint}
@@ -56,10 +56,10 @@ export default function Home() {
           points={points}
           width={width}
           height={height}
-          size={25}
+          size={24}
         />
       )}
-      <section className="font-akira flex w-max flex-col gap-4">
+      <section className="font-akira mx-auto flex w-max flex-col gap-4">
         <h1 className="text-right text-8xl">
           Michael
           <br />
