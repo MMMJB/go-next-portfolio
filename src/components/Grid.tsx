@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useOptimistic } from "react";
+import { useRef, useState, useEffect, useOptimistic } from "react";
 
 type GridPoint = Point & { updating?: boolean };
 
@@ -41,9 +41,17 @@ export default function Grid({
   height: number;
   size: number;
 }) {
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
   const [mousePosition, setMousePosition] = useState<{
     x: number;
     y: number;
+  } | null>(null);
+  const [g, setGridDimensions] = useState<{
+    width: number;
+    height: number;
+    left: number;
+    top: number;
   } | null>(null);
 
   const [optimisticPoints, addOptimisticPoint] = useOptimistic<
@@ -59,8 +67,10 @@ export default function Grid({
   }
 
   function parseMouseEvent(e: MouseEvent) {
-    const x = e.clientX - (window.innerWidth - width) / 2;
-    const y = e.clientY;
+    if (!g) return null;
+
+    const x = e.clientX - g.left;
+    const y = e.clientY - g.top;
 
     if (x <= 0 || x > width || y <= 0 || y > height) return null;
 
@@ -98,43 +108,61 @@ export default function Grid({
     await addPoint(newPoint);
   }
 
-  async function handleRightClick(e: MouseEvent) {
-    e.preventDefault();
+  // async function handleRightClick(e: MouseEvent) {
+  //   e.preventDefault();
 
-    const position = parseMouseEvent(e);
-    if (!position) return;
+  //   const position = parseMouseEvent(e);
+  //   if (!position || !points) return;
 
-    const { x, y } = position;
-    const point = {
-      lat: Math.ceil(y / size) - 1,
-      lng: Math.ceil(x / size) - 1,
-      col: "black",
-    };
+  //   const { x, y } = position;
+  //   const point = {
+  //     lat: Math.ceil(y / size) - 1,
+  //     lng: Math.ceil(x / size) - 1,
+  //     col: "black",
+  //   };
 
-    await removePoint(point);
+  //   await removePoint(point);
+  // }
+
+  function updateGridDimensions() {
+    if (!svgRef.current) return;
+
+    const { width, height, left, top } = svgRef.current.getBoundingClientRect();
+    setGridDimensions({ width, height, left, top });
   }
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
-    // window.addEventListener("mouseup", handleMouseClick);
-    // window.addEventListener("pointerup", handleMouseClick);
-    window.addEventListener("contextmenu", handleRightClick);
+    window.addEventListener("mouseup", handleMouseClick);
+    window.addEventListener("pointerup", handleMouseClick);
+    // window.addEventListener("contextmenu", handleRightClick);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      // window.removeEventListener("mouseup", handleMouseClick);
-      // window.removeEventListener("pointerup", handleMouseClick);
-      window.removeEventListener("contextmenu", handleRightClick);
+      window.removeEventListener("mouseup", handleMouseClick);
+      window.removeEventListener("pointerup", handleMouseClick);
+      // window.removeEventListener("contextmenu", handleRightClick);
     };
-  }, [width, height]);
+  }, [width, height, g]);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    updateGridDimensions();
+
+    window.addEventListener("resize", updateGridDimensions);
+
+    return () => window.removeEventListener("resize", updateGridDimensions);
+  }, [svgRef.current]);
 
   return (
     <svg
+      ref={svgRef}
       viewBox={`0 0 ${width} ${height}`}
-      className="absolute inset-0 -z-10 border-r border-gray-300 bg-white"
+      className="cursor-crosshair border-b border-r border-gray-100 bg-white"
       style={{
         backgroundSize: `${size}px ${size}px`,
-        backgroundImage: `linear-gradient(to right, #cccccc33 1px, transparent 1px), linear-gradient(to bottom, #cccccc33 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(to right, #cccccc55 1px, transparent 1px), linear-gradient(to bottom, #cccccc55 1px, transparent 1px)`,
       }}
     >
       {optimisticPoints &&
@@ -159,7 +187,7 @@ export default function Grid({
               "white",
           }}
           style={{
-            stroke: "#aaaaaa33",
+            stroke: "#aaaaaa55",
           }}
           size={size}
         />
