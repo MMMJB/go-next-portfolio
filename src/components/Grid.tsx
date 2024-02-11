@@ -91,8 +91,6 @@ export default function Grid({
   }
 
   async function handleMouseClick(e: MouseEvent) {
-    e.preventDefault();
-
     const position = parseMouseEvent(e);
     if (!position) return;
 
