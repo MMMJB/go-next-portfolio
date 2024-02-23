@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import Grid from "@/components/Grid";
+import Navigation from "@/components/Navigation";
 
 import { fetchAllPoints, createPoint, deletePoint } from "./actions";
 
@@ -62,6 +63,7 @@ export default function Home() {
           <img src="/hoops.png" alt="" />
         </div>
       </div>
+      <Navigation />
     </div>
   );
 }

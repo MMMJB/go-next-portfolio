@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer components {
-  a {
-    @apply text-link-light dark:text-link-dark hover:underline;
+  a:not(:has(*)) {
+    @apply text-link-light hover:underline dark:text-link-dark;
   }
 
-  a::after {
+  a:not(:has(*))::after {
     content: "↗";
     @apply ml-1 text-xs;
   }

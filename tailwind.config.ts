@@ -23,6 +23,9 @@ const config: Config = {
         },
       },
     },
+    borderRadius: {
+      md: "4px",
+    },
   },
   plugins: [],
 };
