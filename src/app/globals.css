@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes pie {
+  0% {
+    --p: 0;
+  }
+  /* 50% {
+    --p: 75;
+  } */
+}
+
 @layer components {
   a:not(:has(*)) {
     @apply text-link-light hover:underline dark:text-link-dark;
@@ -10,5 +25,16 @@
   a:not(:has(*))::after {
     content: "↗";
     @apply ml-1 text-xs;
+  }
+}
+
+@layer utilities {
+  .animate-pie {
+    --p: 100;
+
+    mask-image: conic-gradient(#000 calc(var(--p) * 1%), transparent 0);
+    -webkit-mask-image: conic-gradient(#000 calc(var(--p) * 1%), transparent 0);
+
+    animation: pie 0.5s ease-in-out forwards;
   }
 }
