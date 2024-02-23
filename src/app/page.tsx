@@ -47,7 +47,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex w-full max-w-[600px] flex-col gap-24">
+    <div className="flex w-full max-w-[600px] flex-col gap-8 p-8 sm:gap-24 sm:p-0">
       <div className="flex w-full gap-24">
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold">Hey, I'm Michael! 👋</h1>
@@ -59,7 +59,7 @@ export default function Home() {
             have any questions, feel free to <a href="/contact">contact me</a>.
           </p>
         </div>
-        <div className="flex w-full items-end justify-center">
+        <div className="hidden w-full items-end justify-center sm:flex">
           <img src="/hoops.png" alt="" />
         </div>
       </div>

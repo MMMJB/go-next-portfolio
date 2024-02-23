@@ -49,7 +49,7 @@ export function NavigationCard({
 export default function Nav() {
   return (
     <div className="flex flex-col gap-3">
-      <nav className="flex w-full gap-3">
+      <nav className="flex w-full flex-col gap-3 sm:flex-row">
         {navItems.map((item) => (
           <NavigationCard
             key={item.title}
