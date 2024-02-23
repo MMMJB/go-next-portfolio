@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 
 import Grid from "@/components/Grid";
-import Window from "@/components/Window";
 
 import { fetchAllPoints, createPoint, deletePoint } from "./actions";
 
@@ -47,31 +46,22 @@ export default function Home() {
   }
 
   return (
-    <div className="relative mx-auto flex h-full w-full max-w-screen-md flex-col justify-center gap-16 bg-white py-16">
-      <section className="font-akira mx-auto flex w-max flex-col gap-4">
-        <h1 className="text-right text-8xl">
-          Michael
-          <br />
-          Beck
-        </h1>
-        <div className="flex w-full items-center justify-between text-2xl">
-          <span>UI</span>
-          <span>Frontend</span>
-          <span>UX</span>
+    <div className="flex w-full max-w-[600px] flex-col gap-24">
+      <div className="flex w-full gap-24">
+        <div className="flex flex-col gap-3">
+          <h1 className="font-semibold">Hey, I'm Michael! 👋</h1>
+          <p className="text-justify text-sm">
+            I’m a 16-year-old experienced in fullstack engineering and UI/UX
+            design. I’m the founder of{" "}
+            <a href="https://launchsite.tech">Launch</a> and a frontend
+            developer at a <a href="/projects">few other projects</a>. If you
+            have any questions, feel free to <a href="/contact">contact me</a>.
+          </p>
         </div>
-      </section>
-      <section>
-        {!loading && (
-          <Grid
-            addPoint={addPoint}
-            removePoint={removePoint}
-            points={points}
-            width={width}
-            height={216}
-            size={24}
-          />
-        )}
-      </section>
+        <div className="flex w-full items-end justify-center">
+          <img src="/hoops.png" alt="" />
+        </div>
+      </div>
     </div>
   );
 }

@@ -157,7 +157,7 @@ export default function Grid({
     <svg
       ref={svgRef}
       viewBox={`0 0 ${width} ${height}`}
-      className="cursor-crosshair border-b border-r border-gray-100 bg-white"
+      className="cursor-crosshair rounded-lg border-b border-r border-gray-100 bg-white"
       style={{
         backgroundSize: `${size}px ${size}px`,
         backgroundImage: `linear-gradient(to right, #cccccc55 1px, transparent 1px), linear-gradient(to bottom, #cccccc55 1px, transparent 1px)`,

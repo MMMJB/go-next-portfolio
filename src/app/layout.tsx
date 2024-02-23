@@ -1,14 +1,12 @@
 import "./globals.css";
 
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
+import { Syne } from "next/font/google";
 
 import type { Metadata } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
-const akira = localFont({
-  src: [{ path: "../../public/fonts/Akira.ttf", weight: "normal" }],
-  variable: "--font-akira",
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "600"],
 });
 
 export const metadata: Metadata = {
@@ -23,14 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <style>{`
-          .font-akira {
-            font-family: ${akira.style.fontFamily.replaceAll("'", "")};
-          }
-        `}</style>
-      </head>
-      <body className={`${inter.className} text-text`}>{children}</body>
+      <body
+        className={`${syne.className} text-text-light dark:text-text-dark dark:bg-text-light grid min-h-screen place-items-center`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

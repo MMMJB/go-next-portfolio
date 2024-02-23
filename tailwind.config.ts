@@ -9,7 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        text: "#1A1A1A",
+        text: {
+          light: "#353A56",
+          dark: "#fff",
+        },
+        link: {
+          light: "#6790E0",
+          dark: "#B4CDFF",
+        },
+        card: {
+          light: "#DADCEF",
+          dark: "#fff",
+        },
       },
     },
   },
