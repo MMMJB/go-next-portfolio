@@ -37,4 +37,12 @@
 
     animation: pie 0.5s ease-in-out forwards;
   }
+
+  .wave::after {
+    content: "👋";
+    transform-origin: 70% 70%;
+    font-size: 1.2em;
+
+    @apply animate-wave ml-1 inline-block;
+  }
 }

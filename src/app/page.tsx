@@ -50,7 +50,7 @@ export default function Home() {
     <div className="flex w-full max-w-[600px] flex-col gap-8 p-8 sm:p-0">
       <div className="flex w-full gap-24">
         <div className="flex flex-col gap-1">
-          <h1 className="font-semibold">Hey, I&apos;m Michael! 👋</h1>
+          <h1 className="wave font-semibold">Hey, I&apos;m Michael!</h1>
           <p className="text-sm sm:text-justify">
             I’m a 16-year-old experienced in fullstack engineering and UI/UX
             design. I&apos;m the founder of{" "}
