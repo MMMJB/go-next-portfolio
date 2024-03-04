@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useOptimistic } from "react";
+import { useGrid } from "@/contexts/gridContext";
 
 type GridPoint = Point & { updating?: boolean };
 
@@ -26,21 +27,14 @@ function Point({
   );
 }
 
-export default function Grid({
-  points,
-  addPoint,
-  removePoint,
-  width,
-  height,
-  size,
-}: {
-  points: Point[];
-  addPoint: (newPoint: Point) => Promise<void>;
-  removePoint: (point: Point) => Promise<void>;
-  width: number;
-  height: number;
-  size: number;
-}) {
+export default function Grid({ rows }: { rows: number }) {
+  const {
+    points,
+    addPoint,
+    removePoint,
+    dimensions: { width, height },
+  } = useGrid();
+
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const [mousePosition, setMousePosition] = useState<{
@@ -53,6 +47,7 @@ export default function Grid({
     left: number;
     top: number;
   } | null>(null);
+  const [size, setSize] = useState(Math.ceil(height / rows));
 
   const [optimisticPoints, addOptimisticPoint] = useOptimistic<
     GridPoint[],
@@ -91,6 +86,8 @@ export default function Grid({
   }
 
   async function handleMouseClick(e: MouseEvent) {
+    if (!addPoint) return;
+
     const position = parseMouseEvent(e);
     if (!position) return;
 
@@ -153,17 +150,22 @@ export default function Grid({
     return () => window.removeEventListener("resize", updateGridDimensions);
   }, [svgRef.current]);
 
+  useEffect(() => {
+    setSize(Math.ceil(height / rows));
+  }, [height, rows]);
+
   return (
     <svg
       ref={svgRef}
       viewBox={`0 0 ${width} ${height}`}
-      className="cursor-crosshair rounded-lg border-b border-r border-gray-100 bg-white"
+      className="rounded-lg absolute inset-4 -z-50 cursor-crosshair border-b border-r border-gray-100 bg-white dark:bg-text-light"
       style={{
         backgroundSize: `${size}px ${size}px`,
         backgroundImage: `linear-gradient(to right, #cccccc55 1px, transparent 1px), linear-gradient(to bottom, #cccccc55 1px, transparent 1px)`,
       }}
     >
       {optimisticPoints &&
+        size &&
         optimisticPoints.map((point, i) => (
           <Point
             key={i}
@@ -182,7 +184,7 @@ export default function Grid({
             lng: mousePosition.x,
             col:
               findPointAtLocation(mousePosition.y, mousePosition.x)?.col ||
-              "white",
+              "#353A56",
           }}
           style={{
             stroke: "#aaaaaa55",

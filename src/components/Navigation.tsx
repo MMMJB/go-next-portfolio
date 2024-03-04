@@ -8,7 +8,7 @@ const navItems = [
     description: "Tools & technologies.",
     link: "/skills",
     icon: "/skills.png",
-    animation: "animate-pie",
+    animation: "animate-bounce",
   },
   {
     title: "Projects",
@@ -52,7 +52,7 @@ export function NavigationCard({
     <a
       href={link}
       onMouseEnter={() => setAnimationPlaying(true)}
-      className="flex w-full flex-col gap-12 rounded-md border border-card-light bg-card-light/5 p-3 transition-colors hover:bg-card-light/10 dark:border-card-dark/15 dark:bg-card-dark/5 dark:hover:bg-card-dark/10"
+      className="flex w-full flex-col gap-12 rounded border border-card-light bg-card-light/5 p-3 transition-colors hover:bg-card-light/10 dark:border-card-dark/15 dark:bg-card-dark/5 dark:hover:bg-card-dark/10"
     >
       <div className="h-8 w-8">
         <img

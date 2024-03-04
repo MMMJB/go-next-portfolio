@@ -1,5 +1,9 @@
 import "./globals.css";
 
+import Nav from "@/components/Navigation";
+import { GridProvider } from "@/contexts/gridContext";
+import Grid from "@/components/Grid";
+
 import { Syne } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -25,7 +29,15 @@ export default function RootLayout({
       <body
         className={`${syne.className} grid min-h-screen place-items-center text-text-light dark:bg-text-light dark:text-text-dark`}
       >
-        {children}
+        {/* <GridProvider>
+          <Grid rows={20} />
+        </GridProvider> */}
+        <main className="rounded p-8">
+          <div className="flex w-full max-w-[600px] flex-col gap-8">
+            {children}
+            <Nav />
+          </div>
+        </main>
       </body>
     </html>
   );

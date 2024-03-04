@@ -34,7 +34,7 @@ const config: Config = {
           "75%": { transform: "scale(0.95, 1.05)" },
         },
         "spin-slow": {
-          "100%": { transform: "rotate(90deg)" },
+          "100%": { transform: "rotate(180deg)" },
         },
         wave: {
           "0%, 60%, 100%": { transform: "rotate(0deg)" },
@@ -43,16 +43,24 @@ const config: Config = {
           "40%": { transform: "rotate(-4deg)" },
           "50%": { transform: "rotate(10deg)" },
         },
+        bounce: {
+          "0%, 100%": {
+            transform: "translateY(0)",
+            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
+          "50%": {
+            transform: "translateY(-10%)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+        },
       },
       animation: {
-        jump: "jump .5s ease-in-out forwards",
-        "spin-slow": "spin-slow .5s ease-in-out forwards",
+        jump: "jump .5s ease-in-out forwards 2",
+        "spin-slow": "spin-slow 1s ease-in-out forwards",
         jiggle: "jiggle 1s forwards",
-        wave: "wave 2.5s forwards",
+        wave: "wave 2.5s forwards infinite",
+        bounce: "bounce .5s forwards cubic-bezier(0, 0, 0.2, 1) 2",
       },
-    },
-    borderRadius: {
-      md: "4px",
     },
   },
   plugins: [],
