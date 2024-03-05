@@ -1,8 +1,9 @@
 import "./globals.css";
 
 import Nav from "@/components/Navigation";
-import { GridProvider } from "@/contexts/gridContext";
-import Grid from "@/components/Grid";
+// import { GridProvider } from "@/contexts/gridContext";
+// import Grid from "@/components/Grid";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 import { Syne } from "next/font/google";
 
@@ -26,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script src="/scripts/theme.js" />
+      </head>
       <body
         className={`${syne.className} grid min-h-screen place-items-center text-text-light dark:bg-text-light dark:text-text-dark`}
       >
@@ -33,11 +37,12 @@ export default function RootLayout({
           <Grid rows={20} />
         </GridProvider> */}
         <main className="rounded p-8">
-          <div className="flex w-full max-w-[600px] flex-col gap-8">
+          <div className="flex w-full max-w-[600px] flex-col gap-6">
             {children}
             <Nav />
           </div>
         </main>
+        <DarkModeToggle />
       </body>
     </html>
   );
