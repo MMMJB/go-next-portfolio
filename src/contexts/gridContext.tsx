@@ -52,7 +52,7 @@ export function GridProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     handleResize();
-    onPageLoad();
+    // onPageLoad();
 
     window.addEventListener("resize", handleResize);
 

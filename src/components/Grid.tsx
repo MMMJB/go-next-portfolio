@@ -158,7 +158,7 @@ export default function Grid({ rows }: { rows: number }) {
     <svg
       ref={svgRef}
       viewBox={`0 0 ${width} ${height}`}
-      className="rounded-lg absolute inset-4 -z-50 cursor-crosshair border-b border-r border-gray-100 bg-white dark:bg-text-light"
+      className="absolute inset-4 -z-50 cursor-crosshair rounded-lg border-b border-r border-gray-100 bg-white dark:bg-text-light"
       style={{
         backgroundSize: `${size}px ${size}px`,
         backgroundImage: `linear-gradient(to right, #cccccc55 1px, transparent 1px), linear-gradient(to bottom, #cccccc55 1px, transparent 1px)`,
