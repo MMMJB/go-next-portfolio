@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { useGrid } from "@/contexts/gridContext";
-import { Engine, Render, World, Body, Bodies, Runner } from "matter-js";
+import { Engine, Render, World, Mouse, Bodies, Runner } from "matter-js";
 
 export default function Simulation() {
   const {
@@ -16,13 +16,30 @@ export default function Simulation() {
   function addBounds() {
     if (!w || !h) return;
 
-    const leftBound = Bodies.rectangle(-10, h / 2, 20, h, { isStatic: true });
-    const rightBound = Bodies.rectangle(w + 10, h / 2, 20, h, {
-      isStatic: true,
-    });
+    const left = Bodies.rectangle(-10, h / 2, 20, h, { isStatic: true });
+    const right = Bodies.rectangle(w + 10, h / 2, 20, h, { isStatic: true });
     const floor = Bodies.rectangle(w / 2, h + 10, w, 20, { isStatic: true });
 
-    World.add(engine.current.world, [leftBound, rightBound, floor]);
+    World.add(engine.current.world, [left, right, floor]);
+
+    const collidableElements = document.querySelectorAll(".collision");
+    collidableElements.forEach((el) => {
+      const { x, y, width, height } = el.getBoundingClientRect();
+      const body = Bodies.rectangle(
+        x - 4 + width / 2,
+        y - 8 + height / 2,
+        width,
+        height,
+        {
+          isStatic: true,
+          render: {
+            fillStyle: "transparent",
+          },
+        },
+      );
+
+      World.add(engine.current.world, [body]);
+    });
   }
 
   function removeBounds() {
@@ -41,7 +58,6 @@ export default function Simulation() {
         width: w,
         height: h,
         wireframes: false,
-        showIds: true,
         showBounds: true,
         background: "transparent",
       },

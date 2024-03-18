@@ -72,7 +72,7 @@ export function NavigationCard({
 
 export default function Nav() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="collision flex flex-col gap-3">
       <nav className="grid w-full grid-cols-2 gap-3 sm:flex">
         {navItems.map((item) => (
           <NavigationCard key={item.title} {...item} />
