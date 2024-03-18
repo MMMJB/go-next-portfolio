@@ -4,6 +4,7 @@ import Nav from "@/components/Navigation";
 import { GridProvider } from "@/contexts/gridContext";
 import Simulation from "@/components/Simulation";
 import DarkModeToggle from "@/components/DarkModeToggle";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Syne } from "next/font/google";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           </div>
         </main>
         <DarkModeToggle />
+        <SpeedInsights />
       </body>
     </html>
   );
