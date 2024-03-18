@@ -4,6 +4,8 @@ import { useRef, useEffect } from "react";
 import { useGrid } from "@/contexts/gridContext";
 import { Engine, Render, World, Mouse, Bodies, Runner } from "matter-js";
 
+import getTheme from "@/utils/getTheme";
+
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
@@ -19,8 +21,9 @@ export default function Simulation() {
     const left = Bodies.rectangle(-10, h / 2, 20, h, { isStatic: true });
     const right = Bodies.rectangle(w + 10, h / 2, 20, h, { isStatic: true });
     const floor = Bodies.rectangle(w / 2, h + 10, w, 20, { isStatic: true });
+    const ceiling = Bodies.rectangle(w / 2, -10, w, 20, { isStatic: true });
 
-    World.add(engine.current.world, [left, right, floor]);
+    World.add(engine.current.world, [left, right, floor, ceiling]);
 
     const collidableElements = document.querySelectorAll(".collision");
     collidableElements.forEach((el) => {
@@ -58,7 +61,7 @@ export default function Simulation() {
         width: w,
         height: h,
         wireframes: false,
-        showBounds: true,
+        // showBounds: true,
         background: "transparent",
       },
     });
@@ -105,12 +108,16 @@ export default function Simulation() {
 
     World.add(engine.current.world, [
       Bodies.circle(x, y, 20 + Math.random() * 20, {
-        restitution: 0.5,
+        restitution: 0.6,
         mass: 25,
         friction: 0.001,
         render: {
-          fillStyle: "red",
+          fillStyle:
+            getTheme() === "dark"
+              ? `hsl(231, 24%, ${30 + Math.random() * 15}%)`
+              : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
         },
+        label: "ball",
       }),
     ]);
   }

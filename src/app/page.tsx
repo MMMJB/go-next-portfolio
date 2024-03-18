@@ -14,7 +14,7 @@ export default function Home() {
         </p>
       </div>
       <div className="hidden w-full items-end justify-center sm:flex">
-        <img src="/hoops.png" alt="" className="collision" />
+        <img src="/hoops.png" alt="" />
       </div>
     </div>
   );
