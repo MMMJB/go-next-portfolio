@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { useGrid } from "@/contexts/gridContext";
-import { Engine, Render, World, Mouse, Bodies, Runner } from "matter-js";
+import { Engine, Render, World, Bodies, Runner } from "matter-js";
 
 import getTheme from "@/utils/getTheme";
 
@@ -21,9 +21,11 @@ export default function Simulation() {
     const left = Bodies.rectangle(-10, h / 2, 20, h, { isStatic: true });
     const right = Bodies.rectangle(w + 10, h / 2, 20, h, { isStatic: true });
     const floor = Bodies.rectangle(w / 2, h + 10, w, 20, { isStatic: true });
-    const ceiling = Bodies.rectangle(w / 2, -10, w, 20, { isStatic: true });
+    const ceiling = Bodies.rectangle(w / 2, -20, w, 20, { isStatic: true });
 
     World.add(engine.current.world, [left, right, floor, ceiling]);
+
+    if (w < 600 || h < 600) return;
 
     const collidableElements = document.querySelectorAll(".collision");
     collidableElements.forEach((el) => {
@@ -69,18 +71,23 @@ export default function Simulation() {
     Runner.run(engine.current);
     Render.run(render.current);
 
-    window.addEventListener("click", onMouseClick);
-
     return () => {
       Render.stop(render.current!);
       World.clear(engine.current.world, true);
       Engine.clear(engine.current);
       render.current!.canvas.remove();
       render.current!.textures = {};
-      window.removeEventListener("click", onMouseClick);
       removeBounds();
     };
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("click", onMouseClick);
+
+    return () => {
+      window.removeEventListener("click", onMouseClick);
+    };
+  }, [w, h, onMouseClick]);
 
   useEffect(() => {
     if (!render.current || !w || !h) return;
@@ -107,7 +114,7 @@ export default function Simulation() {
     const y = clientY - top;
 
     World.add(engine.current.world, [
-      Bodies.circle(x, y, 20 + Math.random() * 20, {
+      Bodies.circle(x, y, (w > 600 ? 20 : 5) + Math.random() * 20, {
         restitution: 0.6,
         mass: 25,
         friction: 0.001,
@@ -125,7 +132,9 @@ export default function Simulation() {
   return (
     <canvas
       ref={scene}
-      className="absolute inset-0 -z-50 !h-screen !w-screen"
+      className="absolute inset-0 -z-50 !h-full !w-screen"
+      width={w}
+      height={h}
     />
   );
 }

@@ -31,7 +31,7 @@ export default function RootLayout({
         <script src="/scripts/theme.js" />
       </head>
       <body
-        className={`${syne.className} grid min-h-screen place-items-center text-text-light dark:bg-text-light dark:text-text-dark`}
+        className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
       >
         <GridProvider>
           <Simulation />
