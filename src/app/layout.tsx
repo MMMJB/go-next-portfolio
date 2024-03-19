@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="/scripts/theme.js" />
+        <script src="/scripts/beforeload.js" />
       </head>
       <body
         className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
