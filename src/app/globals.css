@@ -19,12 +19,7 @@
 
 @layer components {
   a:not(:has(*)) {
-    @apply text-link-light hover:underline dark:text-link-dark;
-  }
-
-  a:not(:has(*))::after {
-    content: "↗";
-    @apply ml-1 text-xs;
+    @apply text-link-light underline dark:text-link-dark;
   }
 }
 
@@ -43,6 +38,6 @@
     transform-origin: 70% 70%;
     font-size: 1.2em;
 
-    @apply animate-wave ml-1 inline-block;
+    @apply ml-1 inline-block animate-wave;
   }
 }

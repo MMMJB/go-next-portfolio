@@ -7,9 +7,14 @@ import {
   Render,
   World,
   Bodies,
+  Body,
   Runner,
   Composites,
   Composite,
+  Mouse,
+  MouseConstraint,
+  Events,
+  Query,
 } from "matter-js";
 
 import getTheme from "@/utils/getTheme";
@@ -23,8 +28,11 @@ export default function Simulation() {
 
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create());
-  const render = useRef<Render | null>();
-  const balls = useRef<Composite | null>();
+  const render = useRef<Render | null>(null);
+  const balls = useRef<Composite | null>(null);
+  const mouse = useRef<Mouse | null>(null);
+  const mouseConstraint = useRef<MouseConstraint | null>(null);
+  const hovered = useRef<Body | null>(null);
 
   function addBounds() {
     if (!w || !h) return;
@@ -119,11 +127,40 @@ export default function Simulation() {
 
     removeBounds();
     removeBalls();
+    removeMouse();
     addBounds();
     addBalls();
+    addMouse();
+
+    function afterEngineUpdate() {
+      if (!mouse.current || !mouseConstraint.current || !balls.current) return;
+
+      const bodies = Composite.allBodies(balls.current);
+      const collisions = Query.point(bodies, mouse.current.position);
+
+      hovered.current = collisions[0] || null;
+    }
+
+    function afterRender() {
+      if (!render.current || !hovered.current) return;
+
+      const ctx = render.current.context;
+      const { x, y } = hovered.current.position;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    Events.on(engine.current, "afterUpdate", afterEngineUpdate);
+    Events.on(render.current, "afterRender", afterRender);
 
     return () => {
       observer.disconnect();
+      Events.off(engine.current, "afterUpdate", afterEngineUpdate);
+      Events.off(render.current, "afterRender", afterRender);
     };
   }, [w, h]);
 
@@ -143,7 +180,9 @@ export default function Simulation() {
       rows,
       colGap,
       rowGap,
-      (x: number, y: number) => {
+      (x: number, y: number, col: number, row: number) => {
+        const index = col + row * cols;
+
         const cx = x + (Math.random() * colGap - colGap / 2);
         const cy = y + (Math.random() * rowGap - rowGap / 2);
 
@@ -157,8 +196,12 @@ export default function Simulation() {
           render: {
             fillStyle:
               getTheme() === "dark"
-                ? `hsl(231, 24%, ${30 + Math.random() * 15}%)`
-                : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
+                ? index === 0
+                  ? "white"
+                  : `hsl(231, 24%, ${30 + Math.random() * 15}%)`
+                : index === 0
+                  ? "#6790E0"
+                  : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
           },
           label: "ball",
         });
@@ -169,15 +212,30 @@ export default function Simulation() {
   }
 
   function removeBalls() {
-    console.log("removing");
     if (!balls.current) return;
     Composite.clear(balls.current, false);
+  }
+
+  function addMouse() {
+    if (!render.current) return;
+
+    mouse.current = Mouse.create(render.current.canvas);
+    mouseConstraint.current = MouseConstraint.create(engine.current);
+
+    Composite.add(engine.current.world, mouseConstraint.current);
+
+    render.current!.mouse = mouse.current;
+  }
+
+  function removeMouse() {
+    if (!mouseConstraint.current) return;
+    Composite.remove(engine.current.world, mouseConstraint.current);
   }
 
   return (
     <canvas
       ref={scene}
-      className="absolute inset-0 -z-50 !h-full !w-screen"
+      className="absolute inset-0 z-0 !h-full !w-screen"
       width={w}
       height={h}
     />
