@@ -2,9 +2,19 @@
 
 import { useRef, useEffect } from "react";
 import { useGrid } from "@/contexts/gridContext";
-import { Engine, Render, World, Bodies, Runner } from "matter-js";
+import {
+  Engine,
+  Render,
+  World,
+  Bodies,
+  Runner,
+  Composites,
+  Composite,
+} from "matter-js";
 
 import getTheme from "@/utils/getTheme";
+
+const numBalls = 100;
 
 export default function Simulation() {
   const {
@@ -14,6 +24,7 @@ export default function Simulation() {
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create());
   const render = useRef<Render | null>();
+  const balls = useRef<Composite | null>();
 
   function addBounds() {
     if (!w || !h) return;
@@ -21,9 +32,9 @@ export default function Simulation() {
     const left = Bodies.rectangle(-10, h / 2, 20, h, { isStatic: true });
     const right = Bodies.rectangle(w + 10, h / 2, 20, h, { isStatic: true });
     const floor = Bodies.rectangle(w / 2, h + 10, w, 20, { isStatic: true });
-    const ceiling = Bodies.rectangle(w / 2, -20, w, 20, { isStatic: true });
+    // const ceiling = Bodies.rectangle(w / 2, -20, w, 20, { isStatic: true });
 
-    World.add(engine.current.world, [left, right, floor, ceiling]);
+    World.add(engine.current.world, [left, right, floor /*, ceiling*/]);
 
     if (w < 600 || h < 600) return;
 
@@ -77,17 +88,11 @@ export default function Simulation() {
       Engine.clear(engine.current);
       render.current!.canvas.remove();
       render.current!.textures = {};
+
+      removeBalls();
       removeBounds();
     };
   }, []);
-
-  useEffect(() => {
-    window.addEventListener("click", onMouseClick);
-
-    return () => {
-      window.removeEventListener("click", onMouseClick);
-    };
-  }, [w, h, onMouseClick]);
 
   useEffect(() => {
     if (!render.current || !w || !h) return;
@@ -100,33 +105,73 @@ export default function Simulation() {
     render.current.canvas.height = h;
     Render.setPixelRatio(render.current, window.devicePixelRatio);
 
+    const observer = new MutationObserver(() => {
+      removeBalls();
+      addBalls();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+      childList: false,
+      characterData: false,
+    });
+
     removeBounds();
+    removeBalls();
     addBounds();
+    addBalls();
+
+    return () => {
+      observer.disconnect();
+    };
   }, [w, h]);
 
-  function onMouseClick(e: MouseEvent) {
+  function addBalls() {
     if (!scene.current) return;
 
-    const { clientX, clientY } = e;
-    const { left, top } = scene.current.getBoundingClientRect();
+    const cols = Math.ceil(Math.sqrt(numBalls));
+    const rows = Math.ceil(numBalls / cols);
 
-    const x = clientX - left;
-    const y = clientY - top;
+    const colGap = w > 600 ? w / cols : 0;
+    const rowGap = w > 600 ? h / rows : 0;
 
-    World.add(engine.current.world, [
-      Bodies.circle(x, y, (w > 600 ? 20 : 5) + Math.random() * 20, {
-        restitution: 0.6,
-        mass: 25,
-        friction: 0.001,
-        render: {
-          fillStyle:
-            getTheme() === "dark"
-              ? `hsl(231, 24%, ${30 + Math.random() * 15}%)`
-              : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
-        },
-        label: "ball",
-      }),
-    ]);
+    balls.current = Composites.stack(
+      20,
+      h * -2,
+      cols,
+      rows,
+      colGap,
+      rowGap,
+      (x: number, y: number) => {
+        const cx = x + (Math.random() * colGap - colGap / 2);
+        const cy = y + (Math.random() * rowGap - rowGap / 2);
+
+        const size = (w > 600 ? 20 : 2) + Math.random() * 20;
+        const mass = size * 0.75;
+
+        return Bodies.circle(cx, cy, size, {
+          restitution: 0.6,
+          mass,
+          friction: 0.001,
+          render: {
+            fillStyle:
+              getTheme() === "dark"
+                ? `hsl(231, 24%, ${30 + Math.random() * 15}%)`
+                : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
+          },
+          label: "ball",
+        });
+      },
+    );
+
+    Composite.add(engine.current.world, balls.current);
+  }
+
+  function removeBalls() {
+    console.log("removing");
+    if (!balls.current) return;
+    Composite.clear(balls.current, false);
   }
 
   return (
