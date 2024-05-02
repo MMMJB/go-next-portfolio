@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useGrid } from "@/contexts/gridContext";
 import {
   Engine,
@@ -11,15 +11,21 @@ import {
   Runner,
   Composites,
   Composite,
-  Mouse,
-  MouseConstraint,
   Events,
   Query,
 } from "matter-js";
 
+import Comment from "./Comment";
+
 import getTheme from "@/utils/getTheme";
 
 const numBalls = 100;
+const notes = Object.fromEntries(
+  Array.from({ length: Math.round(Math.random() * numBalls) }).map((_, i) => [
+    i,
+    `Note ${i}`,
+  ]),
+);
 
 export default function Simulation() {
   const {
@@ -30,9 +36,9 @@ export default function Simulation() {
   const engine = useRef(Engine.create());
   const render = useRef<Render | null>(null);
   const balls = useRef<Composite | null>(null);
-  const mouse = useRef<Mouse | null>(null);
-  const mouseConstraint = useRef<MouseConstraint | null>(null);
-  const hovered = useRef<Body | null>(null);
+  const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const [hovered, setHovered] = useState<Body | null>(null);
 
   function addBounds() {
     if (!w || !h) return;
@@ -127,42 +133,31 @@ export default function Simulation() {
 
     removeBounds();
     removeBalls();
-    removeMouse();
     addBounds();
     addBalls();
-    addMouse();
 
     function afterEngineUpdate() {
-      if (!mouse.current || !mouseConstraint.current || !balls.current) return;
+      if (!balls.current) return;
 
       const bodies = Composite.allBodies(balls.current);
-      const collisions = Query.point(bodies, mouse.current.position);
+      const collisions = Query.point(bodies, mouse.current);
 
-      hovered.current = collisions[0] || null;
-    }
-
-    function afterRender() {
-      if (!render.current || !hovered.current) return;
-
-      const ctx = render.current.context;
-      const { x, y } = hovered.current.position;
-
-      ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      ctx.fill();
-      ctx.closePath();
+      setHovered(collisions[0] || null);
     }
 
     Events.on(engine.current, "afterUpdate", afterEngineUpdate);
-    Events.on(render.current, "afterRender", afterRender);
 
     return () => {
       observer.disconnect();
       Events.off(engine.current, "afterUpdate", afterEngineUpdate);
-      Events.off(render.current, "afterRender", afterRender);
     };
   }, [w, h]);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", onMouseMove);
+
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, []);
 
   function addBalls() {
     if (!scene.current) return;
@@ -174,7 +169,7 @@ export default function Simulation() {
     const rowGap = w > 600 ? h / rows : 0;
 
     balls.current = Composites.stack(
-      20,
+      w > 600 ? 40 : 4,
       h * -2,
       cols,
       rows,
@@ -183,27 +178,39 @@ export default function Simulation() {
       (x: number, y: number, col: number, row: number) => {
         const index = col + row * cols;
 
-        const cx = x + (Math.random() * colGap - colGap / 2);
+        const cx = x + ((Math.random() * colGap) / 2 - colGap / 4);
         const cy = y + (Math.random() * rowGap - rowGap / 2);
 
         const size = (w > 600 ? 20 : 2) + Math.random() * 20;
         const mass = size * 0.75;
+
+        const dark = getTheme() === "dark";
+        const sprite = "https://ui-avatars.com/api/?size=100&rounded=true";
 
         return Bodies.circle(cx, cy, size, {
           restitution: 0.6,
           mass,
           friction: 0.001,
           render: {
-            fillStyle:
-              getTheme() === "dark"
-                ? index === 0
-                  ? "white"
-                  : `hsl(231, 24%, ${30 + Math.random() * 15}%)`
-                : index === 0
-                  ? "#6790E0"
-                  : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
+            fillStyle: dark
+              ? index === 0
+                ? "white"
+                : `hsl(231, 24%, ${30 + Math.random() * 15}%)`
+              : index === 0
+                ? "#6790E0"
+                : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
+            sprite: {
+              texture:
+                index in notes
+                  ? dark
+                    ? `${sprite}&background=fff`
+                    : `${sprite}&background=6790E0&color=fff`
+                  : "",
+              xScale: (size / 100) * 2,
+              yScale: (size / 100) * 2,
+            },
           },
-          label: "ball",
+          label: `ball-${index}`,
         });
       },
     );
@@ -216,28 +223,31 @@ export default function Simulation() {
     Composite.clear(balls.current, false);
   }
 
-  function addMouse() {
-    if (!render.current) return;
-
-    mouse.current = Mouse.create(render.current.canvas);
-    mouseConstraint.current = MouseConstraint.create(engine.current);
-
-    Composite.add(engine.current.world, mouseConstraint.current);
-
-    render.current!.mouse = mouse.current;
-  }
-
-  function removeMouse() {
-    if (!mouseConstraint.current) return;
-    Composite.remove(engine.current.world, mouseConstraint.current);
+  function onMouseMove(e: MouseEvent) {
+    mouse.current.x = e.clientX;
+    mouse.current.y = e.clientY;
   }
 
   return (
-    <canvas
-      ref={scene}
-      className="absolute inset-0 z-0 !h-full !w-screen"
-      width={w}
-      height={h}
-    />
+    <>
+      <canvas
+        ref={scene}
+        className="pointer-events-none absolute inset-0 z-0 !h-full !w-screen"
+        width={w}
+        height={h}
+      />
+      {hovered && (
+        <Comment
+          author={hovered.label}
+          index={parseInt(hovered.label.split("-")[1])}
+          position={hovered.position}
+        >
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod
+          aspernatur ipsum cum recusandae illum officia vero ipsa unde aliquid
+          saepe, distinctio ducimus numquam est cumque dolore, eaque corrupti
+          asperiores, non ad quaerat.
+        </Comment>
+      )}
+    </>
   );
 }

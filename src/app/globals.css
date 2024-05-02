@@ -21,6 +21,10 @@
   a:not(:has(*)) {
     @apply text-link-light underline dark:text-link-dark;
   }
+
+  .number {
+    font-feature-settings: "tnum";
+  }
 }
 
 @layer utilities {

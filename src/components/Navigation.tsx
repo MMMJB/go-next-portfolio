@@ -52,7 +52,7 @@ export function NavigationCard({
     <a
       href={link}
       onMouseEnter={() => setAnimationPlaying(true)}
-      className="flex w-full flex-col gap-12 rounded border border-text-light/10 bg-card-light/5 p-3 backdrop-blur-lg transition-colors hover:bg-card-light/10 dark:border-card-dark/15 dark:bg-card-dark/5 dark:hover:bg-card-dark/10"
+      className="border-card-light-border hover:bg-card-light-hover dark:border-card-dark-border dark:hover:bg-card-dark-hover flex w-full flex-col gap-12 rounded border bg-card-light p-3 transition-colors dark:bg-card-dark"
     >
       <div className="h-8 w-8">
         <img
