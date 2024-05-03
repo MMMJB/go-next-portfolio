@@ -41,11 +41,45 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  async function prepareAllAvatars(
+    visitors: Visitor[],
+  ): Promise<Record<string, HTMLImageElement>> {
+    const avatars = visitors.map((visitor) => visitor.avatar);
+    let loaded = 0;
+
+    return await new Promise((resolve) => {
+      const images = avatars.map((avatar) => {
+        const img = new Image();
+        img.onload = () => {
+          loaded++;
+          if (loaded === avatars.length)
+            resolve(
+              avatars.reduce(
+                (acc, avatar, i) => {
+                  acc[avatar] = images[i];
+                  return acc;
+                },
+                {} as Record<string, HTMLImageElement>,
+              ),
+            );
+        };
+
+        img.src = `/api/avatar?url=${avatar}`;
+        return img;
+      });
+    });
+  }
+
   async function onPageLoad() {
     const data = await fetchAllVisitors();
-    setVisitors(data);
+    const images = await prepareAllAvatars(data);
 
-    setLoading(false);
+    setVisitors(() =>
+      data.map((visitor) => ({
+        ...visitor,
+        avatarImage: images[visitor.avatar],
+      })),
+    );
   }
 
   useEffect(() => {
@@ -56,6 +90,12 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!visitors.length) return;
+
+    setLoading(false);
+  }, [visitors]);
 
   return (
     <VisitorContext.Provider

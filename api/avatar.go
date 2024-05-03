@@ -7,8 +7,8 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
-	"image/jpeg"
-	_ "image/png" // Register PNG decoder
+	_ "image/jpeg"
+	"image/png" // Register PNG decoder
 
 	"github.com/nfnt/resize"
 )
@@ -79,7 +79,7 @@ func AvatarHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the resized image to the response
 	w.Header().Set("Content-Type", "image/jpeg")
-	err = jpeg.Encode(w, circleImg, nil)
+	err = png.Encode(w, circleImg)
 	if err != nil {
 		http.Error(w, "Error writing image to response", http.StatusInternalServerError)
 		return

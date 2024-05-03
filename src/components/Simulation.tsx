@@ -94,6 +94,11 @@ export default function Simulation() {
       },
     });
 
+    render.current.textures = visitors.reduce(
+      (a, c) => ((a[c.avatar] = c.avatarImage!), a),
+      {} as Record<string, HTMLImageElement>,
+    );
+
     Runner.run(engine.current);
     Render.run(render.current);
 
@@ -204,10 +209,7 @@ export default function Simulation() {
                 ? "#6790E0"
                 : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
             sprite: {
-              texture:
-                index < visitors.length
-                  ? `/api/avatar?url=${visitors[index].avatar}`
-                  : "",
+              texture: index < visitors.length ? visitors[index].avatar : "",
               xScale: (size / 100) * 2,
               yScale: (size / 100) * 2,
             },
