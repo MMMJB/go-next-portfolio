@@ -25,6 +25,11 @@
   .number {
     font-feature-settings: "tnum";
   }
+
+  input,
+  textarea {
+    @apply appearance-none bg-transparent;
+  }
 }
 
 @layer utilities {
