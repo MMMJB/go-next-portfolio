@@ -17,7 +17,7 @@ export default function Toolbar() {
     <>
       <ul className="border-card-light-border collision dark:border-card-dark-border fixed bottom-8 flex rounded-full border bg-card-light opacity-50 transition-opacity hover:opacity-100 dark:bg-card-dark sm:bottom-12">
         <ToolbarItem>
-          <a href="https://github.com/MMMJB/go-next-portfolio">
+          <a target="_blank" href="https://github.com/MMMJB/go-next-portfolio">
             <GitHub size={20} />
           </a>
         </ToolbarItem>
