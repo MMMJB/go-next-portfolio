@@ -1,4 +1,10 @@
 (() => {
+  window.addEventListener("mousedown", (e) => {
+    if (e.detail > 1) {
+      e.preventDefault();
+    }
+  });
+
   if (
     localStorage.theme === "dark" ||
     (!("theme" in localStorage) &&

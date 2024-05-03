@@ -2,34 +2,22 @@
 
 import { revalidatePath } from "next/cache";
 
-export async function fetchAllPoints() {
-  const response = await fetch(process.env.WEB_URI + "/api/points");
+export async function fetchAllVisitors(): Promise<Visitor[]> {
+  const response = await fetch(process.env.WEB_URI + "/api/visitors");
   const data = await response.json();
 
   return data;
 }
 
-export async function createPoint(newPoint: Point) {
-  console.log("Adding point...");
+export async function createVisitor(newVisitor: Visitor) {
+  console.log("Adding visitor...");
 
   await fetch(
     process.env.WEB_URI +
-      `/api/newPoint?lat=${newPoint.lat}&lng=${newPoint.lng}&col=${newPoint.col}`,
+      `/api/newVisitor?avatar=${newVisitor.avatar}&name=${newVisitor.name}&message=${newVisitor.message}`,
   );
 
-  console.log("Point added.");
-
-  revalidatePath("/app");
-}
-
-export async function deletePoint(point: Point) {
-  console.log("Removing point...");
-
-  await fetch(
-    process.env.WEB_URI + `/api/deletePoint?lat=${point.lat}&lng=${point.lng}`,
-  );
-
-  console.log("Point removed.");
+  console.log("Visitor added.");
 
   revalidatePath("/app");
 }

@@ -1,9 +1,10 @@
 import "./globals.css";
 
 import Nav from "@/components/Navigation";
-// import { GridProvider } from "@/contexts/gridContext";
-// import Grid from "@/components/Grid";
+import { VisitorsProvider } from "@/contexts/visitorContext";
+import Simulation from "@/components/Simulation";
 import DarkModeToggle from "@/components/DarkModeToggle";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Syne } from "next/font/google";
 
@@ -28,14 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="/scripts/theme.js" />
+        <script src="/scripts/beforeload.js" />
       </head>
       <body
-        className={`${syne.className} grid min-h-screen place-items-center text-text-light dark:bg-text-light dark:text-text-dark`}
+        className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
       >
-        {/* <GridProvider>
-          <Grid rows={20} />
-        </GridProvider> */}
+        <VisitorsProvider>
+          <Simulation />
+        </VisitorsProvider>
         <main className="rounded p-8">
           <div className="flex w-full max-w-[600px] flex-col gap-6">
             {children}
@@ -43,6 +44,7 @@ export default function RootLayout({
           </div>
         </main>
         <DarkModeToggle />
+        <SpeedInsights />
       </body>
     </html>
   );

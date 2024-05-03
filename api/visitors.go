@@ -15,11 +15,11 @@ import (
 	// "go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Points(w http.ResponseWriter, r *http.Request) {
+func Visitors(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	// Create points array
-	var points []bson.M
+	// Create visitors array
+	var visitors []bson.M
 
 	L.ConnectToMongo(func(collection *mongo.Collection) {
 		// Find all documents in the collection
@@ -30,7 +30,7 @@ func Points(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Iterate through the cursor and write to the points array
+		// Iterate through the cursor and write to the visitors array
 		for cursor.Next(context.Background()) {
 			var result bson.M
 
@@ -41,20 +41,22 @@ func Points(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			points = append(points, result)
+			// Remove the email field from the result
+			delete(result, "email")
+
+			visitors = append(visitors, result)
 		}
 	})
 
-	// Convert the points array to a JSON object
-	json, err := json.Marshal(points)
+	// Convert the visitors array to a JSON object
+	json, err := json.Marshal(visitors)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Printf("Error converting points to JSON: %v\n", err)
+		fmt.Printf("Error converting visitors to JSON: %v\n", err)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 
-	// Write the JSON object to the response writer
 	w.Write(json)
 }

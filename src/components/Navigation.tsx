@@ -52,7 +52,7 @@ export function NavigationCard({
     <a
       href={link}
       onMouseEnter={() => setAnimationPlaying(true)}
-      className="flex w-full flex-col gap-12 rounded border border-card-light bg-card-light/5 p-3 transition-colors hover:bg-card-light/10 dark:border-card-dark/15 dark:bg-card-dark/5 dark:hover:bg-card-dark/10"
+      className="border-card-light-border hover:bg-card-light-hover dark:border-card-dark-border dark:hover:bg-card-dark-hover flex w-full flex-col gap-12 rounded border bg-card-light p-3 transition-colors dark:bg-card-dark"
     >
       <div className="h-8 w-8">
         <img
@@ -72,7 +72,7 @@ export function NavigationCard({
 
 export default function Nav() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="collision flex flex-col gap-3">
       <nav className="grid w-full grid-cols-2 gap-3 sm:flex">
         {navItems.map((item) => (
           <NavigationCard key={item.title} {...item} />

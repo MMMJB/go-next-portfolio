@@ -2,8 +2,10 @@ export default function Home() {
   return (
     <div className="flex w-full gap-24">
       <div className="flex flex-col gap-1">
-        <h1 className="wave font-semibold">Hey, I&apos;m Michael!</h1>
-        <p className="text-sm sm:text-justify">
+        <h1 className="wave collision w-max font-semibold">
+          Hey, I&apos;m Michael!
+        </h1>
+        <p className="collision text-sm sm:text-justify">
           I’m a 16-year-old experienced in fullstack engineering and UI/UX
           design. I&apos;m the founder of{" "}
           <a href="https://launchsite.tech">Launch</a> and a frontend developer

@@ -19,8 +19,16 @@ const config: Config = {
           dark: "#B4CDFF",
         },
         card: {
-          light: "#DADCEF",
-          dark: "#fff",
+          light: {
+            DEFAULT: "#FDFDFE",
+            border: "#EBECEF",
+            hover: "#FCFCFE",
+          },
+          dark: {
+            DEFAULT: "#3F445F",
+            border: "#53576F",
+            hover: "#494D67",
+          },
         },
       },
       keyframes: {
