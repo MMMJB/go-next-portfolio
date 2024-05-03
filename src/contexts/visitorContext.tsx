@@ -5,19 +5,19 @@ import { useState, useEffect, useContext, createContext } from "react";
 import { fetchAllVisitors, createVisitor } from "@/app/actions";
 
 const VisitorContext = createContext<{
+  visitors: Visitor[];
   dimensions: {
     width: number;
     height: number;
   };
-  loading: boolean;
   fetchAllVisitors: () => Promise<Visitor[]>;
   createVisitor: (newVisitor: Visitor) => void;
 }>({
+  visitors: [],
   dimensions: {
     width: 0,
     height: 0,
   },
-  loading: true,
   fetchAllVisitors,
   createVisitor,
 });
@@ -28,6 +28,7 @@ export function useVisitors() {
 
 export function VisitorsProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
+  const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
@@ -41,7 +42,8 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function onPageLoad() {
-    // const data = await fetchAllPoints();
+    const data = await fetchAllVisitors();
+    setVisitors(data);
 
     setLoading(false);
   }
@@ -57,9 +59,9 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <VisitorContext.Provider
-      value={{ dimensions, loading, fetchAllVisitors, createVisitor }}
+      value={{ dimensions, fetchAllVisitors, createVisitor, visitors }}
     >
-      {children}
+      {!loading && children}
     </VisitorContext.Provider>
   );
 }

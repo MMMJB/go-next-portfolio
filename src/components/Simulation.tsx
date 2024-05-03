@@ -19,17 +19,20 @@ import Comment from "./Comment";
 
 import getTheme from "@/utils/getTheme";
 
-const numBalls = 100;
-const notes = Object.fromEntries(
-  Array.from({ length: Math.round(Math.random() * numBalls) }).map((_, i) => [
-    i,
-    `Note ${i}`,
-  ]),
-);
+// const numBalls = 100;
+// const notes = Object.fromEntries(
+//   Array.from({ length: Math.round(Math.random() * numBalls) }).map((_, i) => [
+//     i,
+//     `Note ${i}`,
+//   ]),
+// );
+
+const avatarUrl = process.env.WEB_URI + "/api/avatar";
 
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
+    visitors,
   } = useVisitors();
 
   const scene = useRef<HTMLCanvasElement | null>(null);
@@ -141,7 +144,7 @@ export default function Simulation() {
 
       const bodies = Composite.allBodies(balls.current);
       const collisions = Query.point(bodies, mouse.current).filter(
-        (body) => parseInt(body.label) in notes,
+        (body) => parseInt(body.label) < visitors.length,
       );
 
       setHovered(collisions[0] || null);
@@ -163,6 +166,8 @@ export default function Simulation() {
 
   function addBalls() {
     if (!scene.current) return;
+
+    const numBalls = visitors.length;
 
     const cols = Math.ceil(Math.sqrt(numBalls));
     const rows = Math.ceil(numBalls / cols);
@@ -187,7 +192,6 @@ export default function Simulation() {
         const mass = size * 0.75;
 
         const dark = getTheme() === "dark";
-        const sprite = "https://ui-avatars.com/api/?size=100&rounded=true";
 
         return Bodies.circle(cx, cy, size, {
           restitution: 0.6,
@@ -203,10 +207,8 @@ export default function Simulation() {
                 : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
             sprite: {
               texture:
-                index in notes
-                  ? dark
-                    ? `${sprite}&background=fff`
-                    : `${sprite}&background=6790E0&color=fff`
+                index < visitors.length
+                  ? `${avatarUrl}?url=visitors[index].avatar`
                   : "",
               xScale: (size / 100) * 2,
               yScale: (size / 100) * 2,
@@ -240,14 +242,11 @@ export default function Simulation() {
       />
       {hovered && (
         <Comment
-          author={`Person ${hovered.label}`}
-          index={parseInt(hovered.label)}
+          author={visitors[parseInt(hovered.label)].name}
+          index={parseInt(hovered.label) + 1}
           position={hovered.position}
         >
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod
-          aspernatur ipsum cum recusandae illum officia vero ipsa unde aliquid
-          saepe, distinctio ducimus numquam est cumque dolore, eaque corrupti
-          asperiores, non ad quaerat.
+          {visitors[parseInt(hovered.label)].message}
         </Comment>
       )}
     </>
