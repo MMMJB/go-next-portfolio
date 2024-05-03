@@ -27,8 +27,6 @@ import getTheme from "@/utils/getTheme";
 //   ]),
 // );
 
-const avatarUrl = process.env.WEB_URI + "/api/avatar";
-
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
@@ -208,7 +206,7 @@ export default function Simulation() {
             sprite: {
               texture:
                 index < visitors.length
-                  ? `${avatarUrl}?url=visitors[index].avatar`
+                  ? `/api/avatar?url=${visitors[index].avatar}`
                   : "",
               xScale: (size / 100) * 2,
               yScale: (size / 100) * 2,
