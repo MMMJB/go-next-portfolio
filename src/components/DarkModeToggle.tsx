@@ -4,7 +4,11 @@ import { useState, useEffect } from "react";
 
 import { Sun, Moon } from "react-feather";
 
-export default function DarkModeToggle() {
+export default function DarkModeToggle({
+  className = "",
+}: {
+  className?: string;
+}) {
   const [darkMode, setDarkMode] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -22,9 +26,9 @@ export default function DarkModeToggle() {
   return (
     <button
       onClick={switchTheme}
-      className={`${darkMode ? "text-text-dark" : "text-text-light"} fixed bottom-12 right-12`}
+      className={`${darkMode ? "text-text-dark" : "text-text-light"} ${className}`}
     >
-      {darkMode !== null && (darkMode ? <Sun /> : <Moon />)}
+      {darkMode !== null && (darkMode ? <Sun size={20} /> : <Moon size={20} />)}
     </button>
   );
 }

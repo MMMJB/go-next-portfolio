@@ -1,6 +1,12 @@
+import { VisitorsProvider } from "@/contexts/visitorContext";
+import Simulation from "@/components/Simulation";
+
 export default function Home() {
   return (
     <div className="flex w-full gap-24">
+      <VisitorsProvider>
+        <Simulation />
+      </VisitorsProvider>
       <div className="flex flex-col gap-1">
         <h1 className="wave collision w-max font-semibold">
           Hey, I&apos;m Michael!

@@ -18,6 +18,7 @@ import {
 import Comment from "./Comment";
 
 import getTheme from "@/utils/getTheme";
+import clamp from "@/utils/clamp";
 
 // const numBalls = 100;
 // const notes = Object.fromEntries(
@@ -191,17 +192,17 @@ export default function Simulation() {
         const cx = x + ((Math.random() * colGap) / 2 - colGap / 4);
         const cy = y + (Math.random() * rowGap - rowGap / 2);
 
-        const size = (w > 600 ? 20 : 2) + Math.random() * 20;
+        const size = (w > 600 ? 20 : 10) + Math.random() * 20;
         const mass = size * 0.75;
 
         const dark = getTheme() === "dark";
 
-        return Bodies.circle(cx, cy, size, {
+        return Bodies.circle(clamp(30, cx, w - 30), cy, size, {
           restitution: 0.6,
           mass,
           friction: 0.001,
           render: {
-            fillStyle: dark
+            strokeStyle: dark
               ? index < visitors.length
                 ? "white"
                 : `hsl(231, 24%, ${30 + Math.random() * 15}%)`

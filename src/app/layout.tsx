@@ -1,12 +1,10 @@
 import "./globals.css";
 
 import Nav from "@/components/Navigation";
-import { VisitorsProvider } from "@/contexts/visitorContext";
-import Simulation from "@/components/Simulation";
-import DarkModeToggle from "@/components/DarkModeToggle";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import Toolbar from "@/components/Toolbar";
 
 import { Syne } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import type { Metadata } from "next";
 
@@ -34,16 +32,13 @@ export default function RootLayout({
       <body
         className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
       >
-        <VisitorsProvider>
-          <Simulation />
-        </VisitorsProvider>
         <main className="rounded p-8">
           <div className="flex w-full max-w-[600px] flex-col gap-6">
             {children}
             <Nav />
           </div>
         </main>
-        <DarkModeToggle />
+        <Toolbar />
         <SpeedInsights />
       </body>
     </html>
