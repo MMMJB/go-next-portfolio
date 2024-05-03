@@ -197,10 +197,10 @@ export default function Simulation() {
           friction: 0.001,
           render: {
             fillStyle: dark
-              ? index === 0
+              ? index < visitors.length
                 ? "white"
                 : `hsl(231, 24%, ${30 + Math.random() * 15}%)`
-              : index === 0
+              : index < visitors.length
                 ? "#6790E0"
                 : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
             sprite: {
