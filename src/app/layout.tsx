@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import Nav from "@/components/Navigation";
-import { GridProvider } from "@/contexts/gridContext";
+import { VisitorsProvider } from "@/contexts/visitorContext";
 import Simulation from "@/components/Simulation";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -34,9 +34,9 @@ export default function RootLayout({
       <body
         className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
       >
-        <GridProvider>
+        <VisitorsProvider>
           <Simulation />
-        </GridProvider>
+        </VisitorsProvider>
         <main className="rounded p-8">
           <div className="flex w-full max-w-[600px] flex-col gap-6">
             {children}

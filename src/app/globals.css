@@ -42,6 +42,6 @@
     transform-origin: 70% 70%;
     font-size: 1.2em;
 
-    @apply ml-1 inline-block animate-wave;
+    @apply relative -z-10 ml-1 inline-block animate-wave;
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useGrid } from "@/contexts/gridContext";
+import { useVisitors } from "@/contexts/visitorContext";
 import {
   Engine,
   Render,
@@ -30,7 +30,7 @@ const notes = Object.fromEntries(
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
-  } = useGrid();
+  } = useVisitors();
 
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create());
@@ -140,7 +140,9 @@ export default function Simulation() {
       if (!balls.current) return;
 
       const bodies = Composite.allBodies(balls.current);
-      const collisions = Query.point(bodies, mouse.current);
+      const collisions = Query.point(bodies, mouse.current).filter(
+        (body) => parseInt(body.label) in notes,
+      );
 
       setHovered(collisions[0] || null);
     }
@@ -210,7 +212,7 @@ export default function Simulation() {
               yScale: (size / 100) * 2,
             },
           },
-          label: `ball-${index}`,
+          label: index.toString(),
         });
       },
     );
@@ -238,8 +240,8 @@ export default function Simulation() {
       />
       {hovered && (
         <Comment
-          author={hovered.label}
-          index={parseInt(hovered.label.split("-")[1])}
+          author={`Person ${hovered.label}`}
+          index={parseInt(hovered.label)}
           position={hovered.position}
         >
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod

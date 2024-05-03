@@ -31,7 +31,7 @@ func ConnectToMongo(function func(*mongo.Collection)) {
 	}()
 
 	// Get the database and collection
-	collection := client.Database("development").Collection("points")
+	collection := client.Database("development").Collection("visitors")
 
 	// Call the function with the collection
 	function(collection)

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useGrid } from "@/contexts/gridContext";
+import { useVisitors } from "@/contexts/visitorContext";
 
 export default function Comment({
   children,
@@ -16,7 +16,7 @@ export default function Comment({
 }) {
   const {
     dimensions: { width: w, height: h },
-  } = useGrid();
+  } = useVisitors();
 
   const [mouse, setMouse] = useState(position);
 
