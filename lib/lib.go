@@ -9,13 +9,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Utility function for getting environment variable
+func GetEnv(key string) string {
+	value, exists := os.LookupEnv(key)
+	if !exists {
+		fmt.Printf("No '%s' environment variable found.\n", key)
+	}
+
+	return value
+}
+
 // Utility function for connecting to the MongoDB client and executing a function on the collection
 func ConnectToMongo(function func(*mongo.Collection)) {
 	// Get mongo environment variable
-	uri, exists := os.LookupEnv("MONGODB_URI")
-	if !exists {
-		fmt.Println("No 'MONGODB_URI' environment variable found.")
-	}
+	uri := GetEnv("MONGO_URI")
 
 	// Connect to MongoDB client
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
