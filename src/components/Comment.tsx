@@ -42,7 +42,7 @@ export default function Comment({
           -100%
         )`,
       }}
-      className={`border-card-light-border dark:border-card-dark-border absolute flex w-max min-w-64 max-w-80 flex-col gap-3 rounded-xl border bg-card-light p-3 dark:bg-card-dark ${
+      className={`absolute hidden w-max min-w-64 max-w-80 flex-col gap-3 rounded-xl border border-card-light-border bg-card-light p-3 dark:border-card-dark-border dark:bg-card-dark sm:flex ${
         orientationX === "right" ? "rounded-br-sm" : "rounded-bl-sm"
       }`}
     >

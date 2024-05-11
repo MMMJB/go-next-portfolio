@@ -24,7 +24,7 @@ export default function Toolbar() {
 
   return (
     <>
-      <ul className="collision fixed bottom-8 left-1/2 flex -translate-x-1/2 rounded-full border border-card-light-border bg-card-light opacity-50 transition-opacity hover:opacity-100 dark:border-card-dark-border dark:bg-card-dark sm:bottom-12">
+      <ul className="collision fixed bottom-8 left-1/2 flex -translate-x-1/2 rounded-full border border-card-light-border bg-card-light transition-opacity hover:opacity-100 dark:border-card-dark-border dark:bg-card-dark sm:bottom-12 sm:opacity-50">
         <ToolbarItem>
           <a target="_blank" href="https://github.com/MMMJB/go-next-portfolio">
             <GitHub size={20} />
@@ -43,7 +43,7 @@ export default function Toolbar() {
         </ToolbarItem>
       </ul>
       <div
-        className={`${feedbackPopupVisible ? "opacity-100 backdrop-blur-lg" : "pointer-events-none opacity-0 backdrop-blur-none"} fixed inset-0 z-50 grid h-screen w-screen place-items-center bg-white/10 transition-all duration-300 ease-out dark:bg-text-light/10`}
+        className={`${feedbackPopupVisible ? "opacity-100 backdrop-blur-lg" : "pointer-events-none opacity-0 backdrop-blur-none"} fixed inset-0 z-50 grid w-screen place-items-center bg-white/10 p-8 transition-all duration-300 ease-out dark:bg-text-light/10`}
       >
         <FeedbackPopup onCancel={() => setFeedbackPopupVisible(false)} />
       </div>

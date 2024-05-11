@@ -92,17 +92,17 @@ export default function FeedbackPopup({
 
   return (
     <form
-      className={`flex w-full max-w-96 flex-col gap-6 rounded-xl border border-card-light-border bg-card-light p-6 text-sm dark:border-card-dark-border dark:bg-card-dark ${className}`}
+      className={`flex w-full max-w-96 flex-col gap-6 rounded-xl border border-card-light-border bg-card-light p-6 dark:border-card-dark-border dark:bg-card-dark ${className}`}
     >
       <hgroup className="flex flex-col gap-0.5">
         <h2 className="text-2xl font-medium">What do you think?</h2>
-        <p className="text-text-light/75 dark:text-text-dark/75">
+        <p className="text-sm text-text-light/75 dark:text-text-dark/75">
           Log in to leave some feedback on my portfolio.
         </p>
       </hgroup>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <label className="font-medium" htmlFor="name">
+          <label className="text-sm font-medium" htmlFor="name">
             Name
           </label>
           <input
@@ -115,7 +115,7 @@ export default function FeedbackPopup({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="font-medium" htmlFor="message">
+          <label className="text-sm font-medium" htmlFor="message">
             Message
           </label>
           <textarea
