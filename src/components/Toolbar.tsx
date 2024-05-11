@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { MessageCircle, GitHub } from "react-feather";
 import DarkModeToggle from "./DarkModeToggle";
@@ -11,11 +12,19 @@ function ToolbarItem({ children }: { children: React.ReactNode }) {
 }
 
 export default function Toolbar() {
+  const params = useSearchParams();
+
   const [feedbackPopupVisible, setFeedbackPopupVisible] = useState(false);
+
+  useEffect(() => {
+    if (params.has("access_token") && window.localStorage.getItem("feedback")) {
+      setFeedbackPopupVisible(true);
+    }
+  }, []);
 
   return (
     <>
-      <ul className="border-card-light-border collision dark:border-card-dark-border fixed bottom-8 flex rounded-full border bg-card-light opacity-50 transition-opacity hover:opacity-100 dark:bg-card-dark sm:bottom-12">
+      <ul className="collision fixed bottom-8 left-1/2 flex -translate-x-1/2 rounded-full border border-card-light-border bg-card-light opacity-50 transition-opacity hover:opacity-100 dark:border-card-dark-border dark:bg-card-dark sm:bottom-12">
         <ToolbarItem>
           <a target="_blank" href="https://github.com/MMMJB/go-next-portfolio">
             <GitHub size={20} />
@@ -36,12 +45,7 @@ export default function Toolbar() {
       <div
         className={`${feedbackPopupVisible ? "opacity-100 backdrop-blur-lg" : "pointer-events-none opacity-0 backdrop-blur-none"} fixed inset-0 z-50 grid h-screen w-screen place-items-center bg-white/10 transition-all duration-300 ease-out dark:bg-text-light/10`}
       >
-        <FeedbackPopup
-          onSubmit={(name, message) => {
-            console.log(name, message);
-          }}
-          onCancel={() => setFeedbackPopupVisible(false)}
-        />
+        <FeedbackPopup onCancel={() => setFeedbackPopupVisible(false)} />
       </div>
     </>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import { Sun, Moon } from "react-feather";
+import Loader from "./Loader";
 
 export default function DarkModeToggle({
   className = "",
@@ -28,7 +29,8 @@ export default function DarkModeToggle({
       onClick={switchTheme}
       className={`${darkMode ? "text-text-dark" : "text-text-light"} ${className}`}
     >
-      {darkMode !== null && (darkMode ? <Sun size={20} /> : <Moon size={20} />)}
+      {(darkMode !== null &&
+        (darkMode ? <Sun size={20} /> : <Moon size={20} />)) || <Loader />}
     </button>
   );
 }

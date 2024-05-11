@@ -173,8 +173,8 @@ export default function Simulation() {
 
     const numBalls = visitors.length;
 
-    const cols = Math.ceil(Math.sqrt(numBalls));
-    const rows = Math.ceil(numBalls / cols);
+    const cols = Math.floor(Math.sqrt(numBalls));
+    const rows = Math.floor(numBalls / cols);
 
     const colGap = w > 600 ? w / cols : 0;
     const rowGap = w > 600 ? h / rows : 0;
@@ -203,12 +203,8 @@ export default function Simulation() {
           friction: 0.001,
           render: {
             strokeStyle: dark
-              ? index < visitors.length
-                ? "white"
-                : `hsl(231, 24%, ${30 + Math.random() * 15}%)`
-              : index < visitors.length
-                ? "#6790E0"
-                : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
+              ? `hsl(231, 24%, ${30 + Math.random() * 15}%)`
+              : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
             sprite: {
               texture: index < visitors.length ? visitors[index].avatar : "",
               xScale: (size / 100) * 2,
