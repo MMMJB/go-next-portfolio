@@ -2,6 +2,7 @@ import "./globals.css";
 
 import Nav from "@/components/Navigation";
 import Toolbar from "@/components/Toolbar";
+import { Suspense } from "react";
 
 import { Syne } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -39,11 +40,13 @@ export default function RootLayout({
       >
         <main className="rounded p-8">
           <div className="flex w-full max-w-[600px] flex-col gap-6">
-            {children}
+            <Suspense>{children}</Suspense>
             <Nav />
           </div>
         </main>
-        <Toolbar />
+        <Suspense>
+          <Toolbar />
+        </Suspense>
         <SpeedInsights />
       </body>
     </html>
