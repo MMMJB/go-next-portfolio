@@ -28,6 +28,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script src="/scripts/beforeload.js" />
+        <script
+          type="module"
+          src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/ring2.js"
+          defer
+        />
       </head>
       <body
         className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}

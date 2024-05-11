@@ -3,7 +3,6 @@ package handler
 import (
 	L "github.com/MMMJB/go-next-portfolio/lib"
 
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,26 +11,28 @@ import (
 
 type GithubAccessTokenResponse struct {
 	AccessToken string `json:"access_token"`
+	TokenType   string `json:"token_type"`
+	Scope       string `json:"scope"`
 }
+
+// type GithubAccessError struct {
+// 	Error            string `json:"error"`
+// 	ErrorDescription string `json:"error_description"`
+// 	ErrorUri         string `json:"error_uri"`
+// }
 
 func getAccessToken(code string) string {
 	// Get the client ID and secret from the environment
 	clientID := L.GetEnv("GITHUB_CLIENT_ID")
 	clientSecret := L.GetEnv("GITHUB_CLIENT_SECRET")
 
-	// Set the request body as JSON
-	body := map[string]string{
-		"client_id":     clientID,
-		"client_secret": clientSecret,
-		"code":          code,
-	}
-	bodyJSON, _ := json.Marshal(body)
+	url := fmt.Sprintf("https://github.com/login/oauth/access_token?client_id=%s&client_secret=%s&code=%s", clientID, clientSecret, code)
 
 	// Create a new request to get the access token
 	req, err := http.NewRequest(
 		"POST",
-		"https://github.com/login/oauth/access_token",
-		bytes.NewBuffer(bodyJSON),
+		url,
+		nil,
 	)
 	if err != nil {
 		fmt.Printf("Error creating request: %v\n", err)
@@ -54,8 +55,14 @@ func getAccessToken(code string) string {
 
 	var accessTokenResponse GithubAccessTokenResponse
 	json.Unmarshal(respBody, &accessTokenResponse)
+	// var accessTokenError GithubAccessError
+	// json.Unmarshal(respBody, &accessTokenError)
+
+	// fmt.Println(accessTokenError, url)
+	fmt.Println(accessTokenResponse)
 
 	return accessTokenResponse.AccessToken
+	// return ""
 }
 
 func getUserData(accessToken string) string {

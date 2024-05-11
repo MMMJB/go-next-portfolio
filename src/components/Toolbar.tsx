@@ -36,12 +36,7 @@ export default function Toolbar() {
       <div
         className={`${feedbackPopupVisible ? "opacity-100 backdrop-blur-lg" : "pointer-events-none opacity-0 backdrop-blur-none"} fixed inset-0 z-50 grid h-screen w-screen place-items-center bg-white/10 transition-all duration-300 ease-out dark:bg-text-light/10`}
       >
-        <FeedbackPopup
-          onSubmit={(name, message) => {
-            console.log(name, message);
-          }}
-          onCancel={() => setFeedbackPopupVisible(false)}
-        />
+        <FeedbackPopup onCancel={() => setFeedbackPopupVisible(false)} />
       </div>
     </>
   );

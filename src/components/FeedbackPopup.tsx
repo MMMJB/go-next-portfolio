@@ -1,26 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { GitHub } from "react-feather";
+import Loader from "./Loader";
+
+import getTheme from "@/utils/getTheme";
 
 const loginURI = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL}/api/auth`;
 
 export default function FeedbackPopup({
-  onSubmit,
   onCancel,
   className,
 }: {
-  onSubmit: (name: string, message: string) => void;
   onCancel: () => void;
   className?: string;
 }) {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <form
-      onSubmit={() => onSubmit(name, message)}
       className={`flex w-full max-w-96 flex-col gap-6 rounded-xl border border-card-light-border bg-card-light p-6 text-sm dark:border-card-dark-border dark:bg-card-dark ${className}`}
     >
       <hgroup className="flex flex-col gap-0.5">
@@ -58,19 +62,34 @@ export default function FeedbackPopup({
         </div>
       </div>
       <div className="mt-1 flex flex-col gap-3">
-        <a className="w-full" href={loginURI}>
-          <button
-            type="submit"
-            className="flex w-full items-center justify-center gap-3 rounded-md bg-text-light p-[14px] font-medium text-white transition-transform hover:translate-y-0.5 dark:bg-text-dark dark:text-text-light"
-          >
-            <GitHub size={16} />
-            <span>Send with GitHub</span>
-          </button>
-        </a>
         <button
           type="button"
-          className="rounded-md border border-card-light-border p-3 text-center transition-transform hover:translate-y-0.5 dark:border-card-dark-border"
+          onClick={() => {
+            if (loading) return;
+
+            setLoading(true);
+            router.push(loginURI);
+          }}
+          className="flex w-full items-center justify-center gap-3 rounded-md bg-text-light p-[14px] font-medium text-white transition-all disabled:cursor-not-allowed disabled:opacity-50 dark:bg-text-dark dark:text-text-light [&:not(:disabled)]:hover:translate-y-0.5"
+          disabled={loading}
+        >
+          {!loading ? (
+            <>
+              <GitHub size={16} />
+              <span>Send with GitHub</span>
+            </>
+          ) : (
+            <Loader
+              size="sm"
+              color={getTheme() === "light" ? "white" : "#353A56"}
+            />
+          )}
+        </button>
+        <button
+          type="button"
+          className="rounded-md border border-card-light-border p-3 text-center transition-all disabled:cursor-not-allowed disabled:opacity-50 dark:border-card-dark-border [&:not(:disabled)]:hover:translate-y-0.5"
           onClick={onCancel}
+          disabled={loading}
         >
           Cancel
         </button>
