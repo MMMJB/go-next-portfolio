@@ -8,7 +8,7 @@ import Loader from "./Loader";
 
 import getTheme from "@/utils/getTheme";
 
-const loginURI = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL}/api/auth`;
+const loginURI = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=https://${process.env.NEXT_PUBLIC_URL}/api/auth`;
 
 export default function FeedbackPopup({
   onCancel,
@@ -74,8 +74,6 @@ export default function FeedbackPopup({
   }
 
   useEffect(() => {
-    console.log(loginURI);
-
     const existingFeedback = window.localStorage.getItem("feedback");
     const token = params.get("access_token");
 
