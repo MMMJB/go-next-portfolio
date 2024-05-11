@@ -51,6 +51,8 @@ export default function FeedbackPopup({
     const avatar = user.avatar_url;
     const email = user.email || `g${user.id}`;
 
+    if (!name || !message || !avatar || !email) return;
+
     const res = await fetch(
       `/api/newVisitor?name=${name}&message=${message}&avatar=${avatar}&email=${email}`,
       {
@@ -72,6 +74,8 @@ export default function FeedbackPopup({
   }
 
   useEffect(() => {
+    console.log(loginURI);
+
     const existingFeedback = window.localStorage.getItem("feedback");
     const token = params.get("access_token");
 
