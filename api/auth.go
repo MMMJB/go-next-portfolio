@@ -59,40 +59,10 @@ func getAccessToken(code string) string {
 	// json.Unmarshal(respBody, &accessTokenError)
 
 	// fmt.Println(accessTokenError, url)
-	fmt.Println(accessTokenResponse)
+	// fmt.Println(accessTokenResponse)
 
 	return accessTokenResponse.AccessToken
 	// return ""
-}
-
-func getUserData(accessToken string) string {
-	// Create a new request to get the user data
-	req, err := http.NewRequest(
-		"GET",
-		"https://api.github.com/user",
-		nil,
-	)
-	if err != nil {
-		fmt.Printf("Error creating request: %v\n", err)
-		return ""
-	}
-
-	// Set the request headers
-	authorization := fmt.Sprintf("token %s", accessToken)
-	req.Header.Set("Authorization", authorization)
-
-	// Send the request
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		fmt.Printf("Error sending request: %v\n", err)
-		return ""
-	}
-
-	// Decode the response body
-	respBody, _ := io.ReadAll(resp.Body)
-
-	// Return the response body as a string (for now)
-	return string(respBody)
 }
 
 func GithubAuthHandler(w http.ResponseWriter, r *http.Request) {
@@ -107,12 +77,6 @@ func GithubAuthHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userData := getUserData(githubAccessToken)
-	if userData == "" {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	w.Write([]byte(userData))
-	w.WriteHeader(http.StatusOK)
+	// Redirect to the frontend with the access token
+	http.Redirect(w, r, fmt.Sprintf("/?access_token=%s", githubAccessToken), http.StatusFound)
 }

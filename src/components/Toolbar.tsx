@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { MessageCircle, GitHub } from "react-feather";
 import DarkModeToggle from "./DarkModeToggle";
@@ -11,7 +12,15 @@ function ToolbarItem({ children }: { children: React.ReactNode }) {
 }
 
 export default function Toolbar() {
+  const params = useSearchParams();
+
   const [feedbackPopupVisible, setFeedbackPopupVisible] = useState(false);
+
+  useEffect(() => {
+    if (params.has("access_token") && window.localStorage.getItem("feedback")) {
+      setFeedbackPopupVisible(true);
+    }
+  }, []);
 
   return (
     <>

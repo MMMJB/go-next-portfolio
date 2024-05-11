@@ -22,7 +22,7 @@ func GetEnv(key string) string {
 // Utility function for connecting to the MongoDB client and executing a function on the collection
 func ConnectToMongo(function func(*mongo.Collection)) {
 	// Get mongo environment variable
-	uri := GetEnv("MONGO_URI")
+	uri := GetEnv("MONGODB_URI")
 
 	// Connect to MongoDB client
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
