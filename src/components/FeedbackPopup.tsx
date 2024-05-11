@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import getTheme from "@/utils/getTheme";
 
 const loginURI = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=https://${process.env.NEXT_PUBLIC_URL}/api/auth`;
+const maxMessageLength = 250;
 
 export default function FeedbackPopup({
   onCancel,
@@ -54,7 +55,7 @@ export default function FeedbackPopup({
     if (!name || !message || !avatar || !email) return;
 
     const res = await fetch(
-      `/api/newVisitor?name=${name}&message=${message}&avatar=${avatar}&email=${email}`,
+      `/api/newVisitor?name=${name}&message=${message.substring(0, maxMessageLength)}&avatar=${avatar}&email=${email}`,
       {
         method: "POST",
         headers: {
@@ -112,6 +113,7 @@ export default function FeedbackPopup({
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -124,13 +126,14 @@ export default function FeedbackPopup({
             placeholder="Your message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            maxLength={250}
+            maxLength={maxMessageLength}
+            required
           />
         </div>
       </div>
       <div className="mt-1 flex flex-col gap-3">
         <button
-          type="button"
+          type="submit"
           onClick={authorize}
           className="flex w-full items-center justify-center gap-3 rounded-md bg-text-light p-[14px] font-medium text-white transition-all disabled:cursor-not-allowed disabled:opacity-50 dark:bg-text-dark dark:text-text-light [&:not(:disabled)]:hover:translate-y-0.5"
           disabled={!!loadingState}

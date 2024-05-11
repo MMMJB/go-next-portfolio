@@ -2,7 +2,9 @@ import "./globals.css";
 
 import Nav from "@/components/Navigation";
 import Toolbar from "@/components/Toolbar";
+import Simulation from "@/components/Simulation";
 import { Suspense } from "react";
+import { VisitorsProvider } from "@/contexts/visitorContext";
 
 import { Syne } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -36,17 +38,18 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${syne.className} grid place-items-center text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
+        className={`${syne.className} flex items-center justify-center bg-white text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
       >
-        <main className="rounded p-8">
-          <div className="flex w-full max-w-[600px] flex-col gap-6">
-            <Suspense>{children}</Suspense>
-            <Nav />
-          </div>
+        <main className="flex w-full max-w-[664px] flex-col justify-center gap-6 p-8 py-12">
+          <Nav />
+          <Suspense>{children}</Suspense>
         </main>
         <Suspense>
           <Toolbar />
         </Suspense>
+        {/* <VisitorsProvider>
+          <Simulation />
+        </VisitorsProvider> */}
         <SpeedInsights />
       </body>
     </html>

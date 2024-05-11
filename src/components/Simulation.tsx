@@ -233,7 +233,7 @@ export default function Simulation() {
     <>
       <canvas
         ref={scene}
-        className="pointer-events-none absolute inset-0 -z-10 !h-full !w-screen sm:z-0"
+        className="pointer-events-none absolute inset-0 -z-10 !h-full !w-screen bg-transparent sm:z-0"
         width={w}
         height={h}
       />
