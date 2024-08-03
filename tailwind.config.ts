@@ -17,6 +17,9 @@ const config: Config = {
         surface: "#F3F4F8",
         border: "#EBEBEB",
       },
+      borderRadius: {
+        "4xl": "40px",
+      },
     },
   },
   plugins: [],

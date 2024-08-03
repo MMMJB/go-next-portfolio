@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import Nav from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import Simulation from "@/components/Simulation";
 import { Suspense } from "react";
 import { VisitorsProvider } from "@/contexts/visitorContext";
@@ -34,6 +35,7 @@ export default function RootLayout({
         <Nav />
         <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
           <Suspense>{children}</Suspense>
+          <Footer />
         </div>
         {/* <VisitorsProvider>
           <Simulation />

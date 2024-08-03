@@ -10,6 +10,11 @@
   font-family: "Manrope", sans-serif;
 }
 
+a svg {
+  width: 1em;
+  height: 1em;
+}
+
 @layer utilities {
   .h1 {
     font-size: 98px;
