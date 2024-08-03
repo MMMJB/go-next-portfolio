@@ -22,13 +22,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`flex items-center justify-center bg-white text-text-light dark:bg-text-light dark:text-text-dark sm:min-h-screen`}
-      >
-        <main className="flex w-full max-w-[664px] flex-col justify-center gap-6 p-8 py-12">
-          <Nav />
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className="text-text-light">
+        <Nav />
+        <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
           <Suspense>{children}</Suspense>
-        </main>
+        </div>
         {/* <VisitorsProvider>
           <Simulation />
         </VisitorsProvider> */}
