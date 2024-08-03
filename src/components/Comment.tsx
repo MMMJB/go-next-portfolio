@@ -42,19 +42,8 @@ export default function Comment({
           -100%
         )`,
       }}
-      className={`absolute hidden w-max min-w-64 max-w-80 flex-col gap-3 rounded-xl border border-card-light-border bg-card-light p-3 dark:border-card-dark-border dark:bg-card-dark sm:flex ${
-        orientationX === "right" ? "rounded-br-sm" : "rounded-bl-sm"
-      }`}
     >
-      <div className="flex w-full items-center justify-between text-xs">
-        <span className="text-text-light/75 dark:text-text-dark/75">
-          {author}
-        </span>
-        <span className="number text-text-light/25 dark:text-text-dark/25">
-          {index}
-        </span>
-      </div>
-      <p className="text-sm">{children}</p>
+      Comment
     </div>
   );
 }

@@ -17,7 +17,6 @@ import {
 
 import Comment from "./Comment";
 
-import getTheme from "@/utils/getTheme";
 import clamp from "@/utils/clamp";
 
 // const numBalls = 100;
@@ -195,16 +194,12 @@ export default function Simulation() {
         const size = (w > 600 ? 20 : 10) + Math.random() * 20;
         const mass = size * 0.75;
 
-        const dark = getTheme() === "dark";
-
         return Bodies.circle(clamp(30, cx, w - 30), cy, size, {
           restitution: 0.6,
           mass,
           friction: 0.001,
           render: {
-            strokeStyle: dark
-              ? `hsl(231, 24%, ${30 + Math.random() * 15}%)`
-              : `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
+            strokeStyle: `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
             sprite: {
               texture: index < visitors.length ? visitors[index].avatar : "",
               xScale: (size / 100) * 2,
