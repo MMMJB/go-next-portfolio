@@ -18,7 +18,14 @@ const config: Config = {
         border: "#EBEBEB",
       },
       borderRadius: {
-        "4xl": "40px",
+        "4xl": "2.5rem",
+        "5xl": "4rem",
+      },
+      boxShadow: {
+        "project-light": "0px 32px 64px rgba(0, 0, 0, .05)",
+        "project-light-expanded": "0px 64px 128px rgba(0, 0, 0, .05)",
+        "project-dark": "0px 32px 64px rgba(0, 0, 0, .2)",
+        "project-dark-expanded": "0px 64px 128px rgba(0, 0, 0, .2)",
       },
     },
   },

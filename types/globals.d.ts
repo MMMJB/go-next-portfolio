@@ -1,3 +1,28 @@
+declare type Project = {
+  _id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  startDate: string;
+  endDate: string;
+  status: "complete" | "underway" | "abandoned";
+  website?: string;
+  github?: string;
+  package?: string;
+  work?: string;
+};
+
+declare type Work = {
+  _id: number;
+  title: string;
+  description: string;
+  role: string;
+  startDate: string;
+  endDate: string;
+  github?: string;
+  website?: string;
+};
+
 declare type Visitor = {
   _id: number;
   avatar: string;
