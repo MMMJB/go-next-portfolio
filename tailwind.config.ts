@@ -27,6 +27,21 @@ const config: Config = {
         "project-dark": "0px 32px 64px rgba(0, 0, 0, .2)",
         "project-dark-expanded": "0px 64px 128px rgba(0, 0, 0, .2)",
       },
+      keyframes: {
+        "slide-up": {
+          "0%": {
+            transform: "translateY(100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+      },
+      animation: {
+        "slide-up": "slide-up 500ms ease-out",
+      },
     },
   },
   plugins: [],

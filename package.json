@@ -11,12 +11,14 @@
   "dependencies": {
     "@types/matter-js": "^0.19.6",
     "@vercel/speed-insights": "^1.0.10",
+    "gsap": "^3.12.5",
     "ldrs": "^1.0.1",
     "matter-js": "^0.19.0",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-feather": "^2.0.10"
+    "react-feather": "^2.0.10",
+    "split-type": "^0.3.4"
   },
   "devDependencies": {
     "@types/node": "^20",

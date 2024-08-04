@@ -15,6 +15,13 @@ a svg {
   height: 1em;
 }
 
+@layer components {
+  section {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}
+
 @layer utilities {
   .h1 {
     font-size: 98px;
