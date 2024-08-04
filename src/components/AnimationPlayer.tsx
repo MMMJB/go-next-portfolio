@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { ReactLenis } from "@studio-freight/react-lenis";
 
 export default function AnimationPlayer({
   children,
@@ -30,5 +31,16 @@ export default function AnimationPlayer({
     return () => ctx.revert();
   }, []);
 
-  return children;
+  return (
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.1,
+        duration: 1.5,
+        smoothWheel: true,
+      }}
+    >
+      {children}
+    </ReactLenis>
+  );
 }
