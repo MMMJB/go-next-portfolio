@@ -15,10 +15,13 @@ export default function Comment({
   position: { x: number; y: number };
 }) {
   const {
-    dimensions: { width: w, height: h },
+    dimensions: { width: w },
   } = useVisitors();
 
-  const [mouse, setMouse] = useState(position);
+  const [mouse, setMouse] = useState({
+    x: position.x,
+    y: position.y - window.scrollY,
+  });
 
   const orientationX = position.x > w / 2 ? "right" : "left";
 

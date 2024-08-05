@@ -3,17 +3,18 @@
 import { useRef, useState, useEffect } from "react";
 import { useVisitors } from "@/contexts/visitorContext";
 import {
-  Engine,
-  Render,
-  World,
   Bodies,
-  Bounds,
   Body,
-  Runner,
+  Bounds,
   Composites,
   Composite,
+  Constraint,
+  Engine,
   Events,
+  Render,
+  Runner,
   Query,
+  World,
 } from "matter-js";
 
 import Comment from "./Comment";
@@ -35,7 +36,7 @@ export default function Simulation() {
   } = useVisitors();
 
   const scene = useRef<HTMLCanvasElement | null>(null);
-  const engine = useRef(Engine.create({ gravity: { y: 0.5 } }));
+  const engine = useRef(Engine.create());
   const render = useRef<Render | null>(null);
   const balls = useRef<Composite | null>(null);
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -67,36 +68,25 @@ export default function Simulation() {
         {
           isStatic: true,
           render: {
-            fillStyle: "red",
+            fillStyle: "transparent",
           },
         },
       );
 
       World.add(engine.current.world, [body]);
     });
-
-    const ropesContainer = document.getElementById("ropes-container")!;
-    const { x, y, width, height } = ropesContainer.getBoundingClientRect();
-    const body = Bodies.rectangle(
-      x + width / 2,
-      y + height / 2 + window.scrollY,
-      width,
-      height,
-      {
-        isStatic: true,
-        render: {
-          fillStyle: "red",
-        },
-      },
-    );
-
-    World.add(engine.current.world, [body]);
   }
 
   function removeBounds() {
     World.remove(engine.current.world, [
-      ...engine.current.world.bodies.filter((b) => b.isStatic),
+      ...engine.current.world.bodies.filter(
+        (b) => b.isStatic || b.label === "rope",
+      ),
     ]);
+
+    // Remove rope
+    const rope = engine.current.world.bodies.find((b) => b.label === "rope");
+    console.log(rope);
   }
 
   useEffect(() => {
@@ -157,13 +147,8 @@ export default function Simulation() {
     function afterEngineUpdate() {
       if (!balls.current) return;
 
-      const mouseRelativeToViewport = {
-        x: mouse.current.x,
-        y: mouse.current.y + window.scrollY,
-      };
-
       const bodies = Composite.allBodies(balls.current);
-      const collisions = Query.point(bodies, mouseRelativeToViewport).filter(
+      const collisions = Query.point(bodies, mouse.current).filter(
         (body) => parseInt(body.label) < visitors.length,
       );
 
@@ -236,7 +221,7 @@ export default function Simulation() {
 
   function onMouseMove(e: MouseEvent) {
     mouse.current.x = e.clientX;
-    mouse.current.y = e.clientY;
+    mouse.current.y = e.clientY + window.scrollY;
   }
 
   return (
@@ -251,7 +236,7 @@ export default function Simulation() {
         <Comment
           author={visitors[parseInt(hovered.label)].name}
           index={parseInt(hovered.label) + 1}
-          position={hovered.position}
+          position={mouse.current}
         >
           {visitors[parseInt(hovered.label)].message}
         </Comment>

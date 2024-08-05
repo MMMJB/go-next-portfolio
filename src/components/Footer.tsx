@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="rounded-4xl text-surface flex flex-col gap-20 bg-text-light pb-10 pt-20 font-medium">
+    <footer className="collision flex flex-col gap-20 rounded-4xl bg-text-light pb-10 pt-20 font-medium text-surface">
       <div className="flex flex-col items-center gap-10">
         <h2 className="h1 text-center">
           Feedback?
           <br />
           Leave a comment!
         </h2>
-        <button className="border-surface flex items-center justify-center gap-2 rounded-full border px-10 py-2 text-[18px]/[36px]">
+        <button className="flex items-center justify-center gap-2 rounded-full border border-surface px-10 py-2 text-[18px]/[36px]">
           Let&rsquo;s do it!
           <ArrowUpRight size={24} />
         </button>
