@@ -157,8 +157,13 @@ export default function Simulation() {
     function afterEngineUpdate() {
       if (!balls.current) return;
 
+      const mouseRelativeToViewport = {
+        x: mouse.current.x,
+        y: mouse.current.y + window.scrollY,
+      };
+
       const bodies = Composite.allBodies(balls.current);
-      const collisions = Query.point(bodies, mouse.current).filter(
+      const collisions = Query.point(bodies, mouseRelativeToViewport).filter(
         (body) => parseInt(body.label) < visitors.length,
       );
 
@@ -238,7 +243,7 @@ export default function Simulation() {
     <>
       <canvas
         ref={scene}
-        className="pointer-events-none absolute inset-0 -z-10 !h-full !w-screen bg-transparent"
+        className="pointer-events-none absolute inset-0 -z-10 bg-transparent"
         width={w}
         height={h}
       />

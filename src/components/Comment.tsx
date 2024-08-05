@@ -36,7 +36,7 @@ export default function Comment({
     <div
       style={{
         left: `${mouse.x}px`,
-        top: `${mouse.y}px`,
+        top: `${mouse.y + window.scrollY}px`,
         transform: `translate(
           ${orientationX === "right" ? "-100%" : "0"},
           -100%
