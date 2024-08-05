@@ -12,7 +12,7 @@ export default function Home() {
         <header className="grid grid-cols-2 gap-8">
           <h1 className="h1 text-text-dark">Michael Beck Developer</h1>
           <div className="flex flex-col justify-center gap-4">
-            <p className="h3 animate-lines">
+            <p className="h3 animate-lines collision">
               I&rsquo;m a 17-year-old experienced in web dev and UI/UX.
               I&rsquo;m the founder of Launch and a frontend developer at a few
               other projects. If you&rsquo;d like to chat, feel free to contact

@@ -2,18 +2,17 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useVisitors } from "@/contexts/visitorContext";
-import {
+import Matter, {
   Bodies,
   Body,
-  Bounds,
+  // Bounds,
   Composites,
   Composite,
-  Constraint,
+  // Constraint,
   Engine,
-  Events,
-  Render,
-  Runner,
   Query,
+  Render,
+  // Runner,
   World,
 } from "matter-js";
 
@@ -21,13 +20,19 @@ import Comment from "./Comment";
 
 import clamp from "@/utils/clamp";
 
-// const numBalls = 100;
-// const notes = Object.fromEntries(
-//   Array.from({ length: Math.round(Math.random() * numBalls) }).map((_, i) => [
-//     i,
-//     `Note ${i}`,
-//   ]),
-// );
+const engineOptions = {
+  enableSleeping: true,
+  positionIterations: 6,
+  velocityIterations: 4,
+  constraintIterations: 2,
+  broadphase: {
+    detector: Matter.Detector.collisions,
+    buckets: {
+      width: 50,
+      height: 50,
+    },
+  },
+};
 
 export default function Simulation() {
   const {
@@ -36,7 +41,7 @@ export default function Simulation() {
   } = useVisitors();
 
   const scene = useRef<HTMLCanvasElement | null>(null);
-  const engine = useRef(Engine.create());
+  const engine = useRef(Engine.create(engineOptions));
   const render = useRef<Render | null>(null);
   const balls = useRef<Composite | null>(null);
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -56,11 +61,11 @@ export default function Simulation() {
     if (w < 600 || h < 600) return;
 
     const collidableElements = document.querySelectorAll(".collision");
-    collidableElements.forEach((el) => {
+    const rectangles = Object.values(collidableElements).map((el) => {
       const { x, y, width, height } = el.getBoundingClientRect();
 
       // ! Inconsistent with slide-in animations
-      const body = Bodies.rectangle(
+      return Bodies.rectangle(
         x + width / 2,
         y + height / 2 + window.scrollY,
         width,
@@ -68,25 +73,20 @@ export default function Simulation() {
         {
           isStatic: true,
           render: {
-            fillStyle: "transparent",
+            fillStyle: "red",
           },
         },
       );
-
-      World.add(engine.current.world, [body]);
     });
+
+    World.add(engine.current.world, rectangles);
   }
 
   function removeBounds() {
-    World.remove(engine.current.world, [
-      ...engine.current.world.bodies.filter(
-        (b) => b.isStatic || b.label === "rope",
-      ),
-    ]);
-
-    // Remove rope
-    const rope = engine.current.world.bodies.find((b) => b.label === "rope");
-    console.log(rope);
+    const bodiesToRemove = engine.current.world.bodies.filter(
+      (b) => b.isStatic || b.label === "rope",
+    );
+    World.remove(engine.current.world, bodiesToRemove);
   }
 
   useEffect(() => {
@@ -100,12 +100,7 @@ export default function Simulation() {
         height: h,
         wireframes: false,
         background: "transparent",
-        hasBounds: true,
       },
-      bounds: Bounds.create([
-        { x: 0, y: 0 },
-        { x: w, y: h },
-      ]),
     });
 
     render.current.textures = visitors.reduce(
@@ -113,15 +108,29 @@ export default function Simulation() {
       {} as Record<string, HTMLImageElement>,
     );
 
-    Runner.run(engine.current);
-    Render.run(render.current);
+    // Runner.run(engine.current);
+
+    let frameId: number,
+      lastTime = 0;
+
+    (function renderFrame() {
+      frameId = window.requestAnimationFrame(renderFrame);
+
+      const now = Date.now();
+      const delta = now - (lastTime || now);
+      lastTime = now;
+
+      Engine.update(engine.current, delta);
+
+      Render.world(render.current!);
+      Render;
+    })();
 
     return () => {
-      Render.stop(render.current!);
       World.clear(engine.current.world, true);
       Engine.clear(engine.current);
-      render.current!.canvas.remove();
-      render.current!.textures = {};
+
+      window.cancelAnimationFrame(frameId);
 
       removeBalls();
       removeBounds();
@@ -143,28 +152,18 @@ export default function Simulation() {
     removeBalls();
     addBounds();
     addBalls();
-
-    function afterEngineUpdate() {
-      if (!balls.current) return;
-
-      const bodies = Composite.allBodies(balls.current);
-      const collisions = Query.point(bodies, mouse.current).filter(
-        (body) => parseInt(body.label) < visitors.length,
-      );
-
-      setHovered(collisions[0] || null);
-    }
-
-    Events.on(engine.current, "afterUpdate", afterEngineUpdate);
-
-    return () => Events.off(engine.current, "afterUpdate", afterEngineUpdate);
   }, [w, h]);
 
-  useEffect(() => {
-    window.addEventListener("mousemove", onMouseMove);
+  function afterEngineUpdate() {
+    if (!balls.current || hovered) return;
 
-    return () => window.removeEventListener("mousemove", onMouseMove);
-  }, []);
+    const bodies = Composite.allBodies(balls.current);
+    const collisions = Query.point(bodies, mouse.current).filter(
+      (body) => parseInt(body.label) < visitors.length,
+    );
+
+    setHovered(collisions[0] || null);
+  }
 
   function addBalls() {
     if (!scene.current) return;
