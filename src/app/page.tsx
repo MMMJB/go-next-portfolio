@@ -34,11 +34,7 @@ export default function Home() {
             </div>
           </div>
         </header>
-        <div>
-          {Array.from({ length: 40 }).map((_, i) => (
-            <div className="mb-1 h-1 bg-surface" key={i}></div>
-          ))}
-        </div>
+        <div id="ropes-container" className="h-[320px]" />
       </section>
       <section className="flex flex-col gap-10">
         <h1 className="h3 text-text-dark">Work</h1>

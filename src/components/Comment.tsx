@@ -42,8 +42,13 @@ export default function Comment({
           -100%
         )`,
       }}
+      className={`${orientationX === "right" ? "rounded-br-sm" : "rounded-bl-sm"} absolute min-w-min max-w-80 rounded-2xl bg-white px-3 py-2 shadow-project-dark`}
     >
-      Comment
+      <div className="span mb-2 flex items-center justify-between gap-2 rounded-t-md text-text-light/75">
+        <span>{author}</span>
+        <span>#{index}</span>
+      </div>
+      <p className="p text-text-dark">{children}</p>
     </div>
   );
 }

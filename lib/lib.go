@@ -14,6 +14,7 @@ func GetEnv(key string) string {
 	value, exists := os.LookupEnv(key)
 	if !exists {
 		fmt.Printf("No '%s' environment variable found.\n", key)
+		return ""
 	}
 
 	return value
@@ -27,7 +28,9 @@ func ConnectToMongo(function func(*mongo.Collection)) {
 	// Connect to MongoDB client
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 	if err != nil {
-		fmt.Errorf("Error connecting to MongoDB: %v", err)
+		err := fmt.Errorf("Error connecting to MongoDB: %v", err)
+		fmt.Println(err)
+		return
 	}
 
 	// Disconnect from MongoDB client after function ends

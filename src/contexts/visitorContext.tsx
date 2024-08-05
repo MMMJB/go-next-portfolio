@@ -28,7 +28,7 @@ export function useVisitors() {
 
 export function VisitorsProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
-  const [visitors, setVisitors] = useState<Visitor[]>([]);
+  const [visitors, setVisitors] = useState<Visitor[] | null>(null);
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
@@ -36,14 +36,16 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
 
   function handleResize() {
     setDimensions({
-      width: window.innerWidth - 16,
-      height: window.innerHeight - 16,
+      width: window.innerWidth,
+      height: window.innerHeight,
     });
   }
 
   async function prepareAllAvatars(
     visitors: Visitor[],
   ): Promise<Record<string, HTMLImageElement>> {
+    if (!visitors.length) return {};
+
     const avatars = visitors.map((visitor) => visitor.avatar);
     let loaded = 0;
 
@@ -92,14 +94,19 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!visitors.length) return;
+    if (!visitors) return;
 
     setLoading(false);
   }, [visitors]);
 
   return (
     <VisitorContext.Provider
-      value={{ dimensions, fetchAllVisitors, createVisitor, visitors }}
+      value={{
+        dimensions,
+        fetchAllVisitors,
+        createVisitor,
+        visitors: visitors || [],
+      }}
     >
       {!loading && children}
     </VisitorContext.Provider>

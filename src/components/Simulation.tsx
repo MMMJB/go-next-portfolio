@@ -7,6 +7,7 @@ import {
   Render,
   World,
   Bodies,
+  Bounds,
   Body,
   Runner,
   Composites,
@@ -34,7 +35,7 @@ export default function Simulation() {
   } = useVisitors();
 
   const scene = useRef<HTMLCanvasElement | null>(null);
-  const engine = useRef(Engine.create());
+  const engine = useRef(Engine.create({ gravity: { y: 0.5 } }));
   const render = useRef<Render | null>(null);
   const balls = useRef<Composite | null>(null);
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -56,21 +57,40 @@ export default function Simulation() {
     const collidableElements = document.querySelectorAll(".collision");
     collidableElements.forEach((el) => {
       const { x, y, width, height } = el.getBoundingClientRect();
+
+      // ! Inconsistent with slide-in animations
       const body = Bodies.rectangle(
-        x - 4 + width / 2,
-        y - 8 + height / 2,
+        x + width / 2,
+        y + height / 2 + window.scrollY,
         width,
         height,
         {
           isStatic: true,
           render: {
-            fillStyle: "transparent",
+            fillStyle: "red",
           },
         },
       );
 
       World.add(engine.current.world, [body]);
     });
+
+    const ropesContainer = document.getElementById("ropes-container")!;
+    const { x, y, width, height } = ropesContainer.getBoundingClientRect();
+    const body = Bodies.rectangle(
+      x + width / 2,
+      y + height / 2 + window.scrollY,
+      width,
+      height,
+      {
+        isStatic: true,
+        render: {
+          fillStyle: "red",
+        },
+      },
+    );
+
+    World.add(engine.current.world, [body]);
   }
 
   function removeBounds() {
@@ -89,9 +109,13 @@ export default function Simulation() {
         width: w,
         height: h,
         wireframes: false,
-        // showBounds: true,
         background: "transparent",
+        hasBounds: true,
       },
+      bounds: Bounds.create([
+        { x: 0, y: 0 },
+        { x: w, y: h },
+      ]),
     });
 
     render.current.textures = visitors.reduce(
@@ -125,18 +149,6 @@ export default function Simulation() {
     render.current.canvas.height = h;
     Render.setPixelRatio(render.current, window.devicePixelRatio);
 
-    const observer = new MutationObserver(() => {
-      removeBalls();
-      addBalls();
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-      childList: false,
-      characterData: false,
-    });
-
     removeBounds();
     removeBalls();
     addBounds();
@@ -155,10 +167,7 @@ export default function Simulation() {
 
     Events.on(engine.current, "afterUpdate", afterEngineUpdate);
 
-    return () => {
-      observer.disconnect();
-      Events.off(engine.current, "afterUpdate", afterEngineUpdate);
-    };
+    return () => Events.off(engine.current, "afterUpdate", afterEngineUpdate);
   }, [w, h]);
 
   useEffect(() => {
@@ -192,11 +201,12 @@ export default function Simulation() {
         const cy = y + (Math.random() * rowGap - rowGap / 2);
 
         const size = (w > 600 ? 20 : 10) + Math.random() * 20;
-        const mass = size * 0.75;
+        const mass = size * 0.05;
 
         return Bodies.circle(clamp(30, cx, w - 30), cy, size, {
           restitution: 0.6,
           mass,
+          inverseMass: 1 / mass,
           friction: 0.001,
           render: {
             strokeStyle: `hsl(0, 0%, ${90 - Math.random() * 15}%)`,
@@ -228,7 +238,7 @@ export default function Simulation() {
     <>
       <canvas
         ref={scene}
-        className="pointer-events-none absolute inset-0 -z-10 !h-full !w-screen bg-transparent sm:z-0"
+        className="pointer-events-none absolute inset-0 -z-10 !h-full !w-screen bg-transparent"
         width={w}
         height={h}
       />

@@ -18,7 +18,7 @@ const projects: Project[] = [
     title: "Portfolio",
     description:
       "My personal website to showcase my projects and experience, built with a NextJS/Tailwind frontend and a Go/Vercel backend.",
-    tags: ["NextJS", "Tailwind", "Go", "Vercel,"],
+    tags: ["NextJS", "TailwindCSS", "Go", "MongoDB", "Vercel"],
     startDate: "Jan 2024",
     endDate: "Sep 2024",
     status: "underway",

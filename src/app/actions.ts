@@ -3,10 +3,15 @@
 import { revalidatePath } from "next/cache";
 
 export async function fetchAllVisitors(): Promise<Visitor[]> {
-  const response = await fetch(process.env.WEB_URI + "/api/visitors");
-  const data = await response.json();
+  try {
+    const response = await fetch(process.env.WEB_URI + "/api/visitors");
+    const data = await response.json();
 
-  return data;
+    return data;
+  } catch {
+    console.error("Failed to fetch visitors.");
+    return [];
+  }
 }
 
 export async function createVisitor(newVisitor: Visitor) {

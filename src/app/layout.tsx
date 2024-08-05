@@ -40,9 +40,9 @@ export default function RootLayout({
             <Footer />
           </div>
         </AnimationPlayer>
-        {/* <VisitorsProvider>
+        <VisitorsProvider>
           <Simulation />
-        </VisitorsProvider> */}
+        </VisitorsProvider>
         <SpeedInsights />
       </body>
     </html>
