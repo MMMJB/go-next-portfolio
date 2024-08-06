@@ -8,7 +8,7 @@ import Matter, {
   // Bounds,
   Composites,
   Composite,
-  // Constraint,
+  Constraint,
   Engine,
   Query,
   Render,
@@ -19,6 +19,7 @@ import Matter, {
 import Comment from "./Comment";
 
 import clamp from "@/utils/clamp";
+import renderWorld from "@/utils/render";
 
 const engineOptions = {
   enableSleeping: true,
@@ -34,16 +35,20 @@ const engineOptions = {
   },
 };
 
+Matter.use("matter-springs");
+
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
-    visitors,
+    visitors: v,
   } = useVisitors();
+  const visitors = v.concat(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
 
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create(engineOptions));
   const render = useRef<Render | null>(null);
   const balls = useRef<Composite | null>(null);
+  const display = useRef<Composite | null>(null);
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const [hovered, setHovered] = useState<Body | null>(null);
@@ -79,14 +84,37 @@ export default function Simulation() {
       );
     });
 
+    const displayContainer = document.getElementById("display-container")!;
+    const { x, y, width, height } = displayContainer.getBoundingClientRect();
+
+    display.current = Composites.stack(
+      x,
+      y,
+      4,
+      1,
+      12,
+      0,
+      (x: number, y: number) =>
+        Bodies.rectangle(x, y + window.scrollY, (width - 36) / 4, height, {
+          isStatic: true,
+          render: {
+            fillStyle: "blue",
+          },
+        }),
+    );
+
     World.add(engine.current.world, rectangles);
+    Composite.add(engine.current.world, display.current);
   }
 
   function removeBounds() {
     const bodiesToRemove = engine.current.world.bodies.filter(
-      (b) => b.isStatic || b.label === "rope",
+      (b) => b.isStatic,
     );
+
     World.remove(engine.current.world, bodiesToRemove);
+
+    if (display.current) Composite.clear(display.current, false);
   }
 
   useEffect(() => {
@@ -98,8 +126,9 @@ export default function Simulation() {
       options: {
         width: w,
         height: h,
-        wireframes: false,
+        wireframes: true,
         background: "transparent",
+        showSleeping: true,
       },
     });
 
@@ -123,7 +152,8 @@ export default function Simulation() {
 
       Engine.update(engine.current, delta);
 
-      Render.world(render.current!);
+      // Render.world(render.current!);
+      renderWorld(render.current);
 
       if (now - lastMouseCheck > 10) {
         afterEngineUpdate();
@@ -238,7 +268,7 @@ export default function Simulation() {
     <>
       <canvas
         ref={scene}
-        className="pointer-events-none absolute inset-0 -z-10 bg-transparent"
+        className="pointer-events-none absolute inset-0 -z-10"
         width={w}
         height={h}
       />

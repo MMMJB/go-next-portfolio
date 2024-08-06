@@ -37,8 +37,8 @@ export function VisitorsProvider({ children }: { children: React.ReactNode }) {
   function handleResize() {
     setDimensions({
       width: window.innerWidth,
-      height: document.documentElement.scrollHeight,
-      // height: window.innerHeight,
+      // height: document.documentElement.scrollHeight,
+      height: window.innerHeight,
     });
   }
 

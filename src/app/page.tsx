@@ -34,11 +34,11 @@ export default function Home() {
             </div>
           </div>
         </header>
-        <div id="ropes-container" className="h-[320px]" />
+        <div id="display-container" className="h-[320px]" />
       </section>
       <section className="flex flex-col gap-10">
         <h1 className="h3 text-text-dark">Work</h1>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-5">
           {work.map((job) => (
             <WorkPreview key={job._id} {...job} />
           ))}
@@ -46,7 +46,7 @@ export default function Home() {
       </section>
       <section className="flex flex-col gap-10">
         <h1 className="h3 text-text-dark">Featured projects</h1>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-5">
           {featuredProjects.map((project) => (
             <ProjectPreview key={project._id} {...project} />
           ))}
