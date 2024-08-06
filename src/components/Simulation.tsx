@@ -111,7 +111,8 @@ export default function Simulation() {
     // Runner.run(engine.current);
 
     let frameId: number,
-      lastTime = 0;
+      lastTime = 0,
+      lastMouseCheck = 0;
 
     (function renderFrame() {
       frameId = window.requestAnimationFrame(renderFrame);
@@ -123,7 +124,11 @@ export default function Simulation() {
       Engine.update(engine.current, delta);
 
       Render.world(render.current!);
-      Render;
+
+      if (now - lastMouseCheck > 10) {
+        afterEngineUpdate();
+        lastMouseCheck = now;
+      }
     })();
 
     return () => {
@@ -222,6 +227,12 @@ export default function Simulation() {
     mouse.current.x = e.clientX;
     mouse.current.y = e.clientY + window.scrollY;
   }
+
+  useEffect(() => {
+    window.addEventListener("mousemove", onMouseMove);
+
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, []);
 
   return (
     <>
