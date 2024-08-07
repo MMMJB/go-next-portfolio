@@ -2,10 +2,8 @@ import "./globals.css";
 
 import Nav from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import Simulation from "@/components/Simulation";
 import AnimationPlayer from "@/components/AnimationPlayer";
 import { Suspense } from "react";
-import { VisitorsProvider } from "@/contexts/visitorContext";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -40,9 +38,6 @@ export default function RootLayout({
             <Footer />
           </div>
         </AnimationPlayer>
-        <VisitorsProvider>
-          <Simulation />
-        </VisitorsProvider>
         <SpeedInsights />
       </body>
     </html>

@@ -15,6 +15,10 @@ a svg {
   height: 1em;
 }
 
+input {
+  outline: none;
+}
+
 .line {
   overflow: hidden;
 }
