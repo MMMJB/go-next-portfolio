@@ -19,14 +19,14 @@ input {
   outline: none;
 }
 
-.line {
-  overflow: hidden;
-}
-
 @layer components {
   section {
     opacity: 0;
     transform: translateY(50px);
+  }
+
+  .input {
+    @apply p rounded-md border border-border bg-white px-5 py-3 outline-none outline-1 outline-offset-0 transition-all placeholder:text-text-light/50 focus:outline-offset-2 focus:outline-border;
   }
 }
 

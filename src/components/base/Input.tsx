@@ -10,12 +10,15 @@ export function TextInput({
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <input
-      {...props}
-      type={type ?? "text"}
-      className={`${className} p rounded-md border border-border bg-white px-5 py-3 outline-none outline-1 outline-offset-0 transition-all placeholder:text-text-light/50 focus:outline-offset-2 focus:outline-border`}
-    />
+    <input {...props} type={type ?? "text"} className={`${className} input`} />
   );
+}
+
+export function Textarea({
+  className,
+  ...props
+}: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return <textarea {...props} className={`${className} input h-40 resize-y`} />;
 }
 
 export function Dropdown({
@@ -60,7 +63,7 @@ export function Dropdown({
     <div ref={containerRef} {...props} className={`${className} p relative`}>
       <button
         onClick={() => setIsOpen((p) => !p)}
-        className="flex items-center gap-3 rounded-md border border-border px-5 py-3 outline-none outline-1 outline-offset-0 transition-all focus:outline-offset-2 focus:outline-border"
+        className="input flex items-center gap-3"
       >
         {value}
         <ChevronDown size={16} />
@@ -82,5 +85,23 @@ export function Dropdown({
         ))}
       </div>
     </div>
+  );
+}
+
+export function Button({
+  children,
+  className,
+  theme = "light",
+  ...props
+}: {
+  theme?: "light" | "dark";
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...props}
+      className={`${className} ${theme === "dark" && "bg-text-light text-surface"} input flex items-center justify-center gap-3`}
+    >
+      {children}
+    </button>
   );
 }

@@ -1,4 +1,5 @@
 import { ArrowRight } from "react-feather";
+import { Button } from "./base/Input";
 import Link from "next/link";
 
 export default function Nav() {
@@ -12,12 +13,11 @@ export default function Nav() {
           <Link href="/projects">Projects</Link>
           <Link href="/journey">Journey</Link>
           <Link href="/resume">Resume</Link>
-          <Link
-            href="/feedback"
-            className="flex items-center gap-1 rounded-md border border-border px-5 py-3"
-          >
-            Leave some feedback
-            <ArrowRight size={16} />
+          <Link href="/feedback">
+            <Button>
+              Leave some feedback
+              <ArrowRight size={16} />
+            </Button>
           </Link>
         </div>
       </nav>
