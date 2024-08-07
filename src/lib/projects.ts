@@ -1,4 +1,4 @@
-const projects: Project[] = [
+const baseProjects: Omit<Project, "searchString">[] = [
   {
     _id: 1,
     title: "Launched",
@@ -36,6 +36,12 @@ const projects: Project[] = [
     github: "https://github.com/MMMJB/Quilli-react",
   },
 ];
+
+const projects: Project[] = baseProjects.map((project) => ({
+  ...project,
+  searchString:
+    `${project.title} ${project.description} ${project.tags.join(" ")}`.toLowerCase(),
+}));
 
 export const featuredProjects = projects.slice(0, 3);
 

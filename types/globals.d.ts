@@ -6,6 +6,7 @@ declare type Project = {
   startDate: string;
   endDate: string;
   status: "complete" | "underway" | "abandoned";
+  searchString: string;
   website?: string;
   github?: string;
   package?: string;

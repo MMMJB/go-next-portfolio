@@ -35,8 +35,6 @@ const engineOptions = {
   },
 };
 
-Matter.use("matter-springs");
-
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },

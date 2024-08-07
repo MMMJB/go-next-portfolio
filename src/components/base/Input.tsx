@@ -23,12 +23,14 @@ export function Dropdown({
   options,
   selected,
   disabled,
+  onChange,
   ...props
 }: {
   options: string[];
   selected: string;
   disabled?: boolean;
-} & React.HTMLAttributes<HTMLDivElement>) {
+  onChange?: (value: string) => void;
+} & Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +51,10 @@ export function Dropdown({
       document.removeEventListener("click", onClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (onChange) onChange(value);
+  }, [value]);
 
   return (
     <div ref={containerRef} {...props} className={`${className} p relative`}>

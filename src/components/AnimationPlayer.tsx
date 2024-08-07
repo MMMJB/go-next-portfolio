@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
+import { usePathname } from "next/navigation";
 
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { ReactLenis } from "@studio-freight/react-lenis";
+
+export const AnimationContext = createContext<() => void>(() => {});
 
 export default function AnimationPlayer({
   children,
@@ -13,7 +16,13 @@ export default function AnimationPlayer({
 }) {
   gsap.registerPlugin(ScrollTrigger);
 
+  const pathname = usePathname();
+
+  const [v, refresh] = useState(0);
+
   useEffect(() => {
+    console.log("here");
+
     const ctx = gsap.context(() => {
       (gsap.utils.toArray("section") as HTMLDivElement[]).forEach((section) => {
         gsap.to(section, {
@@ -29,18 +38,20 @@ export default function AnimationPlayer({
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [pathname, v]);
 
   return (
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.1,
-        duration: 1.5,
-        smoothWheel: true,
-      }}
-    >
-      {children}
-    </ReactLenis>
+    <AnimationContext.Provider value={() => refresh((p) => ++p)}>
+      <ReactLenis
+        root
+        options={{
+          lerp: 0.1,
+          duration: 1.5,
+          smoothWheel: true,
+        }}
+      >
+        {children}
+      </ReactLenis>
+    </AnimationContext.Provider>
   );
 }
