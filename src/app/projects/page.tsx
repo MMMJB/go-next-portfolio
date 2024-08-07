@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { TextInput } from "@/components/base/Input";
+import { TextInput, Dropdown } from "@/components/base/Input";
 
 import projects, { featuredProjects } from "@/lib/projects";
 
@@ -22,6 +22,7 @@ export default function Projects() {
               placeholder="Search by title, job, or technology..."
               className="flex-grow"
             />
+            <Dropdown options={["Newest", "Oldest"]} selected="Newest" />
           </div>
         </div>
       </header>
