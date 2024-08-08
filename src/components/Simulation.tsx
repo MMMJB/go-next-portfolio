@@ -40,13 +40,13 @@ export default function Simulation() {
     dimensions: { width: w, height: h },
     visitors: v,
   } = useVisitors();
-  const visitors = v.concat(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+  // const visitors = v.concat(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+  const visitors: Visitor[] = [];
 
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create(engineOptions));
   const render = useRef<Render | null>(null);
   const balls = useRef<Composite | null>(null);
-  const display = useRef<Composite | null>(null);
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const [hovered, setHovered] = useState<Body | null>(null);
@@ -82,27 +82,7 @@ export default function Simulation() {
       );
     });
 
-    const displayContainer = document.getElementById("display-container")!;
-    const { x, y, width, height } = displayContainer.getBoundingClientRect();
-
-    display.current = Composites.stack(
-      x,
-      y,
-      4,
-      1,
-      12,
-      0,
-      (x: number, y: number) =>
-        Bodies.rectangle(x, y + window.scrollY, (width - 36) / 4, height, {
-          isStatic: true,
-          render: {
-            fillStyle: "blue",
-          },
-        }),
-    );
-
     World.add(engine.current.world, rectangles);
-    Composite.add(engine.current.world, display.current);
   }
 
   function removeBounds() {
@@ -111,8 +91,6 @@ export default function Simulation() {
     );
 
     World.remove(engine.current.world, bodiesToRemove);
-
-    if (display.current) Composite.clear(display.current, false);
   }
 
   useEffect(() => {
@@ -137,9 +115,50 @@ export default function Simulation() {
 
     // Runner.run(engine.current);
 
+    const stringsCanvas = document.getElementById(
+      "strings",
+    ) as HTMLCanvasElement;
+    const { width, height, x, y } = stringsCanvas.getBoundingClientRect();
+
+    const pixelRatio = window.devicePixelRatio;
+    stringsCanvas.width = width * pixelRatio;
+    stringsCanvas.height = height * pixelRatio;
+    stringsCanvas.style.width = `${width / pixelRatio}px`;
+    stringsCanvas.style.height = `${height / pixelRatio}px`;
+
+    const ctx = stringsCanvas.getContext("2d")!;
+    const sw = stringsCanvas.width,
+      sh = stringsCanvas.height;
+
+    const TWO_PI = 2 * Math.PI;
+    const SPRING_CONSTANT = 0.05;
+    const NUM_LINES = 40;
+    const PULL_THRESHOLD = 30;
+
     let frameId: number,
       lastTime = 0,
       lastMouseCheck = 0;
+
+    const lines: {
+      py: number;
+      vy: number;
+      dragging: boolean;
+      direction: number;
+      prevDistance: number;
+      baseY: number;
+    }[] = [];
+    for (let i = 0; i < NUM_LINES; i++) {
+      const baseY = sh / NUM_LINES / 2 + (sh / NUM_LINES) * i;
+
+      lines.push({
+        py: baseY,
+        vy: 0,
+        dragging: false,
+        direction: 1,
+        prevDistance: 0,
+        baseY,
+      });
+    }
 
     (function renderFrame() {
       frameId = window.requestAnimationFrame(renderFrame);
@@ -156,6 +175,59 @@ export default function Simulation() {
       if (now - lastMouseCheck > 10) {
         afterEngineUpdate();
         lastMouseCheck = now;
+      }
+
+      // <--- Custom rendering --->
+
+      ctx.clearRect(0, 0, sw, sh);
+      ctx.strokeStyle = "red";
+
+      const mouseX = mouse.current.x - x;
+      const mouseY = mouse.current.y - y;
+
+      ctx.beginPath();
+      ctx.arc(mouseX, mouseY, 5, 0, TWO_PI);
+      ctx.stroke();
+
+      for (let i = 0; i < NUM_LINES; i++) {
+        const l = lines[i];
+
+        const mouseDistanceToCenter = mouseY - l.baseY;
+        const withinXRange = mouseX > 20 && mouseX < sw - 20;
+
+        if (
+          !l.dragging &&
+          Math.abs(mouseDistanceToCenter) < PULL_THRESHOLD &&
+          withinXRange
+        ) {
+          l.direction = l.prevDistance < mouseDistanceToCenter ? 1 : -1;
+          l.dragging = true;
+        } else if (
+          l.dragging &&
+          (Math.abs(mouseDistanceToCenter) > PULL_THRESHOLD || !withinXRange)
+        ) {
+          l.dragging = false;
+
+          l.py = l.baseY + mouseDistanceToCenter;
+        }
+
+        l.py += l.vy;
+
+        ctx.moveTo(20, l.baseY);
+        ctx.beginPath();
+        ctx.bezierCurveTo(
+          20,
+          l.baseY,
+          mouseX,
+          l.dragging ? mouseY + PULL_THRESHOLD * l.direction : l.py,
+          sw - 20,
+          l.baseY,
+        );
+        ctx.stroke();
+
+        l.prevDistance = mouseDistanceToCenter;
+
+        l.vy += (l.baseY - l.py) * SPRING_CONSTANT - l.vy * 0.01;
       }
     })();
 
