@@ -37,7 +37,7 @@ export default function Home() {
             </div>
           </div>
         </header>
-        <canvas id="strings" className="h-[320px] border border-black" />
+        <canvas id="strings" className="h-[320px]" />
       </section>
       <CardSection title="Work">
         {work.map((job) => (

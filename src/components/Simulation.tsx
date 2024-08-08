@@ -20,6 +20,7 @@ import Comment from "./Comment";
 
 import clamp from "@/utils/clamp";
 import renderWorld from "@/utils/render";
+import videoToCanvas from "@/utils/video";
 
 const engineOptions = {
   enableSleeping: true,
@@ -34,6 +35,11 @@ const engineOptions = {
     },
   },
 };
+
+const TWO_PI = 2 * Math.PI;
+const SPRING_CONSTANT = 0.05;
+const NUM_LINES = 20;
+const PULL_THRESHOLD = 30;
 
 export default function Simulation() {
   const {
@@ -115,6 +121,16 @@ export default function Simulation() {
 
     // Runner.run(engine.current);
 
+    return () => {
+      World.clear(engine.current.world, true);
+      Engine.clear(engine.current);
+
+      removeBalls();
+      removeBounds();
+    };
+  }, []);
+
+  useEffect(() => {
     const stringsCanvas = document.getElementById(
       "strings",
     ) as HTMLCanvasElement;
@@ -123,17 +139,12 @@ export default function Simulation() {
     const pixelRatio = window.devicePixelRatio;
     stringsCanvas.width = width * pixelRatio;
     stringsCanvas.height = height * pixelRatio;
-    stringsCanvas.style.width = `${width / pixelRatio}px`;
-    stringsCanvas.style.height = `${height / pixelRatio}px`;
+    stringsCanvas.style.width = `${width}px`;
+    stringsCanvas.style.height = `${height}px`;
 
     const ctx = stringsCanvas.getContext("2d")!;
     const sw = stringsCanvas.width,
       sh = stringsCanvas.height;
-
-    const TWO_PI = 2 * Math.PI;
-    const SPRING_CONSTANT = 0.05;
-    const NUM_LINES = 40;
-    const PULL_THRESHOLD = 30;
 
     let frameId: number,
       lastTime = 0,
@@ -160,6 +171,10 @@ export default function Simulation() {
       });
     }
 
+    ctx.strokeStyle = "red";
+
+    // const videoFrame = videoToCanvas("/waves.mp4", stringsCanvas);
+
     (function renderFrame() {
       frameId = window.requestAnimationFrame(renderFrame);
 
@@ -179,11 +194,12 @@ export default function Simulation() {
 
       // <--- Custom rendering --->
 
-      ctx.clearRect(0, 0, sw, sh);
-      ctx.strokeStyle = "red";
+      // ctx.globalCompositeOperation = "source-over";
 
-      const mouseX = mouse.current.x - x;
-      const mouseY = mouse.current.y - y;
+      ctx.clearRect(0, 0, sw, sh);
+
+      const mouseX = (mouse.current.x - x) * pixelRatio;
+      const mouseY = (mouse.current.y - y) * pixelRatio;
 
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 5, 0, TWO_PI);
@@ -193,7 +209,7 @@ export default function Simulation() {
         const l = lines[i];
 
         const mouseDistanceToCenter = mouseY - l.baseY;
-        const withinXRange = mouseX > 20 && mouseX < sw - 20;
+        const withinXRange = mouseX > 0 && mouseX < sw;
 
         if (
           !l.dragging &&
@@ -213,14 +229,14 @@ export default function Simulation() {
 
         l.py += l.vy;
 
-        ctx.moveTo(20, l.baseY);
+        ctx.moveTo(0, l.baseY);
         ctx.beginPath();
         ctx.bezierCurveTo(
-          20,
+          0,
           l.baseY,
           mouseX,
           l.dragging ? mouseY + PULL_THRESHOLD * l.direction : l.py,
-          sw - 20,
+          sw,
           l.baseY,
         );
         ctx.stroke();
@@ -229,18 +245,14 @@ export default function Simulation() {
 
         l.vy += (l.baseY - l.py) * SPRING_CONSTANT - l.vy * 0.01;
       }
+
+      // ctx.globalCompositeOperation = "source-atop";
+
+      // videoFrame();
     })();
 
-    return () => {
-      World.clear(engine.current.world, true);
-      Engine.clear(engine.current);
-
-      window.cancelAnimationFrame(frameId);
-
-      removeBalls();
-      removeBounds();
-    };
-  }, []);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [w, h]);
 
   useEffect(() => {
     if (!render.current || !w || !h) return;
