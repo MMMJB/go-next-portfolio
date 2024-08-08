@@ -8,7 +8,7 @@ import Matter, {
   // Bounds,
   Composites,
   Composite,
-  Constraint,
+  // Constraint,
   Engine,
   Query,
   Render,
@@ -37,17 +37,17 @@ const engineOptions = {
 };
 
 const TWO_PI = 2 * Math.PI;
-const SPRING_CONSTANT = 0.05;
-const NUM_LINES = 20;
-const PULL_THRESHOLD = 30;
+const SPRING_CONSTANT = 0.1;
+const NUM_LINES = 12;
+const PULL_THRESHOLD = 20;
 
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
     visitors: v,
   } = useVisitors();
-  // const visitors = v.concat(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-  const visitors: Visitor[] = [];
+  const visitors = v.concat(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
+  // const visitors: Visitor[] = [];
 
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create(engineOptions));
@@ -72,6 +72,7 @@ export default function Simulation() {
     const collidableElements = document.querySelectorAll(".collision");
     const rectangles = Object.values(collidableElements).map((el) => {
       const { x, y, width, height } = el.getBoundingClientRect();
+      const borderRadius = parseInt(getComputedStyle(el).borderRadius);
 
       // ! Inconsistent with slide-in animations
       return Bodies.rectangle(
@@ -83,6 +84,9 @@ export default function Simulation() {
           isStatic: true,
           render: {
             fillStyle: "red",
+          },
+          chamfer: {
+            radius: borderRadius,
           },
         },
       );
@@ -134,7 +138,13 @@ export default function Simulation() {
     const stringsCanvas = document.getElementById(
       "strings",
     ) as HTMLCanvasElement;
-    const { width, height, x, y } = stringsCanvas.getBoundingClientRect();
+    const {
+      width,
+      height,
+      x,
+      y: screenY,
+    } = stringsCanvas.getBoundingClientRect();
+    const y = screenY + window.scrollY;
 
     const pixelRatio = window.devicePixelRatio;
     stringsCanvas.width = width * pixelRatio;
@@ -171,8 +181,6 @@ export default function Simulation() {
       });
     }
 
-    ctx.strokeStyle = "red";
-
     // const videoFrame = videoToCanvas("/waves.mp4", stringsCanvas);
 
     (function renderFrame() {
@@ -201,11 +209,13 @@ export default function Simulation() {
       const mouseX = (mouse.current.x - x) * pixelRatio;
       const mouseY = (mouse.current.y - y) * pixelRatio;
 
-      ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 5, 0, TWO_PI);
-      ctx.stroke();
+      // ctx.beginPath();
+      // ctx.arc(mouseX, mouseY, 5, 0, TWO_PI);
+      // ctx.stroke();
 
       for (let i = 0; i < NUM_LINES; i++) {
+        ctx.strokeStyle = "red";
+
         const l = lines[i];
 
         const mouseDistanceToCenter = mouseY - l.baseY;
@@ -228,6 +238,15 @@ export default function Simulation() {
         }
 
         l.py += l.vy;
+
+        if (balls.current) {
+          const collisions = Query.ray(
+            balls.current.bodies,
+            { x, y: y + l.py },
+            { x: x + sw, y: y + l.py },
+          );
+          if (collisions.length) ctx.strokeStyle = "blue";
+        }
 
         ctx.moveTo(0, l.baseY);
         ctx.beginPath();
