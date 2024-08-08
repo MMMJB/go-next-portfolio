@@ -99,7 +99,7 @@ export function Button({
   return (
     <button
       {...props}
-      className={`${className} ${theme === "dark" && "bg-text-light text-surface"} input flex items-center justify-center gap-3`}
+      className={`${className} ${theme === "dark" && "bg-text-light text-surface"} input flex items-center justify-center gap-3 disabled:cursor-not-allowed disabled:opacity-50`}
     >
       {children}
     </button>

@@ -21,8 +21,6 @@ export default function AnimationPlayer({
   const [v, refresh] = useState(0);
 
   useEffect(() => {
-    console.log("here");
-
     const ctx = gsap.context(() => {
       (gsap.utils.toArray("section") as HTMLDivElement[]).forEach((section) => {
         gsap.to(section, {
