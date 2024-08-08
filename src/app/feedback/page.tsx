@@ -3,7 +3,7 @@ import { GitHub } from "react-feather";
 
 export default function Feedback() {
   return (
-    <div className="-my-20 grid min-h-[calc(100vh-103px)] place-items-center">
+    <section className="-my-20 grid min-h-[calc(100vh-103px)] place-items-center">
       <div className="grid grid-cols-2 gap-20">
         <div className="flex flex-col gap-10 text-text-dark">
           <h1 className="h1">What do you think?</h1>
@@ -31,6 +31,6 @@ export default function Feedback() {
           </Button>
         </form>
       </div>
-    </div>
+    </section>
   );
 }
