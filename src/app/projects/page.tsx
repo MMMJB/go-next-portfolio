@@ -77,7 +77,7 @@ export default function Projects() {
       ) : (
         <CardSection title={`Search results (${searchResults.length})`}>
           {searchResults.map((project) => (
-            <ProjectPreview key={project._id} {...project} />
+            <ProjectPreview query={search} key={project._id} {...project} />
           ))}
           {!searchResults.length && (
             <p className="p col-span-2 flex flex-col items-center justify-center gap-3 rounded-md border border-border px-10 py-8 text-text-light">

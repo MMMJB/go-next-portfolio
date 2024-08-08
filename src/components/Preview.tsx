@@ -4,18 +4,21 @@ import { useRef, useState, useCallback } from "react";
 
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
+import MatchedText from "./MatchedText";
 
 function Preview({
   title,
   image,
   children,
   link,
+  query,
   ...rest
 }: {
   title: string;
   link: string;
   image: React.ReactNode;
   children: React.ReactNode;
+  query?: string;
 } & React.HTMLAttributes<HTMLAnchorElement>) {
   return (
     <a
@@ -24,7 +27,9 @@ function Preview({
       className="group flex aspect-square w-full flex-col gap-4 rounded-3xl bg-surface px-10 py-8 text-text-dark"
     >
       <div className="grid w-full flex-grow place-items-center">{image}</div>
-      <h3 className="h3 pointer-events-none">{title}</h3>
+      <h3 className="h3 pointer-events-none">
+        <MatchedText query={query ?? ""}>{title}</MatchedText>
+      </h3>
       {children}
     </a>
   );
@@ -33,15 +38,20 @@ function Preview({
 export function ProjectPreview({
   title,
   tags,
+  query,
 }: {
   title: string;
   tags: string[];
+  query?: string;
 }) {
   const slug = title.toLowerCase().replace(/\s/g, "-");
+
+  const queryRegex = new RegExp(`(${query})`, "gi");
 
   return (
     <Preview
       title={title}
+      query={query}
       link={`/projects/${slug}`}
       image={
         <img
@@ -57,14 +67,21 @@ export function ProjectPreview({
       }
     >
       <ul className="span flex items-center gap-3">
-        {tags.slice(0, 3).map((tag) => (
-          <li
-            className="rounded-full border border-text-dark px-2.5 py-0.5"
-            key={tag}
-          >
-            {tag}
-          </li>
-        ))}
+        {tags
+          .sort(
+            (a, b) =>
+              (b.match(queryRegex)?.length ?? 0) -
+              (a.match(queryRegex)?.length ?? 0),
+          )
+          .slice(0, 3)
+          .map((tag) => (
+            <li
+              className="rounded-full border border-text-dark px-2.5 py-0.5"
+              key={tag}
+            >
+              <MatchedText query={query ?? ""}>{tag}</MatchedText>
+            </li>
+          ))}
       </ul>
     </Preview>
   );
@@ -138,7 +155,7 @@ export function WorkPreview({
       onMouseLeave={onMouseLeave}
       image={
         <div
-          className="rounded-5xl relative overflow-hidden will-change-transform"
+          className="relative overflow-hidden rounded-5xl will-change-transform"
           style={{
             transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1, 1, 1)`,
             transition: "all 400ms cubic-bezier(0.03, 0.98, 0.52, 0.99) 0s",
