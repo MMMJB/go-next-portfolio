@@ -20,7 +20,7 @@ import Comment from "./Comment";
 
 import clamp from "@/utils/clamp";
 import renderWorld from "@/utils/render";
-import videoToCanvas from "@/utils/video";
+// import videoToCanvas from "@/utils/video";
 
 const engineOptions = {
   enableSleeping: true,
