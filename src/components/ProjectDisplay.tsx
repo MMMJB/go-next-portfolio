@@ -47,18 +47,17 @@ export default function ProjectDisplay() {
   return hidden ? null : (
     <div
       id="project-popup"
-      className="fixed inset-0 z-50 flex h-full w-full flex-col gap-5 overflow-y-auto bg-transparent pt-5"
+      className="fixed inset-0 z-50 flex h-full w-full flex-col gap-2.5 overflow-y-auto bg-transparent pt-2.5"
     >
       <Link
+        role="button"
         onClick={onClose}
         href={pathname}
-        className="ml-auto mr-5 translate-y-20"
+        className="ml-auto mr-5"
       >
-        <button className="grid h-12 w-12 place-items-center rounded-full bg-white text-2xl text-text-dark">
-          <X />
-        </button>
+        <X className="text-2xl text-white" />
       </Link>
-      <div className="w-full translate-y-20 rounded-tl-4xl bg-white">
+      <div className="h-max w-full translate-y-20 rounded-tl-4xl bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
           <Project slug={params.get("p") || ""} />
         </div>
