@@ -4,16 +4,13 @@ import Nav from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimationPlayer from "@/components/AnimationPlayer";
 import { Suspense } from "react";
-
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Michael Beck | Portfolio",
-  description:
-    "I'm a 17-year-old experienced in web dev and UI/UX. I'm the founder of Launch and a frontend developer at a few other projects. Here's my personal portfolio.",
-};
+import m from "@/lib/metadata";
+
+export const metadata: Metadata = m;
 
 export default function RootLayout({
   children,
@@ -29,6 +26,33 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+
+        <link rel="shortcut icon" href="/meta/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/meta/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/meta/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/meta/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/meta/site.webmanifest" />
+        <link
+          rel="mask-icon"
+          href="/meta/safari-pinned-tab.svg"
+          color="#292d44"
+        />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff"></meta>
       </head>
       <body className="overflow-x-hidden text-text-light">
         <Nav />
