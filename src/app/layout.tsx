@@ -57,15 +57,15 @@ export default function RootLayout({
       </head>
       <body className="overflow-x-hidden text-text-light">
         <Nav />
-        <AnimationPlayer>
-          <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
-            <Suspense>
+        <Suspense>
+          <AnimationPlayer>
+            <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
               {children}
               <ProjectDisplay />
-            </Suspense>
-            <Footer />
-          </div>
-        </AnimationPlayer>
+              <Footer />
+            </div>
+          </AnimationPlayer>
+        </Suspense>
         <SpeedInsights />
       </body>
     </html>
