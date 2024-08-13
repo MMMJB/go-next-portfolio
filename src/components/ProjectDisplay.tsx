@@ -21,8 +21,8 @@ export default function ProjectDisplay() {
     document.body.style.setProperty("overflow", "hidden");
 
     gsap.to("#project-popup", {
-      background: "rgba(0, 0, 0, 0.8)",
-      duration: 0.5,
+      background: "rgba(0, 0, 0, 0.75)",
+      duration: 1,
       ease: "power2.out",
     });
 
