@@ -19,32 +19,32 @@ function Preview({
   ...rest
 }: {
   title: string;
-  link?: string;
   image: React.ReactNode;
   children: React.ReactNode;
+  link?: string;
   query?: string;
   projectId?: string;
 } & React.HTMLAttributes<HTMLAnchorElement>) {
-  const Content = () => (
-    <>
-      <div className="grid w-full flex-grow place-items-center">{image}</div>
-      <h3 className="h3 pointer-events-none">
-        <MatchedText query={query ?? ""}>{title}</MatchedText>
-      </h3>
-      {children}
-    </>
-  );
-
   const className =
     "group flex aspect-square w-full flex-col gap-4 rounded-3xl bg-surface px-10 py-8 text-text-dark";
 
   return projectId ? (
     <ProjectLink id={projectId} className={className} {...rest}>
-      <Content />
+      <div className="grid w-full flex-grow place-items-center">{image}</div>
+      <h3 className="h3 pointer-events-none">
+        {query && <MatchedText query={query}>{title}</MatchedText>}
+        {!query && title}
+      </h3>
+      {children}
     </ProjectLink>
   ) : (
     <Link href={link ?? "/"} className={className} {...rest}>
-      <Content />
+      <div className="grid w-full flex-grow place-items-center">{image}</div>
+      <h3 className="h3 pointer-events-none">
+        {query && <MatchedText query={query}>{title}</MatchedText>}
+        {!query && title}
+      </h3>
+      {children}
     </Link>
   );
 }
@@ -54,10 +54,7 @@ export function ProjectPreview({
   slug,
   tags,
   query,
-}: {
-  title: string;
-  slug: string;
-  tags: string[];
+}: Project & {
   query?: string;
 }) {
   const queryRegex = new RegExp(`(${query})`, "gi");
@@ -98,22 +95,10 @@ export function ProjectPreview({
   );
 }
 
-export function WorkPreview({
-  title,
-  role,
-  startDate,
-  endDate,
-  slug,
-}: {
-  title: string;
-  role: string;
-  startDate: string;
-  endDate: string;
-  slug: string;
-}) {
-  const imageSize = 252;
-  const glareSize = Math.sqrt(2 * imageSize ** 2);
+const imageSize = 252;
+const glareSize = Math.sqrt(2 * imageSize ** 2);
 
+export function WorkPreview({ title, role, startDate, endDate, slug }: Work) {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [shineAngle, setShineAngle] = useState(0);
   const [shineOpacity, setShineOpacity] = useState("0");
