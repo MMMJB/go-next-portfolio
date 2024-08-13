@@ -1,3 +1,5 @@
-import projects from "@/lib/projects";
+import Project from "@/components/Project";
 
-export default function Project({ params }: { params: { id: string } }) {}
+export default function ProjectPage({ params }: { params: { id: string } }) {
+  return <Project slug={params.id} />;
+}

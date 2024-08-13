@@ -16,8 +16,12 @@ export function ProjectLink({
 }) {
   const pathname = usePathname();
 
+  const next = pathname.match(/\/projects\/.*/)
+    ? `/projects/${id}`
+    : `${pathname}?p=${id}`;
+
   return (
-    <Link {...rest} href={`${pathname}?p=${id}`}>
+    <Link {...rest} href={next}>
       {children}
     </Link>
   );

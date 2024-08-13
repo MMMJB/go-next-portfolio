@@ -7,6 +7,7 @@ import Link, { ProjectLink } from "./base/Link";
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
 import MatchedText from "./MatchedText";
+import Tag from "./Tag";
 
 function Preview({
   title,
@@ -50,15 +51,15 @@ function Preview({
 
 export function ProjectPreview({
   title,
+  slug,
   tags,
   query,
 }: {
   title: string;
+  slug: string;
   tags: string[];
   query?: string;
 }) {
-  const slug = title.toLowerCase().replace(/\s/g, "-");
-
   const queryRegex = new RegExp(`(${query})`, "gi");
 
   return (
@@ -88,12 +89,9 @@ export function ProjectPreview({
           )
           .slice(0, 3)
           .map((tag, i) => (
-            <li
-              className="rounded-full border border-text-dark px-2.5 py-0.5"
-              key={i}
-            >
-              <MatchedText query={query ?? ""}>{tag}</MatchedText>
-            </li>
+            <Tag key={i} query={query}>
+              {tag}
+            </Tag>
           ))}
       </ul>
     </Preview>
@@ -105,13 +103,14 @@ export function WorkPreview({
   role,
   startDate,
   endDate,
+  slug,
 }: {
   title: string;
   role: string;
   startDate: string;
   endDate: string;
+  slug: string;
 }) {
-  const slug = title.toLowerCase().replace(/\s/g, "-");
   const imageSize = 252;
   const glareSize = Math.sqrt(2 * imageSize ** 2);
 

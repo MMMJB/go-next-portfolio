@@ -6,9 +6,10 @@ declare type Project = {
   endDate: string;
   status: "complete" | "underway" | "abandoned";
   searchString: string;
+  slug: string;
   website?: string;
   github?: string;
-  package?: string;
+  pkg?: string;
   work?: string;
 };
 
@@ -18,6 +19,7 @@ declare type Work = {
   role: string;
   startDate: string;
   endDate: string;
+  slug: string;
   github?: string;
   website?: string;
 };

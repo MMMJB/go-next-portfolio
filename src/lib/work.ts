@@ -1,4 +1,4 @@
-const work: Work[] = [
+const baseWork = [
   {
     title: "Launch",
     description:
@@ -36,6 +36,11 @@ const work: Work[] = [
     startDate: "Aug 2023",
     endDate: "Present",
   },
-];
+] satisfies Omit<Work, "slug">[];
+
+const work: Work[] = baseWork.map((job) => ({
+  ...job,
+  slug: job.title.toLowerCase().replace(/\s/g, "-"),
+}));
 
 export default work;

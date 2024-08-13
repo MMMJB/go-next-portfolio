@@ -8,7 +8,7 @@ const baseProjects = [
     endDate: "Present",
     status: "underway",
     github: "https://github.com/launchsite-tech/launched",
-    package: "https://www.npmjs.com/package/launched",
+    pkg: "https://www.npmjs.com/package/launched",
     website: "https://launched.tech",
     work: "Launch",
   },
@@ -21,6 +21,7 @@ const baseProjects = [
     endDate: "Sep 2024",
     status: "underway",
     github: "https://github.com/MMMJB/go-next-portfolio",
+    website: "https://mjb.sh",
   },
   {
     title: "Quilli",
@@ -32,12 +33,13 @@ const baseProjects = [
     status: "abandoned",
     github: "https://github.com/MMMJB/Quilli-react",
   },
-] satisfies Omit<Project, "searchString">[];
+] satisfies Omit<Project, "searchString" | "slug">[];
 
 const projects: Project[] = baseProjects.map((project) => ({
   ...project,
   searchString:
     `${project.title} ${project.description} ${project.tags.join(" ")}`.toLowerCase(),
+  slug: project.title.toLowerCase().replace(/\s/g, "-"),
 }));
 
 export const featuredProjects = projects.slice(0, 3);
