@@ -1,6 +1,5 @@
 const work: Work[] = [
   {
-    _id: 1,
     title: "Launch",
     description:
       "A nonprofit connecting aspiring developers with small organizations in need. Founded through a passion for web development, maintained through a combined love for helping the community.",
@@ -11,7 +10,6 @@ const work: Work[] = [
     website: "https://launchsite.tech",
   },
   {
-    _id: 2,
     title: "Codin",
     description:
       "Dribbble for developers. A platform for sharing and discovering new portfolio-ready projects alongside a community of like-minded developers.",
@@ -22,7 +20,6 @@ const work: Work[] = [
     website: "https://codin.app",
   },
   {
-    _id: 3,
     title: "Perceptify",
     description:
       "The data platform for creators. Aggregate, real-time analytics and AI-powered social media insights, on all of your favorite social media platforms.",
@@ -32,7 +29,6 @@ const work: Work[] = [
     website: "https://joinperceptify.com",
   },
   {
-    _id: 4,
     title: "Code Connect",
     description:
       "Promoting the growth of young developers through programs, events, and mentorship. A community of both collaboration and competition.",

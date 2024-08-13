@@ -40,13 +40,13 @@ export default function Home() {
         <canvas id="strings" className="h-[320px]" />
       </section>
       <CardSection title="Work">
-        {work.map((job) => (
-          <WorkPreview key={job._id} {...job} />
+        {work.map((job, i) => (
+          <WorkPreview key={i} {...job} />
         ))}
       </CardSection>
       <CardSection title="Featured projects">
-        {featuredProjects.map((project) => (
-          <ProjectPreview key={project._id} {...project} />
+        {featuredProjects.map((project, i) => (
+          <ProjectPreview key={i} {...project} />
         ))}
         <a
           href="/projects"

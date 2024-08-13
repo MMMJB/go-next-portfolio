@@ -1,5 +1,4 @@
 declare type Project = {
-  _id: number;
   title: string;
   description: string;
   tags: string[];
@@ -14,7 +13,6 @@ declare type Project = {
 };
 
 declare type Work = {
-  _id: number;
   title: string;
   description: string;
   role: string;

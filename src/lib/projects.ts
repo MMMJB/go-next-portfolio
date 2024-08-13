@@ -1,6 +1,5 @@
-const baseProjects: Omit<Project, "searchString">[] = [
+const baseProjects = [
   {
-    _id: 1,
     title: "Launched",
     description:
       "An NPM package to make any website editable. It enables freelance clients to modify their websites with zero codebase access or programming experience necessary.",
@@ -14,7 +13,6 @@ const baseProjects: Omit<Project, "searchString">[] = [
     work: "Launch",
   },
   {
-    _id: 2,
     title: "Portfolio",
     description:
       "My personal website to showcase my projects and experience, built with a NextJS/Tailwind frontend and a Go/Vercel backend.",
@@ -25,7 +23,6 @@ const baseProjects: Omit<Project, "searchString">[] = [
     github: "https://github.com/MMMJB/go-next-portfolio",
   },
   {
-    _id: 3,
     title: "Quilli",
     description:
       "A document creation tool made to improve the poetry writing workflow. My introduction to ReactJS and my first fullstack project.",
@@ -35,7 +32,7 @@ const baseProjects: Omit<Project, "searchString">[] = [
     status: "abandoned",
     github: "https://github.com/MMMJB/Quilli-react",
   },
-];
+] satisfies Omit<Project, "searchString">[];
 
 const projects: Project[] = baseProjects.map((project) => ({
   ...project,

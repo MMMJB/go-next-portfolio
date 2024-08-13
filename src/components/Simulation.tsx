@@ -36,8 +36,7 @@ const engineOptions = {
   },
 };
 
-const TWO_PI = 2 * Math.PI;
-const SPRING_CONSTANT = 0.1;
+const SPRING_CONSTANT = 0.05;
 const NUM_LINES = 12;
 const PULL_THRESHOLD = 20;
 

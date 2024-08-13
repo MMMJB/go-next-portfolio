@@ -1,6 +1,8 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+
+import Link from "next/link";
 
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
@@ -21,7 +23,7 @@ function Preview({
   query?: string;
 } & React.HTMLAttributes<HTMLAnchorElement>) {
   return (
-    <a
+    <Link
       {...rest}
       href={link}
       className="group flex aspect-square w-full flex-col gap-4 rounded-3xl bg-surface px-10 py-8 text-text-dark"
@@ -31,7 +33,7 @@ function Preview({
         <MatchedText query={query ?? ""}>{title}</MatchedText>
       </h3>
       {children}
-    </a>
+    </Link>
   );
 }
 
@@ -74,10 +76,10 @@ export function ProjectPreview({
               (a.match(queryRegex)?.length ?? 0),
           )
           .slice(0, 3)
-          .map((tag) => (
+          .map((tag, i) => (
             <li
               className="rounded-full border border-text-dark px-2.5 py-0.5"
-              key={tag}
+              key={i}
             >
               <MatchedText query={query ?? ""}>{tag}</MatchedText>
             </li>
