@@ -21,7 +21,7 @@ export default function ProjectDisplay() {
     document.body.style.setProperty("overflow", "hidden");
 
     gsap.to("#project-popup", {
-      opacity: 1,
+      background: "rgba(0, 0, 0, 0.8)",
       duration: 0.5,
       ease: "power2.out",
     });
@@ -47,7 +47,7 @@ export default function ProjectDisplay() {
   return hidden ? null : (
     <div
       id="project-popup"
-      className="fixed inset-0 z-50 flex h-full w-full flex-col gap-5 overflow-y-auto bg-black/80 pt-5 opacity-0"
+      className="fixed inset-0 z-50 flex h-full w-full flex-col gap-5 overflow-y-auto bg-transparent pt-5"
     >
       <Link
         onClick={onClose}

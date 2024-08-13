@@ -45,9 +45,9 @@ export default function Project({ slug }: { slug: string }) {
 
   if (!project)
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="grid h-screen place-items-center">
         <h1 className="h1 text-text-dark">
-          <Frown className="mr-4" />
+          <Frown className="mx-auto" size={96} strokeWidth={1.5} />
           Project not found
         </h1>
       </div>
