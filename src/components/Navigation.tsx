@@ -1,6 +1,6 @@
 import { ArrowRight } from "react-feather";
 import { Button } from "./base/Input";
-import Link from "next/link";
+import Link from "@/components/base/Link";
 
 export default function Nav() {
   return (

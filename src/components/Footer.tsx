@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 
 import { ArrowUpRight } from "react-feather";
-import Link from "next/link";
+import Link from "@/components/base/Link";
 
 export default function Footer() {
   const pathname = usePathname();

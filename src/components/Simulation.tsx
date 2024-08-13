@@ -36,9 +36,9 @@ const engineOptions = {
   },
 };
 
-const SPRING_CONSTANT = 0.05;
+const SPRING_CONSTANT = 0.15;
 const NUM_LINES = 12;
-const PULL_THRESHOLD = 20;
+const PULL_THRESHOLD = 30;
 
 export default function Simulation() {
   const {

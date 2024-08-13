@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 
-import Link from "next/link";
+import Link, { ProjectLink } from "./base/Link";
 
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
@@ -14,25 +14,36 @@ function Preview({
   children,
   link,
   query,
+  projectId,
   ...rest
 }: {
   title: string;
-  link: string;
+  link?: string;
   image: React.ReactNode;
   children: React.ReactNode;
   query?: string;
+  projectId?: string;
 } & React.HTMLAttributes<HTMLAnchorElement>) {
-  return (
-    <Link
-      {...rest}
-      href={link}
-      className="group flex aspect-square w-full flex-col gap-4 rounded-3xl bg-surface px-10 py-8 text-text-dark"
-    >
+  const Content = () => (
+    <>
       <div className="grid w-full flex-grow place-items-center">{image}</div>
       <h3 className="h3 pointer-events-none">
         <MatchedText query={query ?? ""}>{title}</MatchedText>
       </h3>
       {children}
+    </>
+  );
+
+  const className =
+    "group flex aspect-square w-full flex-col gap-4 rounded-3xl bg-surface px-10 py-8 text-text-dark";
+
+  return projectId ? (
+    <ProjectLink id={projectId} className={className} {...rest}>
+      <Content />
+    </ProjectLink>
+  ) : (
+    <Link href={link ?? "/"} className={className} {...rest}>
+      <Content />
     </Link>
   );
 }
@@ -54,7 +65,7 @@ export function ProjectPreview({
     <Preview
       title={title}
       query={query}
-      link={`/projects/${slug}`}
+      projectId={slug}
       image={
         <img
           src={`/projects/${slug}/thumbnail.png`}
