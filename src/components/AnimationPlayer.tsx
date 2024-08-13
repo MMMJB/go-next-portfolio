@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, createContext } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -17,10 +17,19 @@ export default function AnimationPlayer({
   gsap.registerPlugin(ScrollTrigger);
 
   const pathname = usePathname();
+  const params = useSearchParams();
 
   const [v, refresh] = useState(0);
 
   useEffect(() => {
+    if (params.get("p")) {
+      Object.values(document.querySelectorAll("section")).forEach((section) => {
+        gsap.to(section, { y: 0, opacity: 1 });
+      });
+
+      return;
+    }
+
     const ctx = gsap.context(() => {
       (gsap.utils.toArray("section") as HTMLDivElement[]).forEach((section) => {
         gsap.to(section, {
@@ -36,7 +45,7 @@ export default function AnimationPlayer({
     });
 
     return () => ctx.revert();
-  }, [pathname, v]);
+  }, [pathname, params, v]);
 
   return (
     <AnimationContext.Provider value={() => refresh((p) => ++p)}>

@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimationPlayer from "@/components/AnimationPlayer";
+import ProjectDisplay from "@/components/ProjectDisplay";
 import { Suspense } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -58,7 +59,10 @@ export default function RootLayout({
         <Nav />
         <AnimationPlayer>
           <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
-            <Suspense>{children}</Suspense>
+            <Suspense>
+              {children}
+              <ProjectDisplay />
+            </Suspense>
             <Footer />
           </div>
         </AnimationPlayer>

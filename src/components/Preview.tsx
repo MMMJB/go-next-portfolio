@@ -28,6 +28,9 @@ function Preview({
   const className =
     "group flex aspect-square w-full flex-col gap-4 rounded-3xl bg-surface px-10 py-8 text-text-dark";
 
+  // * Can't move content to a separate component because of wonky img caching
+  // * I'm sorry, this hurts me too
+
   return projectId ? (
     <ProjectLink id={projectId} className={className} {...rest}>
       <div className="grid w-full flex-grow place-items-center">{image}</div>
