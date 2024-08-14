@@ -73,7 +73,7 @@ export default function Projects() {
         </div>
       </header>
       {!search ? (
-        <DefaultView sort={sort} />
+        <DefaultView projects={projects} sort={sort} />
       ) : (
         <CardSection title={`Search results (${searchResults.length})`}>
           {searchResults.map((project, i) => (
@@ -91,7 +91,7 @@ export default function Projects() {
   );
 }
 
-function DefaultView({ sort }: { sort: any }) {
+function DefaultView({ projects, sort }: { projects: Project[]; sort: any }) {
   return (
     <CardSection title={`All projects (${projects.length})`}>
       {projects.sort(sort).map((project, i) => (

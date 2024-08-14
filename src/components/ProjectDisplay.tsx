@@ -8,6 +8,7 @@ import Project from "./Project";
 import Link from "./base/Link";
 
 import gsap from "gsap";
+import projects from "@/lib/projects";
 
 export default function ProjectDisplay() {
   const params = useSearchParams();
@@ -59,7 +60,7 @@ export default function ProjectDisplay() {
       </Link>
       <div className="h-max w-full translate-y-20 rounded-tl-4xl bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
-          <Project slug={params.get("p") || ""} />
+          <Project projects={projects} slug={params.get("p") || ""} />
         </div>
       </div>
     </div>

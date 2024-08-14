@@ -7,11 +7,14 @@ declare type Project = {
   status: "complete" | "underway" | "abandoned";
   searchString: string;
   slug: string;
+  gallery: { src: string; blurhash: string }[];
   website?: string;
   github?: string;
   pkg?: string;
   work?: string;
 };
+
+declare type StaticProject = Omit<Project, "searchString" | "slug" | "gallery">;
 
 declare type Work = {
   title: string;

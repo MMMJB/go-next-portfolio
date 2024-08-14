@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 
 import m from "@/lib/metadata";
+import projects from "@/lib/_generated.json";
 
 export const metadata: Metadata = m;
 

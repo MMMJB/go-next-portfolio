@@ -2,8 +2,7 @@ import { Frown, GitHub, Package, ExternalLink } from "react-feather";
 import { ProjectPreview } from "./Preview";
 import Tag from "./Tag";
 import Section from "./base/Section";
-
-import projects from "@/lib/projects";
+import Gallery from "./Gallery";
 
 const statusColors = {
   complete: "bg-green-500",
@@ -40,7 +39,13 @@ function SocialLink({
   );
 }
 
-export default function Project({ slug }: { slug: string }) {
+export default function Project({
+  slug,
+  projects,
+}: {
+  slug: string;
+  projects: Project[];
+}) {
   const project = projects.find((p) => p.slug === slug);
 
   if (!project)
@@ -69,6 +74,7 @@ export default function Project({ slug }: { slug: string }) {
     pkg,
     website,
     status,
+    gallery,
   } = project;
 
   return (
@@ -115,9 +121,7 @@ export default function Project({ slug }: { slug: string }) {
         </section>
         <section className="flex flex-col gap-10 text-text-dark">
           <h2 className="h3">Gallery</h2>
-          <div className="max-h-[628px] w-full overflow-hidden rounded-3xl">
-            <div className="h-[628px] w-full bg-surface" />
-          </div>
+          <Gallery slug={slug} assets={gallery} />
         </section>
       </div>
       <Section title={`Similar projects (${similarProjects.length})`}>
