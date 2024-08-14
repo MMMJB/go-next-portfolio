@@ -45,7 +45,7 @@ async function generateGallery(slug) {
       const blurhash = encode(new Uint8ClampedArray(buffer), 1280, 628, 4, 4);
 
       return {
-        src,
+        src: src.substring(8),
         blurhash,
       };
     }),

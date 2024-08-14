@@ -19,7 +19,7 @@
     "slug": "launched",
     "gallery": [
       {
-        "src": "./public/projects/launched/1.png",
+        "src": "/projects/launched/1.png",
         "blurhash": "U48EVzt700Rj00WB?Hj?~pofE2j]00Rj~qoy"
       }
     ]
@@ -59,6 +59,23 @@
     "github": "https://github.com/MMMJB/Quilli-react",
     "searchString": "quilli vite firebase socket.io reactjs tailwindcss",
     "slug": "quilli",
-    "gallery": []
+    "gallery": [
+      {
+        "src": "/projects/quilli/image 16.png",
+        "blurhash": "UDR{DK~VIV9a?GM|%2nhs-%29t%2o}RPNaxu"
+      },
+      {
+        "src": "/projects/quilli/image 17.png",
+        "blurhash": "U1T9Fi~CI9~W_O4n^P4.8w^+00?b@E9Z-TE2"
+      },
+      {
+        "src": "/projects/quilli/image 18.png",
+        "blurhash": "U2SigP00009F_4%La_xu~qRjD%?bD*%M-;IB"
+      },
+      {
+        "src": "/projects/quilli/image 19.png",
+        "blurhash": "U1TI,axu~pS2^+WBD*t7%LWVIos:ELs:?HIo"
+      }
+    ]
   }
 ]
