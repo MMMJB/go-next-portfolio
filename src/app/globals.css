@@ -10,6 +10,10 @@
   font-family: "Manrope", sans-serif;
 }
 
+html {
+  scrollbar-color: theme("colors.slate.200") white;
+}
+
 a svg {
   width: 1em;
   height: 1em;

@@ -4,7 +4,7 @@ import Link from "@/components/base/Link";
 
 export default function Nav() {
   return (
-    <div className="w-full border-b border-border px-10 py-6">
+    <div className="w-full border-b border-border bg-white px-10 py-6">
       <nav className="mx-auto flex max-w-7xl items-center justify-between">
         <Link href="/">
           <img height="31" src="/logo.png" alt="MJB" />
