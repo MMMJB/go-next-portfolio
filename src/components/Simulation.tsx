@@ -20,7 +20,6 @@ import Comment from "./Comment";
 
 import clamp from "@/utils/clamp";
 import renderWorld from "@/utils/render";
-// import videoToCanvas from "@/utils/video";
 
 const engineOptions = {
   enableSleeping: true,
@@ -180,8 +179,6 @@ export default function Simulation() {
       });
     }
 
-    // const videoFrame = videoToCanvas("/waves.mp4", stringsCanvas);
-
     (function renderFrame() {
       frameId = window.requestAnimationFrame(renderFrame);
 
@@ -200,8 +197,6 @@ export default function Simulation() {
       }
 
       // <--- Custom rendering --->
-
-      // ctx.globalCompositeOperation = "source-over";
 
       ctx.clearRect(0, 0, sw, sh);
 
@@ -263,10 +258,6 @@ export default function Simulation() {
 
         l.vy += (l.baseY - l.py) * SPRING_CONSTANT - l.vy * 0.01;
       }
-
-      // ctx.globalCompositeOperation = "source-atop";
-
-      // videoFrame();
     })();
 
     return () => window.cancelAnimationFrame(frameId);

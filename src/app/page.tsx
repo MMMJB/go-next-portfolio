@@ -46,7 +46,7 @@ export default function Home() {
       </CardSection>
       <CardSection title="Featured projects">
         {featuredProjects.map((project, i) => (
-          <ProjectPreview key={i} {...project} />
+          <ProjectPreview key={i} {...(project as Project)} />
         ))}
         <a
           href="/projects"
