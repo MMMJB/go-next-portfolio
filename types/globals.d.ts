@@ -4,6 +4,7 @@ declare type GalleryImage = {
 };
 
 declare type Project = {
+  _id: string;
   title: string;
   description: string;
   tags: string[];
@@ -13,16 +14,11 @@ declare type Project = {
   searchString: string;
   slug: string;
   gallery: GalleryImage[];
+  similarProjects: string[];
   website?: string;
   github?: string;
   pkg?: string;
   work?: string;
-};
-
-declare type ProjectPreview = {
-  title: string;
-  tags: string[];
-  slug: string;
 };
 
 declare type Work = {
@@ -33,7 +29,7 @@ declare type Work = {
   endDate: string;
   slug: string;
   gallery: GalleryImage[];
-  projects: ProjectPreview[];
+  projects: string[];
   github?: string;
   website?: string;
 };

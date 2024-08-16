@@ -4,6 +4,7 @@
  * Generate a blurhash for each image
  * Generate a slug for each project
  * Generate a search string for each project
+ * Evaluate similar projects from tags
  *
  * Generate work dynamically:
  * Generate a slug for each work
@@ -24,6 +25,27 @@ function generateSlug(title) {
 
 function generateSearchString(project) {
   return `${project.title} ${project.tags.join(" ")}`.toLowerCase();
+}
+
+function projectsToSlugs(projects) {
+  return projects.map((project) => project.slug ?? generateSlug(project.title));
+}
+
+function generateSimilarProjects(projects, project) {
+  const similarProjects = projects.filter(
+    (baseProject) =>
+      baseProject.tags.some((tag) => project.tags.includes(tag)) &&
+      baseProject.title !== project.title,
+  );
+
+  const sortedSimilarProjects = similarProjects.sort((a, b) => {
+    const aTags = a.tags.filter((tag) => project.tags.includes(tag));
+    const bTags = b.tags.filter((tag) => project.tags.includes(tag));
+
+    return bTags.length - aTags.length;
+  });
+
+  return projectsToSlugs(sortedSimilarProjects);
 }
 
 async function generateGallery(slug) {
@@ -70,19 +92,27 @@ async function generateGallery(slug) {
       const slug = generateSlug(project.title);
       const searchString = generateSearchString(project);
       const gallery = await generateGallery(slug);
+      const similarProjects = generateSimilarProjects(baseProjects, project);
 
       return {
+        _id: slug,
         ...project,
         searchString,
         slug,
         gallery,
+        similarProjects,
       };
     }),
   );
 
+  const projectsMap = projects.reduce((acc, project) => {
+    acc[project.slug] = project;
+    return acc;
+  }, {});
+
   fs.writeFileSync(
     "./src/lib/_generated-projects.json",
-    JSON.stringify(projects, null, 2),
+    JSON.stringify(projectsMap, null, 2),
   );
 
   const work = baseWork.map((work) => {
@@ -96,16 +126,17 @@ async function generateGallery(slug) {
       ...work,
       slug,
       gallery,
-      projects: associatedProjects.map((project) => ({
-        title: project.title,
-        tags: project.tags,
-        slug: project.slug,
-      })),
+      projects: projectsToSlugs(associatedProjects),
     };
   });
 
+  const workMap = work.reduce((acc, work) => {
+    acc[work.slug] = work;
+    return acc;
+  }, {});
+
   fs.writeFileSync(
     "./src/lib/_generated-work.json",
-    JSON.stringify(work, null, 2),
+    JSON.stringify(workMap, null, 2),
   );
 })();

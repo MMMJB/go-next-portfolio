@@ -9,6 +9,9 @@ import clamp from "@/utils/clamp";
 import MatchedText from "./MatchedText";
 import Tag from "./Tag";
 
+import projects from "@/lib/projects";
+import work from "@/lib/work";
+
 function Preview({
   title,
   image,
@@ -53,13 +56,13 @@ function Preview({
 }
 
 export function ProjectPreview({
-  title,
   slug,
-  tags,
   query,
-}: Project & {
+}: {
+  slug: string;
   query?: string;
 }) {
+  const { title, tags } = projects[slug];
   const queryRegex = new RegExp(`(${query})`, "gi");
 
   return (
@@ -101,7 +104,9 @@ export function ProjectPreview({
 const imageSize = 252;
 const glareSize = Math.sqrt(2 * imageSize ** 2);
 
-export function WorkPreview({ title, role, startDate, endDate, slug }: Work) {
+export function WorkPreview({ slug }: { slug: string }) {
+  const { title, role, startDate, endDate } = work[slug];
+
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [shineAngle, setShineAngle] = useState(0);
   const [shineOpacity, setShineOpacity] = useState("0");

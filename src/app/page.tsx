@@ -40,13 +40,13 @@ export default function Home() {
         <canvas id="strings" className="h-[320px]" />
       </section>
       <CardSection title="Work">
-        {work.map((job, i) => (
-          <WorkPreview key={i} {...job} />
+        {Object.keys(work).map((slug) => (
+          <WorkPreview key={slug} slug={slug} />
         ))}
       </CardSection>
       <CardSection title="Featured projects">
-        {featuredProjects.map((project, i) => (
-          <ProjectPreview key={i} {...(project as Project)} />
+        {featuredProjects.map((slug) => (
+          <ProjectPreview key={slug} slug={slug} />
         ))}
         <a
           href="/projects"
@@ -58,9 +58,9 @@ export default function Home() {
           </div>
         </a>
       </CardSection>
-      <VisitorsProvider>
+      {/* <VisitorsProvider>
         <Simulation />
-      </VisitorsProvider>
+      </VisitorsProvider> */}
     </>
   );
 }

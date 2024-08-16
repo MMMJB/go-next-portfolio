@@ -7,8 +7,10 @@ import { TextInput, Dropdown } from "@/components/base/Input";
 import { ProjectPreview } from "@/components/Preview";
 import CardSection from "@/components/base/Section";
 
-import projects from "@/lib/projects";
+import defaultProjects from "@/lib/projects";
 import { AnimationContext } from "@/components/AnimationPlayer";
+
+const projects = Object.values(defaultProjects);
 
 export default function Projects() {
   const previousState = useRef("default");
@@ -73,7 +75,7 @@ export default function Projects() {
         </div>
       </header>
       {!search ? (
-        <DefaultView projects={projects} sort={sort} />
+        <DefaultView sort={sort} />
       ) : (
         <CardSection title={`Search results (${searchResults.length})`}>
           {searchResults.map((project, i) => (
@@ -91,7 +93,7 @@ export default function Projects() {
   );
 }
 
-function DefaultView({ projects, sort }: { projects: Project[]; sort: any }) {
+function DefaultView({ sort }: { sort: any }) {
   return (
     <CardSection title={`All projects (${projects.length})`}>
       {projects.sort(sort).map((project, i) => (

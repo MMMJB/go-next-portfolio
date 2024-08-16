@@ -1,22 +1,9 @@
 import { Frown, GitHub, Package, ExternalLink } from "react-feather";
 import { ProjectPreview } from "./Preview";
-import Tag from "./Tag";
 import Section from "./base/Section";
 import Gallery from "./Gallery";
 
-import projects from "@/lib/projects";
-
-const statusColors = {
-  complete: "bg-green-500",
-  underway: "bg-yellow-400",
-  abandoned: "bg-red-500",
-};
-
-const statusText = {
-  complete: "Complete",
-  underway: "In progress",
-  abandoned: "Abandoned",
-};
+import allWork from "@/lib/work";
 
 function SocialLink({
   href,
@@ -41,15 +28,15 @@ function SocialLink({
   );
 }
 
-export default function Project({ slug }: { slug: string }) {
-  const project = projects[slug];
+export default function Work({ slug }: { slug: string }) {
+  const work = allWork[slug];
 
-  if (!project)
+  if (!work)
     return (
       <div className="grid h-screen place-items-center">
         <h1 className="h1 text-text-dark">
           <Frown className="mx-auto" size={96} strokeWidth={1.5} />
-          Project not found
+          Work not found
         </h1>
       </div>
     );
@@ -58,15 +45,13 @@ export default function Project({ slug }: { slug: string }) {
     title,
     startDate,
     endDate,
+    role,
     description,
-    tags,
     github,
-    pkg,
     website,
-    status,
     gallery,
-    similarProjects,
-  } = project;
+    projects,
+  } = work;
 
   return (
     <>
@@ -79,11 +64,6 @@ export default function Project({ slug }: { slug: string }) {
             </p>
           </div>
           <div className="flex flex-col gap-8">
-            <ul className="flex gap-3">
-              {tags.map((tag, i) => (
-                <Tag key={i}>{tag}</Tag>
-              ))}
-            </ul>
             <p className="h3">{description}</p>
             <div className="flex gap-3">
               {github && (
@@ -91,22 +71,11 @@ export default function Project({ slug }: { slug: string }) {
                   <GitHub />
                 </SocialLink>
               )}
-              {pkg && (
-                <SocialLink href={pkg}>
-                  <Package />
-                </SocialLink>
-              )}
               {website && (
                 <SocialLink pill href={website} className="span">
-                  View live deployment <ExternalLink className="text-xs" />
+                  Website <ExternalLink className="text-xs" />
                 </SocialLink>
               )}
-              <SocialLink pill className="span cursor-default gap-3">
-                <div
-                  className={`${statusColors[status]} h-3 w-3 rounded-full`}
-                />
-                {statusText[status]}
-              </SocialLink>
             </div>
           </div>
         </section>
@@ -115,11 +84,11 @@ export default function Project({ slug }: { slug: string }) {
           <Gallery assets={gallery} />
         </section>
       </div>
-      <Section title={`Similar projects (${similarProjects.length})`}>
-        {similarProjects.map((slug) => (
+      <Section title={`Associated projects (${projects.length})`}>
+        {projects.map((slug) => (
           <ProjectPreview key={slug} slug={slug} />
         ))}
-        {!similarProjects.length && (
+        {!projects.length && (
           <p className="p col-span-2 flex flex-col items-center justify-center gap-3 rounded-md border border-border px-10 py-8 text-text-light">
             <Frown />
             No similar projects found.

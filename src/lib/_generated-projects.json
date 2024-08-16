@@ -1,5 +1,6 @@
-[
-  {
+{
+  "launched": {
+    "_id": "launched",
     "title": "Launched",
     "description": "An NPM package to make any website editable. It enables freelance clients to modify their websites with zero codebase access or programming experience necessary.",
     "tags": [
@@ -22,9 +23,19 @@
         "src": "/projects/launched/1.png",
         "blurhash": "U48EVzt700Rj00WB?Hj?~pofE2j]00Rj~qoy"
       }
+    ],
+    "similarProjects": [
+      "quilli",
+      "pagepal",
+      "lexily",
+      "cshs-ai-demo",
+      "github-readme-stats",
+      "bean-counter",
+      "perceptify-app"
     ]
   },
-  {
+  "portfolio": {
+    "_id": "portfolio",
     "title": "Portfolio",
     "description": "My personal website to showcase my projects and experience, built with a NextJS/Tailwind frontend and a Go/Vercel backend.",
     "tags": [
@@ -41,9 +52,18 @@
     "website": "https://mjb.sh",
     "searchString": "portfolio nextjs tailwindcss go mongodb vercel",
     "slug": "portfolio",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "perceptify-app",
+      "quilli",
+      "pagepal",
+      "lexily",
+      "github-readme-stats",
+      "bean-counter"
+    ]
   },
-  {
+  "quilli": {
+    "_id": "quilli",
     "title": "Quilli",
     "description": "A document creation tool made to improve the poetry writing workflow. My introduction to ReactJS and my first fullstack project.",
     "tags": [
@@ -76,9 +96,20 @@
         "src": "/projects/quilli/image 19.png",
         "blurhash": "U1TI,axu~pS2^+WBD*t7%LWVIos:ELs:?HIo"
       }
+    ],
+    "similarProjects": [
+      "bean-counter",
+      "pagepal",
+      "lexily",
+      "launched",
+      "portfolio",
+      "cshs-ai-demo",
+      "theme-palette-generator",
+      "perceptify-app"
     ]
   },
-  {
+  "word-flip": {
+    "_id": "word-flip",
     "title": "Word Flip",
     "description": "A gamepidgeon-inspired word game. My first fullstack project, complete with auth and online play. The website is no longer up, but the chrome extension is.",
     "tags": [
@@ -94,9 +125,13 @@
     "package": "https://chromewebstore.google.com/detail/word-flip-a-word-hunting/plmejbcifcjpekepadkikegiimhgkfka",
     "searchString": "word flip aws oauth javascript css html",
     "slug": "word-flip",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "theme-palette-generator"
+    ]
   },
-  {
+  "pagepal": {
+    "_id": "pagepal",
     "title": "PagePal",
     "description": "A web app that generates quizzes about a book's content. Developed in three days for TechOptimum Hacks 2023, receiving 4th place in the advanced pool.",
     "tags": [
@@ -114,9 +149,20 @@
     "website": "https://devpost.com/software/PagePal",
     "searchString": "pagepal vite reactjs tailwindcss flask openai beautifulsoup",
     "slug": "pagepal",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "lexily",
+      "quilli",
+      "bean-counter",
+      "launched",
+      "portfolio",
+      "cshs-ai-demo",
+      "theme-palette-generator",
+      "perceptify-app"
+    ]
   },
-  {
+  "lexily": {
+    "_id": "lexily",
     "title": "Lexily",
     "description": "A web app that assesses a reading levels through adaptive testing. Developed in five days for DualHacks 2023, receiving 5th place in the advanced pool.",
     "tags": [
@@ -133,9 +179,20 @@
     "website": "https://devpost.com/software/lexily",
     "searchString": "lexily vite reactjs tailwindcss flask openai",
     "slug": "lexily",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "pagepal",
+      "quilli",
+      "bean-counter",
+      "launched",
+      "portfolio",
+      "cshs-ai-demo",
+      "theme-palette-generator",
+      "perceptify-app"
+    ]
   },
-  {
+  "cshs-ai-demo": {
+    "_id": "cshs-ai-demo",
     "title": "CSHS AI Demo",
     "description": "A flappy bird clone controleld by hand gestures. Made in ~2 hours for a computer science event at a local elementary school.",
     "tags": [
@@ -150,9 +207,19 @@
     "website": "https://cshs-central-project.vercel.app/",
     "searchString": "cshs ai demo vite typescript tensorflowjs",
     "slug": "cshs-ai-demo",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "launched",
+      "quilli",
+      "pagepal",
+      "lexily",
+      "bean-counter",
+      "theme-palette-generator",
+      "perceptify-app"
+    ]
   },
-  {
+  "github-readme-stats": {
+    "_id": "github-readme-stats",
     "title": "Github README Stats",
     "description": "A serverless API for dynamically generating github language stats.",
     "tags": [
@@ -167,9 +234,14 @@
     "website": "https://mmmjb.vercel.app/api/generate?type=both&user=MMMJB&theme=dark&exclude=quill&recursive=1&title=",
     "searchString": "github readme stats vercel nodejs express",
     "slug": "github-readme-stats",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "launched",
+      "portfolio"
+    ]
   },
-  {
+  "bean-counter": {
+    "_id": "bean-counter",
     "title": "Bean Counter",
     "description": "A simple webb app for keeping count of day-to-day tasks. Made for my dad, who wanted to track his water intake.",
     "tags": [
@@ -185,9 +257,20 @@
     "website": "https://beancounter.vercel.app",
     "searchString": "bean counter vite firebase reactjs tailwindcss",
     "slug": "bean-counter",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "quilli",
+      "pagepal",
+      "lexily",
+      "launched",
+      "portfolio",
+      "cshs-ai-demo",
+      "theme-palette-generator",
+      "perceptify-app"
+    ]
   },
-  {
+  "theme-palette-generator": {
+    "_id": "theme-palette-generator",
     "title": "Theme Palette Generator",
     "description": "A website that generates a color palette from a theme using the singleton pattern.",
     "tags": [
@@ -202,9 +285,18 @@
     "github": "https://github.com/MMMJB/Theme-Palette",
     "searchString": "theme palette generator vite javascript css html",
     "slug": "theme-palette-generator",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "word-flip",
+      "quilli",
+      "pagepal",
+      "lexily",
+      "cshs-ai-demo",
+      "bean-counter"
+    ]
   },
-  {
+  "perceptify-app": {
+    "_id": "perceptify-app",
     "title": "Perceptify App",
     "description": "A centralized dashboard for Perceptify, featuring auth, data aggregation, and user management.",
     "tags": [
@@ -219,6 +311,15 @@
     "work": "Perceptify",
     "searchString": "perceptify app nextjs tailwindcss supabase typescript",
     "slug": "perceptify-app",
-    "gallery": []
+    "gallery": [],
+    "similarProjects": [
+      "portfolio",
+      "launched",
+      "quilli",
+      "pagepal",
+      "lexily",
+      "cshs-ai-demo",
+      "bean-counter"
+    ]
   }
-]
+}
