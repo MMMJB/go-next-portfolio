@@ -4,13 +4,7 @@ import { useState, useEffect } from "react";
 
 import Image from "next/image";
 
-export default function Gallery({
-  slug,
-  assets,
-}: {
-  slug: string;
-  assets: Project["gallery"];
-}) {
+export default function Gallery({ assets }: { assets: Project["gallery"] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

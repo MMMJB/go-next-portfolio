@@ -60,7 +60,7 @@ export default function ProjectDisplay() {
       </Link>
       <div className="h-max w-full translate-y-20 rounded-tl-4xl bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
-          <Project projects={projects} slug={params.get("p") || ""} />
+          <Project slug={params.get("p") || ""} />
         </div>
       </div>
     </div>

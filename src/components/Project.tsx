@@ -4,6 +4,8 @@ import Tag from "./Tag";
 import Section from "./base/Section";
 import Gallery from "./Gallery";
 
+import projects from "@/lib/projects";
+
 const statusColors = {
   complete: "bg-green-500",
   underway: "bg-yellow-400",
@@ -39,13 +41,7 @@ function SocialLink({
   );
 }
 
-export default function Project({
-  slug,
-  projects,
-}: {
-  slug: string;
-  projects: Project[];
-}) {
+export default function Project({ slug }: { slug: string }) {
   const project = projects.find((p) => p.slug === slug);
 
   if (!project)
@@ -121,7 +117,7 @@ export default function Project({
         </section>
         <section className="flex flex-col gap-10 text-text-dark">
           <h2 className="h3">Gallery</h2>
-          <Gallery slug={slug} assets={gallery} />
+          <Gallery assets={gallery} />
         </section>
       </div>
       <Section title={`Similar projects (${similarProjects.length})`}>
