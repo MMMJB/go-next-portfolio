@@ -78,5 +78,5 @@ func GithubAuthHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Redirect to the frontend with the access token
-	http.Redirect(w, r, fmt.Sprintf("/?access_token=%s", githubAccessToken), http.StatusFound)
+	http.Redirect(w, r, fmt.Sprintf("/feedback/?access_token=%s", githubAccessToken), http.StatusFound)
 }
