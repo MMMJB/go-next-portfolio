@@ -1,4 +1,4 @@
-import { Frown, GitHub, Package, ExternalLink } from "react-feather";
+import { Frown, GitHub, ExternalLink } from "react-feather";
 import { ProjectPreview } from "./Preview";
 import Section from "./base/Section";
 import Gallery from "./Gallery";
@@ -91,7 +91,7 @@ export default function Work({ slug }: { slug: string }) {
         {!projects.length && (
           <p className="p col-span-2 flex flex-col items-center justify-center gap-3 rounded-md border border-border px-10 py-8 text-text-light">
             <Frown />
-            No similar projects found.
+            No associated projects found.
           </p>
         )}
       </Section>
