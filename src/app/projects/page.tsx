@@ -31,8 +31,8 @@ export default function Projects() {
   }, [search]);
 
   function sort(a: Project, b: Project, sortType = sortBy) {
-    const dateA = new Date(a.startDate).valueOf();
-    const dateB = new Date(b.startDate).valueOf();
+    const dateA = new Date(a.endDate).valueOf() ?? Date.now();
+    const dateB = new Date(b.endDate).valueOf() ?? Date.now();
 
     return sortType === "Newest" ? dateB - dateA : dateA - dateB;
   }
