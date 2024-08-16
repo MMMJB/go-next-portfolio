@@ -2,42 +2,99 @@
   {
     "title": "Launched",
     "description": "An NPM package to make any website editable. It enables freelance clients to modify their websites with zero codebase access or programming experience necessary.",
-    "tags": ["ReactJS", "Typescript", "NodeJS", "Rollup"],
+    "tags": [
+      "ReactJS",
+      "Typescript",
+      "NodeJS",
+      "Rollup"
+    ],
     "startDate": "May 2024",
     "endDate": "Present",
     "status": "underway",
     "github": "https://github.com/launchsite-tech/launched",
     "pkg": "https://www.npmjs.com/package/launched",
     "website": "https://launched.tech",
-    "work": "Launch"
+    "work": "Launch",
+    "searchString": "launched reactjs typescript nodejs rollup",
+    "slug": "launched",
+    "gallery": [
+      {
+        "src": "/projects/launched/1.png",
+        "blurhash": "U48EVzt700Rj00WB?Hj?~pofE2j]00Rj~qoy"
+      }
+    ]
   },
   {
     "title": "Portfolio",
     "description": "My personal website to showcase my projects and experience, built with a NextJS/Tailwind frontend and a Go/Vercel backend.",
-    "tags": ["NextJS", "TailwindCSS", "Go", "MongoDB", "Vercel"],
+    "tags": [
+      "NextJS",
+      "TailwindCSS",
+      "Go",
+      "MongoDB",
+      "Vercel"
+    ],
     "startDate": "Jan 2024",
     "endDate": "Sep 2024",
     "status": "underway",
     "github": "https://github.com/MMMJB/go-next-portfolio",
-    "website": "https://mjb.sh"
+    "website": "https://mjb.sh",
+    "searchString": "portfolio nextjs tailwindcss go mongodb vercel",
+    "slug": "portfolio",
+    "gallery": []
   },
   {
     "title": "Quilli",
     "description": "A document creation tool made to improve the poetry writing workflow. My introduction to ReactJS and my first fullstack project.",
-    "tags": ["Vite", "Firebase", "Socket.io", "ReactJS", "TailwindCSS"],
+    "tags": [
+      "Vite",
+      "Firebase",
+      "Socket.io",
+      "ReactJS",
+      "TailwindCSS"
+    ],
     "startDate": "Jul 2023",
     "endDate": "Aug 2023",
     "status": "abandoned",
-    "github": "https://github.com/MMMJB/Quilli-react"
+    "github": "https://github.com/MMMJB/Quilli-react",
+    "searchString": "quilli vite firebase socket.io reactjs tailwindcss",
+    "slug": "quilli",
+    "gallery": [
+      {
+        "src": "/projects/quilli/image 16.png",
+        "blurhash": "UDR{DK~VIV9a?GM|%2nhs-%29t%2o}RPNaxu"
+      },
+      {
+        "src": "/projects/quilli/image 17.png",
+        "blurhash": "U1T9Fi~CI9~W_O4n^P4.8w^+00?b@E9Z-TE2"
+      },
+      {
+        "src": "/projects/quilli/image 18.png",
+        "blurhash": "U2SigP00009F_4%La_xu~qRjD%?bD*%M-;IB"
+      },
+      {
+        "src": "/projects/quilli/image 19.png",
+        "blurhash": "U1TI,axu~pS2^+WBD*t7%LWVIos:ELs:?HIo"
+      }
+    ]
   },
   {
     "title": "Word Flip",
     "description": "A gamepidgeon-inspired word game. My first fullstack project, complete with auth and online play. The website is no longer up, but the chrome extension is.",
-    "tags": ["AWS", "OAuth", "Javascript", "CSS", "HTML"],
+    "tags": [
+      "AWS",
+      "OAuth",
+      "Javascript",
+      "CSS",
+      "HTML"
+    ],
     "startDate": "Aug 2022",
     "endDate": "Oct 2022",
     "status": "complete",
-    "package": "https://chromewebstore.google.com/detail/word-flip-a-word-hunting/plmejbcifcjpekepadkikegiimhgkfka"
+    "package": "https://chromewebstore.google.com/detail/word-flip-a-word-hunting/plmejbcifcjpekepadkikegiimhgkfka",
+    "searchString": "word flip aws oauth javascript css html",
+    "slug": "word-flip",
+    "gallery": []
   },
   {
     "title": "PagePal",
@@ -54,64 +111,114 @@
     "endDate": "Aug 2023",
     "status": "complete",
     "github": "https://github.com/AnSingh1/PagePal",
-    "website": "https://devpost.com/software/PagePal"
+    "website": "https://devpost.com/software/PagePal",
+    "searchString": "pagepal vite reactjs tailwindcss flask openai beautifulsoup",
+    "slug": "pagepal",
+    "gallery": []
   },
   {
     "title": "Lexily",
     "description": "A web app that assesses a reading levels through adaptive testing. Developed in five days for DualHacks 2023, receiving 5th place in the advanced pool.",
-    "tags": ["Vite", "ReactJS", "TailwindCSS", "Flask", "OpenAI"],
+    "tags": [
+      "Vite",
+      "ReactJS",
+      "TailwindCSS",
+      "Flask",
+      "OpenAI"
+    ],
     "startDate": "Aug 2023",
     "endDate": "Aug 2023",
     "status": "complete",
     "github": "https://github.com/AnSingh1/Lexily",
-    "website": "https://devpost.com/software/lexily"
+    "website": "https://devpost.com/software/lexily",
+    "searchString": "lexily vite reactjs tailwindcss flask openai",
+    "slug": "lexily",
+    "gallery": []
   },
   {
     "title": "CSHS AI Demo",
     "description": "A flappy bird clone controleld by hand gestures. Made in ~2 hours for a computer science event at a local elementary school.",
-    "tags": ["Vite", "Typescript", "TensorflowJS"],
+    "tags": [
+      "Vite",
+      "Typescript",
+      "TensorflowJS"
+    ],
     "startDate": "Apr 2024",
     "endDate": "Apr 2024",
     "status": "complete",
     "github": "https://github.com/MMMJB/CSHS-central-project/tree/motion-tracking",
-    "website": "https://cshs-central-project.vercel.app/"
+    "website": "https://cshs-central-project.vercel.app/",
+    "searchString": "cshs ai demo vite typescript tensorflowjs",
+    "slug": "cshs-ai-demo",
+    "gallery": []
   },
   {
     "title": "Github README Stats",
     "description": "A serverless API for dynamically generating github language stats.",
-    "tags": ["Vercel", "NodeJS", "Express"],
+    "tags": [
+      "Vercel",
+      "NodeJS",
+      "Express"
+    ],
     "startDate": "Aug 2023",
     "endDate": "Aug 2023",
     "status": "complete",
     "github": "https://github.com/MMMJB/MMMJB",
-    "website": "https://mmmjb.vercel.app/api/generate?type=both&user=MMMJB&theme=dark&exclude=quill&recursive=1&title="
+    "website": "https://mmmjb.vercel.app/api/generate?type=both&user=MMMJB&theme=dark&exclude=quill&recursive=1&title=",
+    "searchString": "github readme stats vercel nodejs express",
+    "slug": "github-readme-stats",
+    "gallery": []
   },
   {
     "title": "Bean Counter",
     "description": "A simple webb app for keeping count of day-to-day tasks. Made for my dad, who wanted to track his water intake.",
-    "tags": ["Vite", "Firebase", "ReactJS", "TailwindCSS"],
+    "tags": [
+      "Vite",
+      "Firebase",
+      "ReactJS",
+      "TailwindCSS"
+    ],
     "startDate": "Sep 2023",
     "endDate": "Oct 2023",
     "status": "complete",
     "github": "https://github.com/MMMJB/counter",
-    "website": "https://beancounter.vercel.app"
+    "website": "https://beancounter.vercel.app",
+    "searchString": "bean counter vite firebase reactjs tailwindcss",
+    "slug": "bean-counter",
+    "gallery": []
   },
   {
     "title": "Theme Palette Generator",
     "description": "A website that generates a color palette from a theme using the singleton pattern.",
-    "tags": ["Vite", "Javascript", "CSS", "HTML"],
+    "tags": [
+      "Vite",
+      "Javascript",
+      "CSS",
+      "HTML"
+    ],
     "startDate": "Nov 2022",
     "endDate": "Sep 2022",
     "status": "complete",
-    "github": "https://github.com/MMMJB/Theme-Palette"
+    "github": "https://github.com/MMMJB/Theme-Palette",
+    "searchString": "theme palette generator vite javascript css html",
+    "slug": "theme-palette-generator",
+    "gallery": []
   },
   {
     "title": "Perceptify App",
     "description": "A centralized dashboard for Perceptify, featuring auth, data aggregation, and user management.",
-    "tags": ["NextJS", "TailwindCSS", "Supabase", "Typescript"],
+    "tags": [
+      "NextJS",
+      "TailwindCSS",
+      "Supabase",
+      "Typescript"
+    ],
     "startDate": "Sep 2023",
     "endDate": "Dec 2023",
     "status": "abandoned",
-    "work": "Perceptify"
+    "work": "Perceptify",
+    "searchString": "perceptify app nextjs tailwindcss supabase typescript",
+    "slug": "perceptify-app",
+    "gallery": []
   }
 ]

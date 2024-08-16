@@ -1,3 +1,8 @@
+declare type GalleryImage = {
+  src: string;
+  blurhash: string;
+};
+
 declare type Project = {
   title: string;
   description: string;
@@ -7,14 +12,18 @@ declare type Project = {
   status: "complete" | "underway" | "abandoned";
   searchString: string;
   slug: string;
-  gallery: { src: string; blurhash: string }[];
+  gallery: GalleryImage[];
   website?: string;
   github?: string;
   pkg?: string;
   work?: string;
 };
 
-declare type StaticProject = Omit<Project, "searchString" | "slug" | "gallery">;
+declare type ProjectPreview = {
+  title: string;
+  tags: string[];
+  slug: string;
+};
 
 declare type Work = {
   title: string;
@@ -23,6 +32,8 @@ declare type Work = {
   startDate: string;
   endDate: string;
   slug: string;
+  gallery: GalleryImage[];
+  projects: ProjectPreview[];
   github?: string;
   website?: string;
 };

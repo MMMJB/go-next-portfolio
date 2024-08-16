@@ -4,13 +4,19 @@
  * Generate a blurhash for each image
  * Generate a slug for each project
  * Generate a search string for each project
+ *
+ * Generate work dynamically:
+ * Generate a slug for each work
+ * Store all associated projects
+ * Compile gallery images from associated projects
  */
 
 const fs = require("fs");
 const sharp = require("sharp");
-const { encode, decode } = require("blurhash");
+const { encode } = require("blurhash");
 
 const baseProjects = require("./projects.json");
+const baseWork = require("./work.json");
 
 function generateSlug(title) {
   return title.toLowerCase().replace(/\s/g, "-");
@@ -25,6 +31,12 @@ async function generateGallery(slug) {
   const blacklist = ["thumbnail"];
 
   const targetDir = `./public/projects/${slug}`;
+
+  if (!fs.existsSync(targetDir)) {
+    console.warn(`No directory found for project: ${slug}`);
+    return [];
+  }
+
   const allImages = fs.readdirSync(targetDir);
   const images = allImages.filter(
     (src) =>
@@ -69,7 +81,31 @@ async function generateGallery(slug) {
   );
 
   fs.writeFileSync(
-    "./src/lib/_generated.json",
+    "./src/lib/_generated-projects.json",
     JSON.stringify(projects, null, 2),
+  );
+
+  const work = baseWork.map((work) => {
+    const slug = generateSlug(work.title);
+    const associatedProjects = projects.filter(
+      (project) => project.work === work.title,
+    );
+    const gallery = associatedProjects.flatMap((project) => project.gallery);
+
+    return {
+      ...work,
+      slug,
+      gallery,
+      projects: associatedProjects.map((project) => ({
+        title: project.title,
+        tags: project.tags,
+        slug: project.slug,
+      })),
+    };
+  });
+
+  fs.writeFileSync(
+    "./src/lib/_generated-work.json",
+    JSON.stringify(work, null, 2),
   );
 })();
