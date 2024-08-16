@@ -13,11 +13,17 @@ export default function Gallery({ assets }: { assets: Project["gallery"] }) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [index]);
 
   return (
     <div className="w-full overflow-hidden rounded-3xl border border-border">
-      <div role="marquee" className="flex overflow-hidden bg-surface">
+      <div
+        role="marquee"
+        style={{
+          gridTemplateColumns: `repeat(${assets.length}, 100%)`,
+        }}
+        className="grid grid-rows-1 overflow-hidden bg-surface"
+      >
         <div
           role="scroll"
           className="absolute bottom-5 left-1/2 z-50 flex -translate-x-1/2 gap-2 overflow-hidden rounded-full bg-white px-3 py-2 shadow-project-dark"
@@ -37,7 +43,7 @@ export default function Gallery({ assets }: { assets: Project["gallery"] }) {
             alt=""
             width={1280}
             height={628}
-            className="transform transition-transform duration-300"
+            className="w-full transform transition-transform duration-300"
             style={{
               transform: `translateX(${index * -100}%)`,
             }}
