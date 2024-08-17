@@ -8,7 +8,6 @@ import Project from "./Project";
 import Link from "./base/Link";
 
 import gsap from "gsap";
-import projects from "@/lib/projects";
 
 export default function ProjectDisplay() {
   const params = useSearchParams();
@@ -17,9 +16,12 @@ export default function ProjectDisplay() {
   const hidden = !params.get("p");
 
   function onOpen() {
-    document.body.scrollTo({ top: 0, behavior: "smooth" });
     document.body.setAttribute("data-lenis-prevent", "true");
     document.body.style.setProperty("overflow", "hidden");
+
+    document
+      .getElementById("project-popup")
+      ?.scrollTo({ top: 0, behavior: "smooth" });
 
     gsap.to("#project-popup", {
       background: "rgba(0, 0, 0, 0.75)",

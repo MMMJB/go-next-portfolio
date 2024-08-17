@@ -22,7 +22,7 @@ export default function AnimationPlayer({
   const [v, refresh] = useState(0);
 
   useEffect(() => {
-    if (params.get("p")) {
+    if (params.has("p")) {
       Object.values(document.querySelectorAll("section")).forEach((section) => {
         gsap.to(section, { y: 0, opacity: 1 });
       });
