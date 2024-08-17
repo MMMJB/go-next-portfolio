@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import Image from "next/image";
 
-export default function Gallery({ assets }: { assets: Project["gallery"] }) {
+export default function Gallery({ assets }: { assets: GalleryImage[] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -37,13 +37,13 @@ export default function Gallery({ assets }: { assets: Project["gallery"] }) {
           ))}
         </div>
         {assets.map((asset, i) => (
-          <Image
+          <img
             key={i}
             src={asset.src}
             alt=""
             width={1280}
             height={628}
-            className="w-full transform transition-transform duration-300"
+            className="h-[628px] w-[1280px] transform object-cover object-top transition-transform duration-300"
             style={{
               transform: `translateX(${index * -100}%)`,
             }}

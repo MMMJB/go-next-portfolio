@@ -70,17 +70,19 @@ async function generateGallery(slug) {
     images.map(async (image) => {
       const src = `${targetDir}/${image}`;
 
-      const buffer = await sharp(src)
-        .raw()
-        .ensureAlpha()
-        .resize(1280, 628, { fit: "inside" })
-        .toBuffer();
+      // const buffer = await sharp(src)
+      //   .raw()
+      //   .ensureAlpha()
+      //   .resize(1280, 628, { fit: "cover", position: "top" })
 
-      const blurhash = encode(new Uint8ClampedArray(buffer), 1280, 628, 4, 4);
+      //   .toFile(newSrc);
+
+      // const blurhash = encode(new Uint8ClampedArray(buffer), 1280, 628, 4, 4);
 
       return {
         src: src.substring(8),
-        blurhash,
+        // blurhash,
+        blurhash: "null",
       };
     }),
   );
