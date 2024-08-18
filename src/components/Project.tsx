@@ -4,6 +4,8 @@ import Tag from "./Tag";
 import Section from "./base/Section";
 import Gallery from "./Gallery";
 
+import formatDate from "@/utils/formatDate";
+
 import projects from "@/lib/projects";
 
 const statusColors = {
@@ -75,7 +77,7 @@ export default function Project({ slug }: { slug: string }) {
           <div className="flex flex-col gap-4 text-text-dark">
             <h1 className="h1">{title}</h1>
             <p className="h3">
-              {startDate} - {endDate}
+              {formatDate(startDate)} - {formatDate(endDate)}
             </p>
           </div>
           <div className="flex flex-col gap-8">

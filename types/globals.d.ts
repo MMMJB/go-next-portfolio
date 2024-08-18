@@ -8,8 +8,8 @@ declare type Project = {
   title: string;
   description: string;
   tags: string[];
-  startDate: string;
-  endDate: string;
+  startDate: number;
+  endDate: number | "Present";
   status: "complete" | "underway" | "abandoned";
   searchString: string;
   slug: string;
@@ -25,8 +25,8 @@ declare type Work = {
   title: string;
   description: string;
   role: string;
-  startDate: string;
-  endDate: string;
+  startDate: number;
+  endDate: number | "Present";
   slug: string;
   gallery: GalleryImage[];
   projects: string[];

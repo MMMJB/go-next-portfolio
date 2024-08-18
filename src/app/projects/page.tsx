@@ -7,6 +7,8 @@ import { TextInput, Dropdown } from "@/components/base/Input";
 import { ProjectPreview } from "@/components/Preview";
 import CardSection from "@/components/base/Section";
 
+import formatDate from "@/utils/formatDate";
+
 import defaultProjects from "@/lib/projects";
 import { AnimationContext } from "@/components/AnimationPlayer";
 
@@ -31,8 +33,8 @@ export default function Projects() {
   }, [search]);
 
   function sort(a: Project, b: Project, sortType = sortBy) {
-    const dateA = new Date(a.endDate).valueOf() ?? Date.now();
-    const dateB = new Date(b.endDate).valueOf() ?? Date.now();
+    const dateA = formatDate(a.endDate, "number") as number;
+    const dateB = formatDate(b.endDate, "number") as number;
 
     return sortType === "Newest" ? dateB - dateA : dateA - dateB;
   }

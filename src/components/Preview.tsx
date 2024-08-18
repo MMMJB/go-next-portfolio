@@ -3,11 +3,12 @@
 import { useState, useCallback } from "react";
 
 import Link, { ProjectLink } from "./base/Link";
+import MatchedText from "./MatchedText";
+import Tag from "./Tag";
 
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
-import MatchedText from "./MatchedText";
-import Tag from "./Tag";
+import formatDate from "@/utils/formatDate";
 
 import projects from "@/lib/projects";
 import work from "@/lib/work";
@@ -191,7 +192,7 @@ export function WorkPreview({ slug }: { slug: string }) {
       }
     >
       <span className="span pointer-events-none">
-        {role} • {startDate} - {endDate}
+        {role} • {formatDate(startDate)} - {formatDate(endDate)}
       </span>
     </Preview>
   );
