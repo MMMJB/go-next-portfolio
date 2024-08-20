@@ -69,7 +69,7 @@ export function Dropdown({
         <ChevronDown size={16} />
       </button>
       <div
-        className={`absolute left-0 top-full flex w-full flex-col overflow-hidden rounded-md border border-border bg-white transition-all ${isOpen ? "opacity-full translate-y-2" : "translate-y-0 opacity-0"}`}
+        className={`absolute left-0 top-full flex w-full flex-col overflow-hidden rounded-md border border-border bg-white transition-all ${isOpen ? "opacity-full translate-y-2" : "pointer-events-none translate-y-0 opacity-0"}`}
       >
         {options.map((option) => (
           <button
