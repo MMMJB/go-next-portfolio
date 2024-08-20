@@ -59,9 +59,11 @@ function Preview({
 export function ProjectPreview({
   slug,
   query,
+  hidden = false,
 }: {
   slug: string;
   query?: string;
+  hidden?: boolean;
 }) {
   const { title, tags } = projects[slug];
   const queryRegex = new RegExp(`(${query})`, "gi");
@@ -71,6 +73,7 @@ export function ProjectPreview({
       title={title}
       query={query}
       projectId={slug}
+      style={{ display: hidden ? "none" : "flex" }}
       image={
         <img
           src={`/projects/${slug}/thumbnail.png`}

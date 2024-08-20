@@ -1,40 +1,51 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useEffect, useContext, useMemo } from "react";
 
 import { Frown } from "react-feather";
 import { TextInput, Dropdown } from "@/components/base/Input";
 import { ProjectPreview } from "@/components/Preview";
 import CardSection from "@/components/base/Section";
 
-import formatDate from "@/utils/formatDate";
-
 import defaultProjects from "@/lib/projects";
 import { AnimationContext } from "@/components/AnimationPlayer";
 
-const projects = Object.values(defaultProjects);
+const p = Object.values(defaultProjects);
 
 export default function Projects() {
-  const previousState = useRef("default");
-
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState<Project[]>([]);
+  const [state, setState] = useState("default");
+  const [searchResults, setSearchResults] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("Newest");
+
+  const projects = useMemo(() => p.sort(sort), [sort]);
 
   const refresh = useContext(AnimationContext);
 
   useEffect(() => {
-    const state = search ? "search" : "default";
+    const newState = search ? "search" : "default";
 
-    if (previousState.current !== state) {
+    if (state !== newState) {
       refresh();
-      previousState.current = state;
+      setState(newState);
     }
   }, [search]);
 
+  useEffect(() => {
+    if (!search) return;
+
+    setSearchResults(
+      projects
+        .filter((project) =>
+          project.searchString.includes(search.toLowerCase()),
+        )
+        .map((p) => p._id),
+    );
+  }, [projects]);
+
   function sort(a: Project, b: Project, sortType = sortBy) {
-    const dateA = formatDate(a.endDate, "number") as number;
-    const dateB = formatDate(b.endDate, "number") as number;
+    const dateA = a.startDate;
+    const dateB = b.startDate;
 
     return sortType === "Newest" ? dateB - dateA : dateA - dateB;
   }
@@ -57,7 +68,7 @@ export default function Projects() {
                         e.target.value.toLowerCase(),
                       ),
                     )
-                    .sort(sort),
+                    .map((p) => p._id),
                 );
               }}
               placeholder="Search by title, job, or technology..."
@@ -68,7 +79,6 @@ export default function Projects() {
                 if (v === sortBy) return;
 
                 setSortBy(v);
-                setSearchResults(searchResults.sort((a, b) => sort(a, b, v)));
               }}
               options={["Newest", "Oldest"]}
               selected="Newest"
@@ -76,31 +86,28 @@ export default function Projects() {
           </div>
         </div>
       </header>
-      {!search ? (
-        <DefaultView sort={sort} />
-      ) : (
-        <CardSection title={`Search results (${searchResults.length})`}>
-          {searchResults.map((project, i) => (
-            <ProjectPreview query={search} key={i} {...project} />
-          ))}
-          {!searchResults.length && (
-            <p className="p col-span-2 flex flex-col items-center justify-center gap-3 rounded-md border border-border px-10 py-8 text-text-light">
-              <Frown />
-              No results found for &ldquo;{search}&rdquo;.
-            </p>
-          )}
-        </CardSection>
-      )}
+      <CardSection
+        title={
+          state === "default"
+            ? `All projects (${projects.length})`
+            : `Search results (${searchResults.length})`
+        }
+      >
+        {projects.map(({ _id, ...rest }) => (
+          <ProjectPreview
+            hidden={state === "search" && !searchResults.includes(_id)}
+            query={search}
+            key={_id}
+            {...rest}
+          />
+        ))}
+        {search && !searchResults.length && (
+          <p className="p col-span-2 flex flex-col items-center justify-center gap-3 rounded-md border border-border px-10 py-8 text-text-light">
+            <Frown />
+            No results found for &ldquo;{search}&rdquo;.
+          </p>
+        )}
+      </CardSection>
     </>
-  );
-}
-
-function DefaultView({ sort }: { sort: any }) {
-  return (
-    <CardSection title={`All projects (${projects.length})`}>
-      {projects.sort(sort).map((project, i) => (
-        <ProjectPreview key={i} {...project} />
-      ))}
-    </CardSection>
   );
 }
