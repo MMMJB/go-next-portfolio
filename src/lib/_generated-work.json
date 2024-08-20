@@ -15,7 +15,13 @@
       }
     ],
     "projects": [
-      "launched"
+      "launched",
+      "launched-docs",
+      "launch-website",
+      "launch-dashboard",
+      "the-world-debates",
+      "central-valley-endocrinology",
+      "blank-page"
     ]
   },
   "codin": {
@@ -28,7 +34,9 @@
     "website": "https://codin.app",
     "slug": "codin",
     "gallery": [],
-    "projects": []
+    "projects": [
+      "codin-frontend"
+    ]
   },
   "perceptify": {
     "title": "Perceptify",
@@ -40,7 +48,8 @@
     "slug": "perceptify",
     "gallery": [],
     "projects": [
-      "perceptify-app"
+      "perceptify-app",
+      "perceptify-website"
     ]
   },
   "code-connect": {
@@ -53,6 +62,8 @@
     "website": "https://code-connect.org",
     "slug": "code-connect",
     "gallery": [],
-    "projects": []
+    "projects": [
+      "code-connect-website"
+    ]
   }
 }
