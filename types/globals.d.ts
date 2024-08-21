@@ -25,8 +25,10 @@ declare type Work = {
   title: string;
   description: string;
   role: string;
-  startDate: number;
-  endDate: number | "Present";
+  // startDate: number;
+  // endDate: number | "Present";
+  startDate: string;
+  endDate: string;
   slug: string;
   gallery: GalleryImage[];
   projects: string[];

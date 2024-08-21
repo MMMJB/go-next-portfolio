@@ -5,6 +5,7 @@ import { useState, useCallback } from "react";
 import Link, { ProjectLink } from "./base/Link";
 import MatchedText from "./MatchedText";
 import Tag from "./Tag";
+import Image from "next/image";
 
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
@@ -75,7 +76,7 @@ export function ProjectPreview({
       projectId={slug}
       style={{ display: hidden ? "none" : "flex" }}
       image={
-        <img
+        <Image
           src={`/projects/${slug}/_thumbnail.png`}
           alt={title}
           width={466}
@@ -195,7 +196,7 @@ export function WorkPreview({ slug }: { slug: string }) {
       }
     >
       <span className="span pointer-events-none">
-        {role} • {formatDate(startDate)} - {formatDate(endDate)}
+        {role} • {startDate} - {endDate}
       </span>
     </Preview>
   );
