@@ -1,10 +1,11 @@
 /*
  * Generate projects dynamically:
  * Store all associated gallery images
- * Generate a blurhash for each image
+ ! Generate a blurhash for each image
  * Generate a slug for each project
  * Generate a search string for each project
  * Evaluate similar projects from tags
+ * Resize thumbnail image to 466x298
  *
  * Generate work dynamically:
  * Generate a slug for each work
@@ -88,6 +89,31 @@ async function generateGallery(slug) {
   );
 }
 
+async function resizeThumbnail(slug) {
+  const targetDir = `./public/projects/${slug}`;
+
+  if (!fs.existsSync(targetDir)) {
+    console.warn(`No directory found for project: ${slug}`);
+    return;
+  }
+
+  const thumbnailSrc = `${targetDir}/thumbnail.png`;
+  const newSrc = `${targetDir}/_thumbnail.png`;
+
+  await sharp(thumbnailSrc)
+    .resize(466, 298, {
+      fit: "contain",
+      position: "top",
+    })
+    .convolve({
+      width: 3,
+      height: 3,
+      kernel: [0.0, -0.125, 0.0, -0.125, 1.5, -0.125, 0.0, -0.125, 0.0],
+    })
+    .png({ quality: 100 })
+    .toFile(newSrc);
+}
+
 (async function () {
   const projects = await Promise.all(
     baseProjects.map(async (project) => {
@@ -95,6 +121,8 @@ async function generateGallery(slug) {
       const searchString = generateSearchString(project);
       const gallery = await generateGallery(slug);
       const similarProjects = generateSimilarProjects(baseProjects, project);
+
+      await resizeThumbnail(slug);
 
       return {
         _id: slug,

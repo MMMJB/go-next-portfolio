@@ -76,7 +76,7 @@ export function ProjectPreview({
       style={{ display: hidden ? "none" : "flex" }}
       image={
         <img
-          src={`/projects/${slug}/thumbnail.png`}
+          src={`/projects/${slug}/_thumbnail.png`}
           alt={title}
           width={466}
           height={298}
