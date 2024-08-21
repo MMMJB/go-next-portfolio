@@ -41,5 +41,5 @@ next-env.d.ts
 .env*.local
 .vercel
 
-_*
-public/projects/*
+_generated*
+public/projects/**/thumbnail.png
