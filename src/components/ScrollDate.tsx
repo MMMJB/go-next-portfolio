@@ -10,62 +10,26 @@ const longDate = {
 
 const topOffset = 80;
 
-type SelectedProject = { _id: string; startDate: number; endDate: number };
-
 export default function ScrollDate({
   startDate,
   endDate,
   duration,
   container,
   height,
-  projects,
 }: {
   startDate: number;
   endDate: number;
   duration: number;
   container: string;
   height: number;
-  projects: { startDate: number; endDate: number; _id: string }[];
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const currentMonth = useRef(new Date(startDate).getMonth());
 
   const [date, setDate] = useState(startDate);
-  const [selectedProjects, setSelectedProjects] = useState<SelectedProject[]>(
-    [],
-  );
   const dateString = useMemo(
     () => new Date(date).toLocaleDateString(undefined, longDate),
     [date],
   );
-
-  const projectsByMonth = useMemo(() => {
-    // year: month: projects
-    const pbm: Record<number, Record<number, SelectedProject[]>> = {};
-
-    projects.forEach(({ startDate, endDate, _id }) => {
-      const start = new Date(startDate),
-        end = new Date(endDate);
-      const startMonth = start.getMonth(),
-        endMonth = end.getMonth();
-      const startYear = start.getFullYear(),
-        endYear = end.getFullYear();
-
-      for (let year = startYear; year <= endYear; year++) {
-        const monthStart = year === startYear ? startMonth : 0;
-        const monthEnd = year === endYear ? endMonth : 11;
-
-        for (let month = monthStart; month <= monthEnd; month++) {
-          if (!pbm[year]) pbm[year] = {};
-          if (!pbm[year][month]) pbm[year][month] = [];
-
-          pbm[year][month].push({ _id, startDate, endDate });
-        }
-      }
-    });
-
-    return pbm;
-  }, [projects]);
 
   function onScroll() {
     if (!containerRef.current) return;
@@ -78,15 +42,6 @@ export default function ScrollDate({
     const date = Math.min(startDate + progress * duration, endDate);
 
     setDate(date);
-
-    const dateDate = new Date(date);
-    const month = dateDate.getMonth(),
-      year = dateDate.getFullYear();
-
-    if (month !== currentMonth.current) {
-      setSelectedProjects(projectsByMonth[year][month] || []);
-      currentMonth.current = month;
-    }
   }
 
   useEffect(() => {
@@ -106,11 +61,6 @@ export default function ScrollDate({
       style={{ top: `${topOffset}px` }}
     >
       <span className="-translate-y-1/2">{dateString} -</span>
-      {selectedProjects
-        .filter((p) => p.startDate <= date && p.endDate >= date)
-        .map(({ _id }) => (
-          <span key={_id}>{_id}</span>
-        ))}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import formatDate from "@/utils/formatDate";
 
 import projects from "@/lib/projects";
 import ScrollDate, { DateRuler } from "@/components/ScrollDate";
+import Timeline from "@/components/Timeline";
 
 const projectsList = Object.values(projects).map((p) => ({
   ...p,
@@ -31,26 +32,13 @@ export default function Journey() {
         height: `${segmentSize}px`,
       }}
     >
-      <div className="relative flex h-full w-max gap-1.5">
-        {progressList.map(({ startProgress, duration, _id }, i) => (
-          <div
-            key={_id}
-            className="relative w-6"
-            style={{
-              top: `${startProgress * segmentSize}px`,
-              height: `${duration * segmentSize}px`,
-              background: `hsl(${250 - i * 3}, 100%, 60%)`,
-            }}
-          />
-        ))}
-      </div>
+      <Timeline segmentSize={segmentSize} progressList={progressList} />
       <ScrollDate
         startDate={min}
         endDate={max}
         duration={max - min}
         container="journey"
         height={segmentSize}
-        projects={projectsList}
       />
       <DateRuler height={segmentSize} startDate={min} endDate={max} />
     </div>
