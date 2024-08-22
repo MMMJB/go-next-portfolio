@@ -8,7 +8,7 @@ const longDate = {
   year: "numeric",
 } as const;
 
-const topOffset = 80;
+const topOffset = 300;
 
 export default function ScrollDate({
   startDate,

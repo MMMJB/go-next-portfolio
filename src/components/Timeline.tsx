@@ -17,12 +17,11 @@ export default function Timeline({
   gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
-    // When a project with _id is 80px from the top of the viewport, move the preview element to the bottom of the project with scrub: true
     progressList.forEach(({ duration, _id }) => {
       gsap.to(`#${_id} > .preview`, {
         scrollTrigger: {
           trigger: `#${_id}`,
-          start: "top 80px",
+          start: "top 300px",
           end: `+=${duration * segmentSize}`,
           scrub: true,
         },
@@ -33,7 +32,7 @@ export default function Timeline({
       gsap.to(`#${_id} > .preview`, {
         scrollTrigger: {
           trigger: `#${_id}`,
-          start: "top 80px",
+          start: "top 300px",
           end: `+=${duration * segmentSize}`,
           toggleActions: "play reverse play reverse",
         },
