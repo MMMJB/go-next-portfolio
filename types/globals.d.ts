@@ -39,7 +39,7 @@ declare type Work = {
 declare type Visitor = {
   _id: number;
   avatar: string;
-  avatarImage?: HTMLImageElement;
+  avatarImage?: string;
   name: string;
   message: string;
   email: string;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useVisitors } from "@/contexts/visitorContext";
 import Matter, {
   Bodies,
   Body,
@@ -39,12 +38,7 @@ const engineOptions = {
 // const NUM_LINES = 12;
 // const PULL_THRESHOLD = 30;
 
-export default function Simulation() {
-  const {
-    dimensions: { width: w, height: h },
-    visitors,
-  } = useVisitors();
-
+export default function Simulation({ visitors }: { visitors: Visitor[] }) {
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create(engineOptions));
   const render = useRef<Render | null>(null);
@@ -52,8 +46,20 @@ export default function Simulation() {
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const [hovered, setHovered] = useState<Body | null>(null);
+  const [dimensions, setDimensions] = useState({
+    w: window.innerWidth,
+    h: document.documentElement.scrollHeight,
+  });
+
+  function onResize() {
+    setDimensions({
+      w: window.innerWidth,
+      h: document.documentElement.scrollHeight,
+    });
+  }
 
   function addBounds() {
+    const { w, h } = dimensions;
     if (!w || !h) return;
 
     const left = Bodies.rectangle(-10, h / 2, 20, h, { isStatic: true });
@@ -79,7 +85,7 @@ export default function Simulation() {
         {
           isStatic: true,
           render: {
-            fillStyle: "red",
+            fillStyle: "transparent",
           },
           chamfer: {
             radius: borderRadius,
@@ -101,6 +107,7 @@ export default function Simulation() {
 
   useEffect(() => {
     if (!scene.current) return;
+    const { w, h } = dimensions;
 
     render.current = Render.create({
       engine: engine.current,
@@ -114,10 +121,10 @@ export default function Simulation() {
       },
     });
 
-    render.current.textures = visitors.reduce(
-      (a, c) => ((a[c.avatar] = c.avatarImage!), a),
-      {} as Record<string, HTMLImageElement>,
-    );
+    // render.current.textures = visitors.reduce(
+    //   (a, c) => ((a[c.avatar] = c.avatarImage!), a),
+    //   {} as Record<string, ImageBitmap>,
+    // );
 
     // Runner.run(engine.current);
 
@@ -259,10 +266,11 @@ export default function Simulation() {
     })();
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [w, h]);
+  }, [dimensions]);
 
   useEffect(() => {
-    if (!render.current || !w || !h) return;
+    if (!render.current) return;
+    const { w, h } = dimensions;
 
     render.current.bounds.max.x = w;
     render.current.bounds.max.y = h;
@@ -276,7 +284,7 @@ export default function Simulation() {
     removeBalls();
     addBounds();
     addBalls();
-  }, [w, h]);
+  }, [dimensions]);
 
   function afterEngineUpdate() {
     if (!balls.current || hovered) return;
@@ -291,6 +299,7 @@ export default function Simulation() {
 
   function addBalls() {
     if (!scene.current) return;
+    const { w, h } = dimensions;
 
     const numBalls = visitors.length;
 
@@ -349,8 +358,12 @@ export default function Simulation() {
 
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("resize", onResize);
 
-    return () => window.removeEventListener("mousemove", onMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   return (
@@ -358,14 +371,15 @@ export default function Simulation() {
       <canvas
         ref={scene}
         className="pointer-events-none absolute inset-0 -z-10"
-        width={w}
-        height={h}
+        width={dimensions.w}
+        height={dimensions.h}
       />
       {hovered && (
         <Comment
           author={visitors[parseInt(hovered.label)].name}
           index={parseInt(hovered.label) + 1}
           position={mouse.current}
+          dimensions={dimensions}
         >
           {visitors[parseInt(hovered.label)].message}
         </Comment>

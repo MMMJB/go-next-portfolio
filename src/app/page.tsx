@@ -1,8 +1,7 @@
 import Social from "@/components/Social";
 import { Linkedin, Instagram, GitHub, Mail, ArrowUpRight } from "react-feather";
 import { ProjectPreview, WorkPreview } from "@/components/Preview";
-import { VisitorsProvider } from "@/contexts/visitorContext";
-import Simulation from "@/components/Simulation";
+import SimulationProvider from "@/components/SimulationProvider";
 import CardSection from "@/components/base/Section";
 
 import { featuredProjects } from "@/lib/projects";
@@ -58,9 +57,7 @@ export default function Home() {
           </div>
         </a>
       </CardSection>
-      <VisitorsProvider>
-        <Simulation />
-      </VisitorsProvider>
+      <SimulationProvider />
     </>
   );
 }

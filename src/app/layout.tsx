@@ -6,6 +6,7 @@ import AnimationPlayer from "@/components/AnimationPlayer";
 import ProjectDisplay from "@/components/ProjectDisplay";
 import { Suspense } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Loading from "@/components/Loading";
 
 import type { Metadata } from "next";
 
@@ -57,7 +58,7 @@ export default function RootLayout({
       </head>
       <body className="overflow-x-hidden text-text-light">
         <Nav />
-        <Suspense>
+        <Suspense fallback={<Loading />}>
           <AnimationPlayer>
             <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
               {children}

@@ -1,29 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useVisitors } from "@/contexts/visitorContext";
 
 export default function Comment({
   children,
   author,
   index,
   position,
+  dimensions,
 }: {
   children: React.ReactNode;
   index: number;
   author: string;
   position: { x: number; y: number };
+  dimensions: { w: number; h: number };
 }) {
-  const {
-    dimensions: { width: w },
-  } = useVisitors();
-
   const [mouse, setMouse] = useState({
     x: position.x,
     y: position.y - window.scrollY,
   });
 
-  const orientationX = position.x > w / 2 ? "right" : "left";
+  const orientationX = position.x > dimensions.w / 2 ? "right" : "left";
 
   function onMouseMove(e: MouseEvent) {
     setMouse({ x: e.clientX, y: e.clientY });

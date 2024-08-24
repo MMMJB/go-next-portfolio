@@ -16,7 +16,7 @@ export default function Feedback() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [loadingState, setLoadingState] = useState<
-    "authenticating" | "sending" | false
+    "authenticating" | "processing" | false
   >(false);
 
   function authorize(e: React.FormEvent<HTMLFormElement>) {
@@ -78,7 +78,7 @@ export default function Feedback() {
       setMessage(message);
 
       if (token) {
-        setLoadingState("sending");
+        setLoadingState("processing");
 
         getUserData(token).then((user) => addVisitor(name, message, user));
       }
@@ -135,8 +135,8 @@ export default function Feedback() {
           <Button type="submit" theme="dark" disabled={!!loadingState}>
             {loadingState === "authenticating" ? (
               "Authenticating..."
-            ) : loadingState === "sending" ? (
-              "Sending..."
+            ) : loadingState === "processing" ? (
+              "Processing..."
             ) : (
               <>
                 <GitHub size={16} />
