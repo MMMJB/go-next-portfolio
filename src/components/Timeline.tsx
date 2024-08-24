@@ -39,8 +39,7 @@ export default function Timeline({
         opacity: 1,
         right: -12,
         pointerEvents: "all",
-        ease: "power3.inOut",
-        duration: 0.3,
+        duration: 0.2,
       });
     });
   }, []);

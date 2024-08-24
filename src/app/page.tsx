@@ -58,9 +58,9 @@ export default function Home() {
           </div>
         </a>
       </CardSection>
-      {/* <VisitorsProvider>
+      <VisitorsProvider>
         <Simulation />
-      </VisitorsProvider> */}
+      </VisitorsProvider>
     </>
   );
 }

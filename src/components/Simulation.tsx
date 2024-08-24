@@ -35,17 +35,15 @@ const engineOptions = {
   },
 };
 
-const SPRING_CONSTANT = 0.15;
-const NUM_LINES = 12;
-const PULL_THRESHOLD = 30;
+// const SPRING_CONSTANT = 0.15;
+// const NUM_LINES = 12;
+// const PULL_THRESHOLD = 30;
 
 export default function Simulation() {
   const {
     dimensions: { width: w, height: h },
-    visitors: v,
+    visitors,
   } = useVisitors();
-  const visitors = v.concat(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v);
-  // const visitors: Visitor[] = [];
 
   const scene = useRef<HTMLCanvasElement | null>(null);
   const engine = useRef(Engine.create(engineOptions));
@@ -110,7 +108,7 @@ export default function Simulation() {
       options: {
         width: w,
         height: h,
-        wireframes: true,
+        wireframes: false,
         background: "transparent",
         showSleeping: true,
       },
@@ -133,51 +131,51 @@ export default function Simulation() {
   }, []);
 
   useEffect(() => {
-    const stringsCanvas = document.getElementById(
-      "strings",
-    ) as HTMLCanvasElement;
-    const {
-      width,
-      height,
-      x,
-      y: screenY,
-    } = stringsCanvas.getBoundingClientRect();
-    const y = screenY + window.scrollY;
+    // const stringsCanvas = document.getElementById(
+    //   "strings",
+    // ) as HTMLCanvasElement;
+    // const {
+    //   width,
+    //   height,
+    //   x,
+    //   y: screenY,
+    // } = stringsCanvas.getBoundingClientRect();
+    // const y = screenY + window.scrollY;
 
-    const pixelRatio = window.devicePixelRatio;
-    stringsCanvas.width = width * pixelRatio;
-    stringsCanvas.height = height * pixelRatio;
-    stringsCanvas.style.width = `${width}px`;
-    stringsCanvas.style.height = `${height}px`;
+    // const pixelRatio = window.devicePixelRatio;
+    // stringsCanvas.width = width * pixelRatio;
+    // stringsCanvas.height = height * pixelRatio;
+    // stringsCanvas.style.width = `${width}px`;
+    // stringsCanvas.style.height = `${height}px`;
 
-    const ctx = stringsCanvas.getContext("2d")!;
-    const sw = stringsCanvas.width,
-      sh = stringsCanvas.height;
+    // const ctx = stringsCanvas.getContext("2d")!;
+    // const sw = stringsCanvas.width,
+    //   sh = stringsCanvas.height;
 
     let frameId: number,
       lastTime = 0,
       lastMouseCheck = 0;
 
-    const lines: {
-      py: number;
-      vy: number;
-      dragging: boolean;
-      direction: number;
-      prevDistance: number;
-      baseY: number;
-    }[] = [];
-    for (let i = 0; i < NUM_LINES; i++) {
-      const baseY = sh / NUM_LINES / 2 + (sh / NUM_LINES) * i;
+    // const lines: {
+    //   py: number;
+    //   vy: number;
+    //   dragging: boolean;
+    //   direction: number;
+    //   prevDistance: number;
+    //   baseY: number;
+    // }[] = [];
+    // for (let i = 0; i < NUM_LINES; i++) {
+    //   const baseY = sh / NUM_LINES / 2 + (sh / NUM_LINES) * i;
 
-      lines.push({
-        py: baseY,
-        vy: 0,
-        dragging: false,
-        direction: 1,
-        prevDistance: 0,
-        baseY,
-      });
-    }
+    //   lines.push({
+    //     py: baseY,
+    //     vy: 0,
+    //     dragging: false,
+    //     direction: 1,
+    //     prevDistance: 0,
+    //     baseY,
+    //   });
+    // }
 
     (function renderFrame() {
       frameId = window.requestAnimationFrame(renderFrame);
@@ -198,66 +196,66 @@ export default function Simulation() {
 
       // <--- Custom rendering --->
 
-      ctx.clearRect(0, 0, sw, sh);
+      // ctx.clearRect(0, 0, sw, sh);
 
-      const mouseX = (mouse.current.x - x) * pixelRatio;
-      const mouseY = (mouse.current.y - y) * pixelRatio;
+      // const mouseX = (mouse.current.x - x) * pixelRatio;
+      // const mouseY = (mouse.current.y - y) * pixelRatio;
 
-      // ctx.beginPath();
-      // ctx.arc(mouseX, mouseY, 5, 0, TWO_PI);
-      // ctx.stroke();
+      // // ctx.beginPath();
+      // // ctx.arc(mouseX, mouseY, 5, 0, TWO_PI);
+      // // ctx.stroke();
 
-      for (let i = 0; i < NUM_LINES; i++) {
-        ctx.strokeStyle = "red";
+      // for (let i = 0; i < NUM_LINES; i++) {
+      //   ctx.strokeStyle = "red";
 
-        const l = lines[i];
+      //   const l = lines[i];
 
-        const mouseDistanceToCenter = mouseY - l.baseY;
-        const withinXRange = mouseX > 0 && mouseX < sw;
+      //   const mouseDistanceToCenter = mouseY - l.baseY;
+      //   const withinXRange = mouseX > 0 && mouseX < sw;
 
-        if (
-          !l.dragging &&
-          Math.abs(mouseDistanceToCenter) < PULL_THRESHOLD &&
-          withinXRange
-        ) {
-          l.direction = l.prevDistance < mouseDistanceToCenter ? 1 : -1;
-          l.dragging = true;
-        } else if (
-          l.dragging &&
-          (Math.abs(mouseDistanceToCenter) > PULL_THRESHOLD || !withinXRange)
-        ) {
-          l.dragging = false;
+      //   if (
+      //     !l.dragging &&
+      //     Math.abs(mouseDistanceToCenter) < PULL_THRESHOLD &&
+      //     withinXRange
+      //   ) {
+      //     l.direction = l.prevDistance < mouseDistanceToCenter ? 1 : -1;
+      //     l.dragging = true;
+      //   } else if (
+      //     l.dragging &&
+      //     (Math.abs(mouseDistanceToCenter) > PULL_THRESHOLD || !withinXRange)
+      //   ) {
+      //     l.dragging = false;
 
-          l.py = l.baseY + mouseDistanceToCenter;
-        }
+      //     l.py = l.baseY + mouseDistanceToCenter;
+      //   }
 
-        l.py += l.vy;
+      //   l.py += l.vy;
 
-        if (balls.current) {
-          const collisions = Query.ray(
-            balls.current.bodies,
-            { x, y: y + l.py },
-            { x: x + sw, y: y + l.py },
-          );
-          if (collisions.length) ctx.strokeStyle = "blue";
-        }
+      //   if (balls.current) {
+      //     const collisions = Query.ray(
+      //       balls.current.bodies,
+      //       { x, y: y + l.py },
+      //       { x: x + sw, y: y + l.py },
+      //     );
+      //     if (collisions.length) ctx.strokeStyle = "blue";
+      //   }
 
-        ctx.moveTo(0, l.baseY);
-        ctx.beginPath();
-        ctx.bezierCurveTo(
-          0,
-          l.baseY,
-          mouseX,
-          l.dragging ? mouseY + PULL_THRESHOLD * l.direction : l.py,
-          sw,
-          l.baseY,
-        );
-        ctx.stroke();
+      //   ctx.moveTo(0, l.baseY);
+      //   ctx.beginPath();
+      //   ctx.bezierCurveTo(
+      //     0,
+      //     l.baseY,
+      //     mouseX,
+      //     l.dragging ? mouseY + PULL_THRESHOLD * l.direction : l.py,
+      //     sw,
+      //     l.baseY,
+      //   );
+      //   ctx.stroke();
 
-        l.prevDistance = mouseDistanceToCenter;
+      //   l.prevDistance = mouseDistanceToCenter;
 
-        l.vy += (l.baseY - l.py) * SPRING_CONSTANT - l.vy * 0.01;
-      }
+      //   l.vy += (l.baseY - l.py) * SPRING_CONSTANT - l.vy * 0.01;
+      // }
     })();
 
     return () => window.cancelAnimationFrame(frameId);
