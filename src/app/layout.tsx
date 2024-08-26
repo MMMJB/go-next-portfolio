@@ -4,9 +4,9 @@ import Nav from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimationPlayer from "@/components/AnimationPlayer";
 import ProjectDisplay from "@/components/ProjectDisplay";
+import Loading from "@/components/Loading";
 import { Suspense } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Loading from "@/components/Loading";
 
 import type { Metadata } from "next";
 
@@ -59,13 +59,13 @@ export default function RootLayout({
       <body className="overflow-x-hidden text-text-light">
         <Nav />
         <Suspense fallback={<Loading />}>
-          <AnimationPlayer>
-            <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
-              {children}
-              <ProjectDisplay />
-              <Footer />
-            </div>
-          </AnimationPlayer>
+          {/* <AnimationPlayer> */}
+          <div className="mx-auto flex max-w-7xl flex-col gap-[120px] pb-10 pt-20">
+            {children}
+            <ProjectDisplay />
+            <Footer />
+          </div>
+          {/* </AnimationPlayer> */}
         </Suspense>
         <SpeedInsights />
       </body>

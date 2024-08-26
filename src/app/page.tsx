@@ -49,7 +49,7 @@ export default function Home() {
         ))}
         <a
           href="/projects"
-          className="h3 flex aspect-square w-full flex-col items-center justify-center gap-4 rounded-3xl border border-border text-text-dark"
+          className="h3 flex aspect-square w-full flex-col items-center justify-center gap-4 rounded-3xl border border-border bg-white text-text-dark"
         >
           See all projects
           <div className="grid h-12 w-12 place-items-center rounded-full bg-text-dark text-2xl text-white">

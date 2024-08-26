@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import Matter, {
   Bodies,
   Body,
@@ -105,7 +105,7 @@ export default function Simulation({ visitors }: { visitors: Visitor[] }) {
     World.remove(engine.current.world, bodiesToRemove);
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!scene.current) return;
     const { w, h } = dimensions;
 
@@ -137,7 +137,7 @@ export default function Simulation({ visitors }: { visitors: Visitor[] }) {
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // const stringsCanvas = document.getElementById(
     //   "strings",
     // ) as HTMLCanvasElement;
@@ -268,7 +268,7 @@ export default function Simulation({ visitors }: { visitors: Visitor[] }) {
     return () => window.cancelAnimationFrame(frameId);
   }, [dimensions]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!render.current) return;
     const { w, h } = dimensions;
 

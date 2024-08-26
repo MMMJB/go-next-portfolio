@@ -8,6 +8,12 @@
 *::before,
 *::after {
   font-family: "Manrope", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+html {
+  height: 100%;
 }
 
 html {
@@ -28,7 +34,7 @@ input {
 }
 
 @layer components {
-  section {
+  section.cards {
     opacity: 0;
     transform: translateY(50px);
   }

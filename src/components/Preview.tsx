@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 import Link, { ProjectLink } from "./base/Link";
 import MatchedText from "./MatchedText";
@@ -9,7 +9,6 @@ import Image from "next/image";
 
 import throttle from "@/utils/throttle";
 import clamp from "@/utils/clamp";
-import formatDate from "@/utils/formatDate";
 
 import projects from "@/lib/projects";
 import work from "@/lib/work";
@@ -69,6 +68,18 @@ export function ProjectPreview({
   const { title, tags } = projects[slug];
   const queryRegex = new RegExp(`(${query})`, "gi");
 
+  const selectedTags = useMemo(() => {
+    let t = tags;
+    if (query)
+      t = tags.sort(
+        (a, b) =>
+          (b.match(queryRegex)?.length ?? 0) -
+          (a.match(queryRegex)?.length ?? 0),
+      );
+
+    return t.slice(0, 3);
+  }, [query, tags]);
+
   return (
     <Preview
       title={title}
@@ -89,18 +100,11 @@ export function ProjectPreview({
       }
     >
       <ul className="span flex items-center gap-3">
-        {tags
-          .sort(
-            (a, b) =>
-              (b.match(queryRegex)?.length ?? 0) -
-              (a.match(queryRegex)?.length ?? 0),
-          )
-          .slice(0, 3)
-          .map((tag, i) => (
-            <Tag key={i} query={query}>
-              {tag}
-            </Tag>
-          ))}
+        {selectedTags.map((tag, i) => (
+          <Tag key={i} query={query}>
+            {tag}
+          </Tag>
+        ))}
       </ul>
     </Preview>
   );
