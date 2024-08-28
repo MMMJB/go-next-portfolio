@@ -4,7 +4,10 @@ const description =
 const url = "https://mjb.sh";
 
 export default {
-  title,
+  title: {
+    default: title,
+    template: "%s | Michael Beck",
+  },
   description,
   metadataBase: new URL(url),
   manifest: "/meta/site.webmanifest",
